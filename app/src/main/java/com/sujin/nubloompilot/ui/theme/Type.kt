@@ -13,46 +13,67 @@ val Typography = Typography(
         fontFamily = Pretendard,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 36.sp,
-        lineHeight = 40.sp
+        lineHeight = 40.sp,
+        color = Gray900
+    ),
+
+    // 중간 메인 타이틀
+    displayMedium = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 32.sp,
+        lineHeight = 40.sp,
+        letterSpacing = (-0.3).sp,
+        color = Gray900
     ),
 
     // 페이지 제목
     headlineMedium = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 24.sp,
-        lineHeight = 32.sp
+        fontSize = 26.sp,
+        lineHeight = 32.sp,
+        letterSpacing = (-0.3).sp,
+        color = Gray900
     ),
 
     // 카드 제목 / 섹션 제목
     titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.SemiBold,
         fontSize = 20.sp,
-        lineHeight = 28.sp
+        lineHeight = 28.sp,
+        letterSpacing = (-0.3).sp,
+        color = Gray900
     ),
 
     // 일반 본문
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp
+        lineHeight = 24.sp,
+        letterSpacing = (-0.3).sp,
+        color = Gray900
     ),
 
     // 작은 설명 텍스트
     bodyMedium = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
-        lineHeight = 20.sp
+        lineHeight = 20.sp,
+        letterSpacing = (-0.3).sp,
+        color = Gray900
     ),
 
     // 버튼 / 라벨
     labelLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.5.sp,
+        color = Gray900
     )
 )

@@ -9,10 +9,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 
 
 @Composable
 fun HomePage(
+    participantName: String,
     onCheckInClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -24,12 +26,21 @@ fun HomePage(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Home --Page~ hello!!",
+            text = "안녕하세요, $participantName 선생님",
             style = MaterialTheme.typography.displayLarge
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onCheckInClick) {
-            Text("기상 체크인")
-        }
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HomePagePreview() {
+    NubloomPilotTheme {
+        HomePage(
+            participantName = "개똥",
+            onCheckInClick = {}
+        )
     }
 }
