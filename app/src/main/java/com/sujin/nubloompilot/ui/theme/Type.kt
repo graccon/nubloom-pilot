@@ -26,6 +26,15 @@ val Typography = Typography(
         letterSpacing = (-0.3).sp,
         color = Gray900
     ),
+    // 중간 메인 타이틀
+    displaySmall = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp,
+        lineHeight = 40.sp,
+        letterSpacing = (-0.3).sp,
+        color = Gray900
+    ),
 
     // 페이지 제목
     headlineMedium = TextStyle(
@@ -47,11 +56,21 @@ val Typography = Typography(
         color = Gray900
     ),
 
+
+    titleMedium = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.Black,
+        fontSize = 17.sp,
+        lineHeight = 28.sp,
+        letterSpacing = (-0.3).sp,
+        color = Gray900
+    ),
+
     // 일반 본문
     bodyLarge = TextStyle(
         fontFamily = Pretendard,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontSize = 17.sp,
         lineHeight = 24.sp,
         letterSpacing = (-0.3).sp,
         color = Gray900

@@ -1,5 +1,7 @@
 package com.sujin.nubloompilot.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -12,18 +14,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sujin.nubloompilot.components.BottomBar
 import com.sujin.nubloompilot.local.ParticipantLocalStore
-import com.sujin.nubloompilot.pages.CheckInPage
 import com.sujin.nubloompilot.pages.HomePage
+import com.sujin.nubloompilot.pages.MyInfoPage
 import com.sujin.nubloompilot.pages.OnboardingPage
 import com.sujin.nubloompilot.pages.SleepPage
 import com.sujin.nubloompilot.repository.ParticipantRepository
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
+import com.sujin.nubloompilot.repository.ShiftScheduleRepository
 
 @Composable
 fun AppNavGraph() {
     val context = LocalContext.current
-
     val navController = rememberNavController()
 
     val localStore = remember {
@@ -32,6 +32,10 @@ fun AppNavGraph() {
 
     val participantRepository = remember {
         ParticipantRepository(context)
+    }
+
+    val shiftScheduleRepository = remember {
+        ShiftScheduleRepository(context)
     }
 
     val hasParticipant = remember {
@@ -70,6 +74,8 @@ fun AppNavGraph() {
             modifier = Modifier.padding(innerPadding),
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None }
         ) {
             composable(Routes.OnboardingPage) {
                 OnboardingPage(
@@ -93,20 +99,22 @@ fun AppNavGraph() {
             }
 
             composable(Routes.HOME) {
+                val todayTomorrowShifts = remember(currentRoute) {
+                    shiftScheduleRepository.getTodayAndTomorrowShifts()
+                }
+
                 HomePage(
                     participantName = participantName,
+                    todayShift = todayTomorrowShifts.todayShift,
+                    tomorrowShift = todayTomorrowShifts.tomorrowShift,
                     onCheckInClick = {
-                        navController.navigate(Routes.CHECK_IN)
+                        navController.navigate(Routes.MYINFO)
                     }
                 )
             }
 
-            composable(Routes.CHECK_IN) {
-                CheckInPage(
-                    onDone = {
-                        navController.navigate(Routes.HOME)
-                    }
-                )
+            composable(Routes.MYINFO) {
+                MyInfoPage()
             }
 
             composable(Routes.SLEEP) {

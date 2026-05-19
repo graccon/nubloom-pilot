@@ -22,7 +22,7 @@ fun BottomBar(
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Sleep,
-        BottomNavItem.CheckIn
+        BottomNavItem.MyInfo
     )
 
     Row(

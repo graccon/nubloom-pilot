@@ -12,5 +12,6 @@ sealed class BottomNavItem(
 ) {
     object Home : BottomNavItem(Routes.HOME, Icons.Default.Home)
     object Sleep : BottomNavItem(Routes.SLEEP, Icons.Default.Face)
-    object CheckIn : BottomNavItem(Routes.CHECK_IN, Icons.Default.DateRange)
+    object MyInfo : BottomNavItem(Routes.MYINFO, Icons.Default.DateRange)
+//    object CheckIn : BottomNavItem(Routes.CHECK_IN, Icons.Default.DateRange)
 }
