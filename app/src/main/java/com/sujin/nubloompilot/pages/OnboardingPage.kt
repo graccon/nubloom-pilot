@@ -33,78 +33,60 @@ fun OnboardingPage(
             .fillMaxSize()
             .padding(horizontal = 32.dp)
     ) {
-        WeightedColumnSection(
-            weight = 5f,
-            contentAlignment = Alignment.CenterStart,
-        ) {
-            Column(
-                horizontalAlignment = Alignment.Start
-            ) {
-                FloatingIcon(
-                    iconRes = R.drawable.icon_flower
-                )
-                Spacer(modifier = Modifier.height(30.dp))
-                Text(
-                    text = "안녕하세요, 간호사님",
-                    style = MaterialTheme.typography.displayMedium
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                SpeechBubble(
-                    text = "실험에 참여해주셔서 감사합니다"
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                SpeechBubble(
-                    text = "시작하기 전에 간단한 정보를 입력해주세요"
-                )
-            }
-        }
+        Spacer(modifier = Modifier.height(60.dp))
 
-        // INPUT
-        WeightedColumnSection(
-            weight = 6f,
-            contentAlignment = Alignment.TopCenter
-        ) {
-            Column {
+        FloatingIcon(
+            iconRes = R.drawable.icon_flower
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        Text(
+            text = "안녕하세요, 간호사님",
+            style = MaterialTheme.typography.displayMedium
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        SpeechBubble(
+            text = "실험에 참여해주셔서 감사합니다"
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        SpeechBubble(
+            text = "시작하기 전에 간단한 정보를 입력해주세요"
+        )
+            Spacer(modifier = Modifier.height(32.dp))
 
-                QuestionTextField(
-                    question = "이름을 입력해주세요",
-                    value = name,
-                    onValueChange = { name = it },
-                    placeholder = "예) 홍길동"
-                )
+        QuestionTextField(
+            question = "이름을 입력해주세요",
+            value = name,
+            onValueChange = { name = it },
+            placeholder = "예) 홍길동"
+        )
 
-                Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
-                QuestionTextField(
-                    question = "출생년도를 입력해주세요",
-                    value = birthYear,
-                    onValueChange = {
-                        if (it.length <= 4 && it.all(Char::isDigit)) {
-                            birthYear = it
-                        }
-                    },
-                    placeholder = "예) 1990",
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    )
-                )
-            }
-        }
+        QuestionTextField(
+            question = "출생년도를 입력해주세요",
+            value = birthYear,
+            onValueChange = {
+                if (it.length <= 4 && it.all(Char::isDigit)) {
+                    birthYear = it
+                }
+            },
+            placeholder = "예) 1990",
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            )
+        )
 
-        // BUTTON (1f)
-        WeightedColumnSection(
-            weight = 2f,
-            contentAlignment = Alignment.Center
-        ) {
-            PrimaryButton(
-                text = "시작할게요",
-                onClick = {
-                    onSubmit(name, birthYear.toInt())
-                },
-                enabled = isValid
+        Spacer(modifier = Modifier.height(32.dp))
+
+        PrimaryButton(
+            text = "시작할게요",
+            onClick = {
+                onSubmit(name, birthYear.toInt())
+            },
+            enabled = isValid
             )
         }
-    }
+
 }
 
 

@@ -8,6 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sujin.nubloompilot.components.SpiralTimeline
+import com.sujin.nubloompilot.components.TimelineStartPeriod
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 
 @Composable
@@ -42,6 +44,12 @@ fun HomePage(
         Text(
             text = "내일 근무: ${formatShift(tomorrowShift)}",
             style = MaterialTheme.typography.titleLarge
+        )
+        Spacer(modifier = Modifier.height(44.dp))
+
+        SpiralTimeline(
+            todayShift = todayShift,
+            tomorrowShift = tomorrowShift
         )
     }
 }
