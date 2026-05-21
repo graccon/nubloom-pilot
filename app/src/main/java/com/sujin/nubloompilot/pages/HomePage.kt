@@ -9,14 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.components.SpiralTimeline
-import com.sujin.nubloompilot.components.TimelineStartPeriod
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
+import java.time.LocalTime
+
 
 @Composable
 fun HomePage(
     participantName: String,
+    yesterdayShift: String?,
     todayShift: String?,
     tomorrowShift: String?,
+    dayAfterTomorrowShift: String?,
     onCheckInClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -48,8 +51,11 @@ fun HomePage(
         Spacer(modifier = Modifier.height(44.dp))
 
         SpiralTimeline(
+            yesterdayShift = yesterdayShift,
             todayShift = todayShift,
-            tomorrowShift = tomorrowShift
+            tomorrowShift = tomorrowShift,
+            dayAfterTomorrowShift = dayAfterTomorrowShift,
+            currentTime = LocalTime.now()
         )
     }
 }
@@ -70,8 +76,10 @@ fun HomePagePreview() {
     NubloomPilotTheme {
         HomePage(
             participantName = "수진",
-            todayShift = "D",
-            tomorrowShift = "N",
+            yesterdayShift = "N",
+            todayShift = "E",
+            tomorrowShift = "E",
+            dayAfterTomorrowShift = "E",
             onCheckInClick = {}
         )
     }

@@ -87,6 +87,26 @@ class ShiftScheduleRepository(
         )
     }
 
+    fun getShiftsAroundToday(): ShiftAroundToday {
+        val today = java.time.LocalDate.now()
+
+        fun getShift(date: java.time.LocalDate): String? {
+            val schedule = getLocalSchedule(
+                year = date.year,
+                month = date.monthValue
+            )
+
+            return schedule[date.dayOfMonth]
+        }
+
+        return ShiftAroundToday(
+            yesterdayShift = getShift(today.minusDays(1)),
+            todayShift = getShift(today),
+            tomorrowShift = getShift(today.plusDays(1)),
+            dayAfterTomorrowShift = getShift(today.plusDays(2))
+        )
+    }
+
     private fun getYearMonthKey(year: Int, month: Int): String {
         return "%04d-%02d".format(year, month)
     }
@@ -97,4 +117,11 @@ data class TodayTomorrowShifts(
     val tomorrowDate: LocalDate,
     val todayShift: String?,
     val tomorrowShift: String?
+)
+
+data class ShiftAroundToday(
+    val yesterdayShift: String?,
+    val todayShift: String?,
+    val tomorrowShift: String?,
+    val dayAfterTomorrowShift: String?
 )

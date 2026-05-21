@@ -99,16 +99,18 @@ fun AppNavGraph() {
             }
 
             composable(Routes.HOME) {
-                val todayTomorrowShifts = remember(currentRoute) {
-                    shiftScheduleRepository.getTodayAndTomorrowShifts()
+                val shiftsAroundToday = remember {
+                    shiftScheduleRepository.getShiftsAroundToday()
                 }
 
                 HomePage(
                     participantName = participantName,
-                    todayShift = todayTomorrowShifts.todayShift,
-                    tomorrowShift = todayTomorrowShifts.tomorrowShift,
+                    yesterdayShift = shiftsAroundToday.yesterdayShift,
+                    todayShift = shiftsAroundToday.todayShift,
+                    tomorrowShift = shiftsAroundToday.tomorrowShift,
+                    dayAfterTomorrowShift = shiftsAroundToday.dayAfterTomorrowShift,
                     onCheckInClick = {
-                        navController.navigate(Routes.MYINFO)
+                        navController.navigate(Routes.CHECK_IN)
                     }
                 )
             }
