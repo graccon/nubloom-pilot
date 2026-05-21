@@ -24,6 +24,7 @@ import androidx.compose.foundation.border
 import com.sujin.nubloompilot.ui.theme.Gray300
 import com.sujin.nubloompilot.ui.theme.Gray400
 import com.sujin.nubloompilot.ui.theme.Gray800
+import androidx.compose.foundation.clickable
 
 enum class SleepReportState {
     NONE,
@@ -88,18 +89,21 @@ fun SleepReportState.toHomeActionCardData(): HomeActionCardData {
 @Composable
 fun HomeActionCard(
     state: SleepReportState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     HomeActionCard(
         data = state.toHomeActionCardData(),
-        modifier = modifier
+        modifier = modifier,
+        onClick = onClick
     )
 }
 
 @Composable
 fun HomeActionCard(
     data: HomeActionCardData,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     val cardShape = RoundedCornerShape(20.dp)
     val topHeight = 100.dp
@@ -116,6 +120,7 @@ fun HomeActionCard(
                 shape = cardShape
             )
             .background(Gray300)
+            .clickable { onClick() }
     ) {
         Box(
             modifier = Modifier
