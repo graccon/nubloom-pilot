@@ -43,21 +43,6 @@ data class TimelineSpiralConfig(
     val startAnchor: TimelineStartAnchor
 )
 
-//fun DrawScope.createTimelineLayout(): TimelineLayout {
-//    val circleCenter = center
-//
-//    return TimelineLayout(
-//        circleCenter = circleCenter,
-//        spiralCenter = Offset(
-//            x = circleCenter.x + 8.dp.toPx(),
-//            y = circleCenter.y//+ 5.dp.toPx()
-//        ),
-//        clockRadius = size.minDimension * 0.46f,
-//        outerRadius = size.minDimension * 0.38f,
-//        innerRadius = size.minDimension * 0.09f
-//    )
-//}
-
 fun DrawScope.createTimelineLayout(
     startAnchor: TimelineStartAnchor
 ): TimelineLayout {

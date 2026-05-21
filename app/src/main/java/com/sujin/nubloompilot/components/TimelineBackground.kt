@@ -75,7 +75,7 @@ fun DrawScope.drawTimelineBackground(
             angleDegrees = angle,
             text = mark.label,
             color = textColor,
-            fontSize = if (mark.label == "6") 24.sp else 22.sp
+            fontSize = 18.sp
         )
     }
 
@@ -186,7 +186,7 @@ private fun DrawScope.drawTimelineLabel(
     fontSize: TextUnit
 ) {
     val angleRad = Math.toRadians(angleDegrees.toDouble())
-    val labelRadius = radius + 28.dp.toPx()
+    val labelRadius = radius + 24.dp.toPx()
 
     val position = Offset(
         x = center.x + cos(angleRad).toFloat() * labelRadius,
@@ -208,7 +208,7 @@ fun DrawScope.drawCenteredText(
     position: Offset,
     color: Color,
     fontSize: TextUnit,
-    fontWeight: FontWeight = FontWeight.Black
+    fontWeight: FontWeight = FontWeight.SemiBold
 ){
     val result = textMeasurer.measure(
         text = text,
@@ -263,7 +263,7 @@ private fun DrawScope.drawMinorTimeMarks(
         val angleRad = Math.toRadians(angle.toDouble())
 
         val dotRadius = layout.clockRadius + 8.dp.toPx()
-        val labelRadius = layout.clockRadius + 22.dp.toPx()
+        val labelRadius = layout.clockRadius + 24.dp.toPx()
 
         val dotPosition = Offset(
             x = layout.circleCenter.x + cos(angleRad).toFloat() * dotRadius,
@@ -272,7 +272,7 @@ private fun DrawScope.drawMinorTimeMarks(
 
         drawCircle(
             color = color.copy(alpha = 0.55f),
-            radius = 3.2.dp.toPx(),
+            radius = (3.5).dp.toPx(),
             center = dotPosition
         )
 
@@ -289,7 +289,7 @@ private fun DrawScope.drawMinorTimeMarks(
                 text = label,
                 position = labelPosition,
                 color = textColor,
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }

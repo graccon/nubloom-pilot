@@ -1,6 +1,8 @@
 package com.sujin.nubloompilot.components
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,8 +22,11 @@ fun SpiralTimeline(
     val textMeasurer = rememberTextMeasurer()
 
     Canvas(
-        modifier = modifier.size(300.dp)
-    ) {
+
+        modifier = modifier
+            .fillMaxWidth(0.85f)
+            .aspectRatio(1f)
+    ){
         val currentHour = currentTime.hour + currentTime.minute / 60f
 
         val startAnchor = resolveTimelineStartAnchor(currentHour)

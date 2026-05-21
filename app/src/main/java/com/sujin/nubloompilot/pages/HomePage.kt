@@ -30,21 +30,16 @@ fun HomePage(
     onCheckInClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     var currentTime = rememberCurrentTime()
     val greetingMessage = rememberRotatingMessage()
-    val healthConnectRepository = remember {
-        HealthConnectRepository(context)
-    }
-
-    val isAvailable = remember {
-        healthConnectRepository.isHealthConnectAvailable()
-    }
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(
+                horizontal = 28.dp,
+                vertical = 16.dp
+            ),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -66,14 +61,6 @@ fun HomePage(
         )
 
         Spacer(modifier = Modifier.height(44.dp))
-
-        Text(
-            text = "Health Connect 사용 가능: $isAvailable",
-            style = MaterialTheme.typography.bodyMedium
-        )
-
-        Spacer(modifier = Modifier.height(44.dp))
-
 
         SpiralTimeline(
             yesterdayShift = yesterdayShift,
