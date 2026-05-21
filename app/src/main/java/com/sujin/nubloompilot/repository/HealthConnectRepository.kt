@@ -3,13 +3,15 @@ package com.sujin.nubloompilot.repository
 import android.content.Context
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
+import androidx.health.connect.client.records.HeartRateRecord
+import androidx.health.connect.client.records.HeartRateVariabilityRmssdRecord
 import androidx.health.connect.client.records.SleepSessionRecord
+import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-
 
 class HealthConnectRepository(
     private val context: Context
@@ -18,8 +20,11 @@ class HealthConnectRepository(
         HealthConnectClient.getOrCreate(context)
     }
 
-    val sleepPermissions = setOf(
-        HealthPermission.getReadPermission(SleepSessionRecord::class)
+    val healthPermissions = setOf(
+        HealthPermission.getReadPermission(SleepSessionRecord::class),
+        HealthPermission.getReadPermission(HeartRateRecord::class),
+        HealthPermission.getReadPermission(HeartRateVariabilityRmssdRecord::class),
+        HealthPermission.getReadPermission(StepsRecord::class)
     )
 
     fun isHealthConnectAvailable(): Boolean {
@@ -27,38 +32,11 @@ class HealthConnectRepository(
                 HealthConnectClient.SDK_AVAILABLE
     }
 
-    suspend fun hasSleepPermission(): Boolean {
+    suspend fun hasHealthPermissions(): Boolean {
         val grantedPermissions =
             client.permissionController.getGrantedPermissions()
 
-        return grantedPermissions.containsAll(sleepPermissions)
-    }
-
-    suspend fun readSleepSessions(
-        date: LocalDate
-    ): List<SleepSessionRecord> {
-        val zoneId = ZoneId.systemDefault()
-
-        val startTime = date
-            .atStartOfDay(zoneId)
-            .toInstant()
-
-        val endTime = date
-            .plusDays(1)
-            .atStartOfDay(zoneId)
-            .toInstant()
-
-        val response = client.readRecords(
-            ReadRecordsRequest(
-                recordType = SleepSessionRecord::class,
-                timeRangeFilter = TimeRangeFilter.between(
-                    startTime,
-                    endTime
-                )
-            )
-        )
-
-        return response.records
+        return grantedPermissions.containsAll(healthPermissions)
     }
 
     suspend fun readSleepSessions(
@@ -67,14 +45,16 @@ class HealthConnectRepository(
     ): List<SleepSessionRecord> {
         val zoneId = ZoneId.systemDefault()
 
-        val startTime = startDate
-            .atStartOfDay(zoneId)
-            .toInstant()
+        return readSleepSessions(
+            startTime = startDate.atStartOfDay(zoneId).toInstant(),
+            endTime = endDate.atStartOfDay(zoneId).toInstant()
+        )
+    }
 
-        val endTime = endDate
-            .atStartOfDay(zoneId)
-            .toInstant()
-
+    suspend fun readSleepSessions(
+        startTime: Instant,
+        endTime: Instant
+    ): List<SleepSessionRecord> {
         val response = client.readRecords(
             ReadRecordsRequest(
                 recordType = SleepSessionRecord::class,
@@ -92,15 +72,14 @@ class HealthConnectRepository(
         lookBackDays: Long = 3
     ): SleepSessionRecord? {
         val today = LocalDate.now()
+        val now = Instant.now()
 
-        val sessions = readSleepSessions(
+        return readSleepSessions(
             startDate = today.minusDays(lookBackDays),
             endDate = today.plusDays(1)
         )
-
-        return sessions
             .filter { session ->
-                session.endTime <= java.time.Instant.now()
+                session.endTime <= now
             }
             .maxByOrNull { session ->
                 session.endTime
@@ -118,10 +97,63 @@ class HealthConnectRepository(
             startDate = today.minusDays(lookBackDays),
             endDate = today.plusDays(1)
         )
-            .filter { it.endTime <= now }
-            .sortedByDescending { it.endTime }
+            .filter { session ->
+                session.endTime <= now
+            }
+            .sortedByDescending { session ->
+                session.endTime
+            }
             .take(limit)
     }
 
+    suspend fun readHeartRates(
+        startTime: Instant,
+        endTime: Instant
+    ): List<HeartRateRecord> {
+        val response = client.readRecords(
+            ReadRecordsRequest(
+                recordType = HeartRateRecord::class,
+                timeRangeFilter = TimeRangeFilter.between(
+                    startTime,
+                    endTime
+                )
+            )
+        )
 
+        return response.records
+    }
+
+    suspend fun readHrvRecords(
+        startTime: Instant,
+        endTime: Instant
+    ): List<HeartRateVariabilityRmssdRecord> {
+        val response = client.readRecords(
+            ReadRecordsRequest(
+                recordType = HeartRateVariabilityRmssdRecord::class,
+                timeRangeFilter = TimeRangeFilter.between(
+                    startTime,
+                    endTime
+                )
+            )
+        )
+
+        return response.records
+    }
+
+    suspend fun readSteps(
+        startTime: Instant,
+        endTime: Instant
+    ): List<StepsRecord> {
+        val response = client.readRecords(
+            ReadRecordsRequest(
+                recordType = StepsRecord::class,
+                timeRangeFilter = TimeRangeFilter.between(
+                    startTime,
+                    endTime
+                )
+            )
+        )
+
+        return response.records
+    }
 }
