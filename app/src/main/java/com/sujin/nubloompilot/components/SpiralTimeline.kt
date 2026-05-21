@@ -36,7 +36,8 @@ fun SpiralTimeline(
 
         drawTimelineBackground(
             layout = layout,
-            textMeasurer = textMeasurer
+            textMeasurer = textMeasurer,
+            currentHour = currentHour
         )
 
         drawTimelineSpiralLayer(

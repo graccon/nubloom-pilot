@@ -56,6 +56,7 @@ fun HomePage(
             tomorrowShift = tomorrowShift,
             dayAfterTomorrowShift = dayAfterTomorrowShift,
             currentTime = LocalTime.now()
+
         )
     }
 }

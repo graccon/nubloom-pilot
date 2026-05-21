@@ -25,7 +25,8 @@ private data class TimelineTimeMark(
 
 fun DrawScope.drawTimelineBackground(
     layout: TimelineLayout,
-    textMeasurer: TextMeasurer
+    textMeasurer: TextMeasurer,
+    currentHour: Float
 ) {
     val nightColor = Color(0xFFB8B5B5)
     val outlineColor = Color(0xFF3A3A3A)
@@ -77,6 +78,16 @@ fun DrawScope.drawTimelineBackground(
             fontSize = if (mark.label == "6") 24.sp else 22.sp
         )
     }
+
+    drawMinorTimeMarks(
+        layout = layout,
+        textMeasurer = textMeasurer,
+        color = outlineColor,
+        textColor = textColor.copy(alpha = 0.7f),
+        currentHour = currentHour
+    )
+
+
 }
 
 private fun DrawScope.drawNightArea(
@@ -196,14 +207,15 @@ fun DrawScope.drawCenteredText(
     text: String,
     position: Offset,
     color: Color,
-    fontSize: TextUnit
-) {
+    fontSize: TextUnit,
+    fontWeight: FontWeight = FontWeight.Black
+){
     val result = textMeasurer.measure(
         text = text,
         style = TextStyle(
             color = color,
             fontSize = fontSize,
-            fontWeight = FontWeight.Black
+            fontWeight = fontWeight
         )
     )
 
@@ -214,4 +226,72 @@ fun DrawScope.drawCenteredText(
             y = position.y - result.size.height / 2f
         )
     )
+}
+
+private fun DrawScope.drawMinorTimeMarks(
+    layout: TimelineLayout,
+    textMeasurer: TextMeasurer,
+    color: Color,
+    textColor: Color,
+    currentHour: Float
+) {
+    val activeRange = when {
+        currentHour < 6f -> 0 until 6
+        currentHour < 12f -> 6 until 12
+        currentHour < 18f -> 12 until 18
+        else -> 18 until 24
+    }
+
+    val majorHours = setOf(0, 6, 12, 18)
+
+    val labelMap = mapOf(
+        2 to "2",
+        4 to "4",
+        8 to "8",
+        10 to "10",
+        14 to "2",
+        16 to "4",
+        20 to "8",
+        22 to "10"
+    )
+
+    val minorHours = activeRange
+        .filter { hour -> hour !in majorHours }
+
+    minorHours.forEach { hour ->
+        val angle = clockHourToAngle(hour.toFloat())
+        val angleRad = Math.toRadians(angle.toDouble())
+
+        val dotRadius = layout.clockRadius + 8.dp.toPx()
+        val labelRadius = layout.clockRadius + 22.dp.toPx()
+
+        val dotPosition = Offset(
+            x = layout.circleCenter.x + cos(angleRad).toFloat() * dotRadius,
+            y = layout.circleCenter.y + sin(angleRad).toFloat() * dotRadius
+        )
+
+        drawCircle(
+            color = color.copy(alpha = 0.55f),
+            radius = 3.2.dp.toPx(),
+            center = dotPosition
+        )
+
+        val label = labelMap[hour]
+
+        if (label != null) {
+            val labelPosition = Offset(
+                x = layout.circleCenter.x + cos(angleRad).toFloat() * labelRadius,
+                y = layout.circleCenter.y + sin(angleRad).toFloat() * labelRadius
+            )
+
+            drawCenteredText(
+                textMeasurer = textMeasurer,
+                text = label,
+                position = labelPosition,
+                color = textColor,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
 }

@@ -185,23 +185,20 @@ private fun DrawScope.drawCurrentTimeMarker(
 
     val angleRad = Math.toRadians(angleDegrees.toDouble())
 
-    val spiralRadius =
-        layout.outerRadius - progress * (layout.outerRadius - layout.innerRadius)
-
-    val spiralPoint = Offset(
-        x = layout.spiralCenter.x + cos(angleRad).toFloat() * spiralRadius,
-        y = layout.spiralCenter.y + sin(angleRad).toFloat() * spiralRadius
+    val outerPoint = Offset(
+        x = layout.circleCenter.x + cos(angleRad).toFloat() * (layout.clockRadius + 8.dp.toPx()),
+        y = layout.circleCenter.y + sin(angleRad).toFloat() * (layout.clockRadius + 8.dp.toPx())
     )
 
-    val outerPoint = Offset(
-        x = layout.circleCenter.x + cos(angleRad).toFloat() * (layout.clockRadius + 6.dp.toPx()),
-        y = layout.circleCenter.y + sin(angleRad).toFloat() * (layout.clockRadius + 6.dp.toPx())
+    val innerPoint = Offset(
+        x = layout.circleCenter.x + cos(angleRad).toFloat() * (layout.clockRadius - 34.dp.toPx()),
+        y = layout.circleCenter.y + sin(angleRad).toFloat() * (layout.clockRadius - 34.dp.toPx())
     )
 
     drawLine(
         color = color,
         start = outerPoint,
-        end = spiralPoint,
+        end = innerPoint,
         strokeWidth = 8.dp.toPx(),
         cap = StrokeCap.Round
     )
