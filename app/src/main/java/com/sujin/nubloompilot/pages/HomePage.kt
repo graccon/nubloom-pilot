@@ -6,10 +6,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.components.SpiralTimeline
 import com.sujin.nubloompilot.components.rememberCurrentTime
+import com.sujin.nubloompilot.components.rememberRotatingMessage
+import com.sujin.nubloompilot.ui.theme.Gray800
+import com.sujin.nubloompilot.ui.theme.Gray900
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 
 @Composable
@@ -23,36 +28,30 @@ fun HomePage(
     modifier: Modifier = Modifier
 ) {
     var currentTime = rememberCurrentTime()
+    val greetingMessage = rememberRotatingMessage()
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "안녕하세요, $participantName 선생님",
-            style = MaterialTheme.typography.displayLarge
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = "현재 시간: ${currentTime.hour}:${currentTime.minute.toString().padStart(2, '0')}",
-            style = MaterialTheme.typography.titleMedium
-        )
-
-
-        Text(
-            text = "오늘 근무: ${formatShift(todayShift)}",
-            style = MaterialTheme.typography.titleLarge
-        )
-
         Spacer(modifier = Modifier.height(8.dp))
-
         Text(
-            text = "내일 근무: ${formatShift(tomorrowShift)}",
-            style = MaterialTheme.typography.titleLarge
+            text = "$participantName 선생님",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.headlineMedium
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(
+            text = greetingMessage,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start,
+            style = MaterialTheme.typography.bodyLarge,
+            color = Gray800
         )
 
         Spacer(modifier = Modifier.height(44.dp))
@@ -64,6 +63,8 @@ fun HomePage(
             dayAfterTomorrowShift = dayAfterTomorrowShift,
             currentTime = currentTime
         )
+
+
     }
 }
 
