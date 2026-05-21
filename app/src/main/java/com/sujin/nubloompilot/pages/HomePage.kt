@@ -9,9 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.components.SpiralTimeline
+import com.sujin.nubloompilot.components.rememberCurrentTime
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
-import java.time.LocalTime
-
 
 @Composable
 fun HomePage(
@@ -23,6 +22,8 @@ fun HomePage(
     onCheckInClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var currentTime = rememberCurrentTime()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -36,6 +37,11 @@ fun HomePage(
         )
 
         Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = "현재 시간: ${currentTime.hour}:${currentTime.minute.toString().padStart(2, '0')}",
+            style = MaterialTheme.typography.titleMedium
+        )
+
 
         Text(
             text = "오늘 근무: ${formatShift(todayShift)}",
@@ -48,6 +54,7 @@ fun HomePage(
             text = "내일 근무: ${formatShift(tomorrowShift)}",
             style = MaterialTheme.typography.titleLarge
         )
+
         Spacer(modifier = Modifier.height(44.dp))
 
         SpiralTimeline(
@@ -55,8 +62,7 @@ fun HomePage(
             todayShift = todayShift,
             tomorrowShift = tomorrowShift,
             dayAfterTomorrowShift = dayAfterTomorrowShift,
-            currentTime = LocalTime.now()
-
+            currentTime = currentTime
         )
     }
 }
@@ -78,8 +84,8 @@ fun HomePagePreview() {
         HomePage(
             participantName = "수진",
             yesterdayShift = "N",
-            todayShift = "E",
-            tomorrowShift = "E",
+            todayShift = "N",
+            tomorrowShift = "N",
             dayAfterTomorrowShift = "E",
             onCheckInClick = {}
         )

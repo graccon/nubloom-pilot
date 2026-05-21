@@ -47,7 +47,8 @@ fun SpiralTimeline(
             todayShift = todayShift,
             tomorrowShift = tomorrowShift,
             dayAfterTomorrowShift = dayAfterTomorrowShift,
-            currentTime = currentTime
+            currentTime = currentTime,
+            textMeasurer = textMeasurer
         )
     }
 }

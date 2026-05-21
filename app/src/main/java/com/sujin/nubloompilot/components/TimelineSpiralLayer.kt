@@ -5,7 +5,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.sujin.nubloompilot.ui.theme.Gray900
 import java.time.LocalTime
 import kotlin.math.cos
 import kotlin.math.sin
@@ -31,7 +35,8 @@ fun DrawScope.drawTimelineSpiralLayer(
     todayShift: String?,
     tomorrowShift: String?,
     dayAfterTomorrowShift: String?,
-    currentTime: LocalTime
+    currentTime: LocalTime,
+    textMeasurer: TextMeasurer
 ) {
     val basePath = createSpiralPath(
         layout = layout,
@@ -77,6 +82,13 @@ fun DrawScope.drawTimelineSpiralLayer(
                 width = 82f,
                 cap = StrokeCap.Round
             )
+        )
+
+        drawShiftStartLabel(
+            layout = layout,
+            config = spiralConfig,
+            segment = segment,
+            textMeasurer = textMeasurer
         )
     }
 
@@ -201,5 +213,35 @@ private fun DrawScope.drawCurrentTimeMarker(
         end = innerPoint,
         strokeWidth = 8.dp.toPx(),
         cap = StrokeCap.Round
+    )
+}
+
+private fun DrawScope.drawShiftStartLabel(
+    layout: TimelineLayout,
+    config: TimelineSpiralConfig,
+    segment: ShiftTimelineSegment,
+    textMeasurer: TextMeasurer
+) {
+    val segmentDuration = segment.endHour - segment.startHour
+
+    if (segmentDuration < 1.5f) {
+        return
+    }
+
+    val labelHour = segment.startHour + 0.1f
+
+    val labelPosition = getSpiralPoint(
+        layout = layout,
+        config = config,
+        hour = labelHour
+    )
+
+    drawCenteredText(
+        textMeasurer = textMeasurer,
+        text = segment.label,
+        position = labelPosition,
+        color = Gray900,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Black
     )
 }

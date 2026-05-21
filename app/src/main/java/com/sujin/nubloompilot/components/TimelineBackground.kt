@@ -65,7 +65,7 @@ fun DrawScope.drawTimelineBackground(
             center = layout.circleCenter,
             radius = layout.clockRadius,
             angleDegrees = angle,
-            color = outlineColor
+            color = textColor
         )
 
         drawTimelineLabel(
@@ -83,7 +83,7 @@ fun DrawScope.drawTimelineBackground(
         layout = layout,
         textMeasurer = textMeasurer,
         color = outlineColor,
-        textColor = textColor.copy(alpha = 0.7f),
+        textColor = textColor,
         currentHour = currentHour
     )
 
