@@ -6,5 +6,6 @@ object Routes {
     const val HOME = "home"
     const val MYINFO = "my_info"
     const val CHECK_IN = "check_in"
+    const val SLEEP_CHECK_IN = "sleep_check_in/{duration}/{heartRate}"
     const val SLEEP = "sleep"
 }

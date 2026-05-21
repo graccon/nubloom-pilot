@@ -102,10 +102,22 @@ fun AppNavGraph() {
                     todayShift = shiftsAroundToday.todayShift,
                     tomorrowShift = shiftsAroundToday.tomorrowShift,
                     dayAfterTomorrowShift = shiftsAroundToday.dayAfterTomorrowShift,
-                    onCheckInClick = {
-                        navController.navigate(Routes.CHECK_IN)
+                    onNavigateToSleepCheckIn = { duration, heartRate ->
+                        navController.navigate("sleep_check_in/$duration/$heartRate")
                     }
                 )
+            }
+
+            composable(
+                route = Routes.SLEEP_CHECK_IN,
+            ) { backStackEntry ->
+                val duration = backStackEntry.arguments?.getString("duration")?.toLong() ?: 0L
+                val heartRate = backStackEntry.arguments?.getString("heartRate")?.toLong() ?: -1L
+                
+                // TODO: Replace with actual SleepCheckInPage
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    androidx.compose.material3.Text("Sleep Check In: $duration min, HR: $heartRate")
+                }
             }
 
             composable(Routes.MYINFO) {
