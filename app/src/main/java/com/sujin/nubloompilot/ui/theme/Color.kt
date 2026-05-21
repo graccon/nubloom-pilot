@@ -1,11 +1,16 @@
 package com.sujin.nubloompilot.ui.theme
 
+import android.text.Highlights
 import androidx.compose.ui.graphics.Color
 
 // Brand
 val Primary = Color(0xFFF4A249)
 val SecondaryYellow = Color(0xFFFFED7A)
 val SecondaryRed = Color(0xFFE06E49)
+
+
+val DarkRed = Color(0xFFA75733)
+val DarkBlue = Color(0xFF3F5879)
 
 // Background
 val Background = Color(0xFFF6F6F6)

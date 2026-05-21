@@ -46,6 +46,16 @@ val Typography = Typography(
         color = Gray900
     ),
 
+    // 페이지 제목
+    headlineSmall = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 22.sp,
+        lineHeight = 32.sp,
+        letterSpacing = (-0.3).sp,
+        color = Gray900
+    ),
+
     // 카드 제목 / 섹션 제목
     titleLarge = TextStyle(
         fontFamily = Pretendard,
@@ -60,7 +70,7 @@ val Typography = Typography(
     titleMedium = TextStyle(
         fontFamily = Pretendard,
         fontWeight = FontWeight.Black,
-        fontSize = 17.sp,
+        fontSize = 18.sp,
         lineHeight = 28.sp,
         letterSpacing = (-0.3).sp,
         color = Gray900
