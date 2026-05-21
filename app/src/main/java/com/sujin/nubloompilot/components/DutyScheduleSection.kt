@@ -49,7 +49,7 @@ fun DutyScheduleSection(
             onSave = onSave
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         MonthNavigator(
             year = currentYearMonth.year,
@@ -58,7 +58,7 @@ fun DutyScheduleSection(
             onNextClick = onNextMonth
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(1.dp))
 
         ShiftCalendarGrid(
             year = currentYearMonth.year,
@@ -103,7 +103,7 @@ private fun DutyScheduleHeader(
     ) {
         Text(
             text = "듀티표",
-            style = MaterialTheme.typography.displayMedium
+            style = MaterialTheme.typography.displaySmall
         )
 
         if (isEditMode) {

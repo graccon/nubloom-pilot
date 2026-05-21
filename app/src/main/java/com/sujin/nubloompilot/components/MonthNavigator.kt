@@ -34,7 +34,7 @@ fun MonthNavigator(
 
         Text(
             text = "${year}년 ${month}월",
-            style = MaterialTheme.typography.displaySmall
+            style = MaterialTheme.typography.titleLarge
         )
 
         IconButton(onClick = onNextClick) {

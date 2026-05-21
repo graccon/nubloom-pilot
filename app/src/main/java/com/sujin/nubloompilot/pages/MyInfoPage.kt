@@ -1,12 +1,18 @@
 package com.sujin.nubloompilot.pages
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import com.sujin.nubloompilot.components.DutyScheduleSection
 import com.sujin.nubloompilot.components.TopBanner
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
@@ -61,53 +67,61 @@ fun MyInfoPage(
     }
 
     Box(
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
     ) {
-        DutyScheduleSection(
-            currentYearMonth = currentYearMonth,
-            shifts = shifts,
-            isEditMode = isEditMode,
-            selectedDay = selectedDay,
-            onPrevMonth = { currentYearMonth = currentYearMonth.minusMonths(1) },
-            onNextMonth = { currentYearMonth = currentYearMonth.plusMonths(1) },
-            onEditStart = {
-                originalShifts = shifts
-                selectedDay = 1
-                isEditMode = true
-            },
-            onCancelEdit = {
-                shifts = originalShifts
-                isEditMode = false
-            },
-            onSave = {
-                scheduleRepository.saveSchedule(
-                    year = currentYearMonth.year,
-                    month = currentYearMonth.monthValue,
-                    shifts = shifts,
-                    onSuccess = {
-                        originalShifts = shifts
-                        isEditMode = false
-                        showSavedBanner = true
-                    },
-                    onFailure = {
-                        // TODO: 실패 배너 처리
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            DutyScheduleSection(
+                currentYearMonth = currentYearMonth,
+                shifts = shifts,
+                isEditMode = isEditMode,
+                selectedDay = selectedDay,
+                onPrevMonth = { currentYearMonth = currentYearMonth.minusMonths(1) },
+                onNextMonth = { currentYearMonth = currentYearMonth.plusMonths(1) },
+                onEditStart = {
+                    originalShifts = shifts
+                    selectedDay = 1
+                    isEditMode = true
+                },
+                onCancelEdit = {
+                    shifts = originalShifts
+                    isEditMode = false
+                },
+                onSave = {
+                    scheduleRepository.saveSchedule(
+                        year = currentYearMonth.year,
+                        month = currentYearMonth.monthValue,
+                        shifts = shifts,
+                        onSuccess = {
+                            originalShifts = shifts
+                            isEditMode = false
+                            showSavedBanner = true
+                        },
+                        onFailure = {
+                            // TODO: 실패 배너 처리
+                        }
+                    )
+                },
+                onDayClick = { day ->
+                    selectedDay = day
+                },
+                onShiftSelected = { shift ->
+                    shifts = shifts.toMutableMap().apply {
+                        this[selectedDay] = shift
                     }
-                )
-            },
-            onDayClick = { day ->
-                selectedDay = day
-            },
-            onShiftSelected = { shift ->
-                shifts = shifts.toMutableMap().apply {
-                    this[selectedDay] = shift
+                    selectedDay = if (selectedDay < daysInMonth) {
+                        selectedDay + 1
+                    } else {
+                        1
+                    }
                 }
-                selectedDay = if (selectedDay < daysInMonth) {
-                    selectedDay + 1
-                } else {
-                    1
-                }
-            }
-        )
+            )
+
+            Spacer(modifier = Modifier.height(120.dp))
+        }
 
         TopBanner(
             visible = showSavedBanner,

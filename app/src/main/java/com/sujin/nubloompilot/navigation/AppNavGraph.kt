@@ -2,8 +2,6 @@ package com.sujin.nubloompilot.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -20,6 +18,9 @@ import com.sujin.nubloompilot.pages.OnboardingPage
 import com.sujin.nubloompilot.pages.SleepPage
 import com.sujin.nubloompilot.repository.ParticipantRepository
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Alignment
 
 @Composable
 fun AppNavGraph() {
@@ -57,21 +58,13 @@ fun AppNavGraph() {
 
     val shouldShowBottomBar = currentRoute != Routes.OnboardingPage
 
-    Scaffold(
-        bottomBar = {
-            if (shouldShowBottomBar) {
-                BottomBar(
-                    navController = navController,
-                    currentRoute = currentRoute
-                )
-            }
-        }
-    ) { innerPadding ->
-
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
         NavHost(
             navController = navController,
             startDestination = startDestination,
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier.fillMaxSize(),
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None },
             popEnterTransition = { EnterTransition.None },
@@ -122,6 +115,14 @@ fun AppNavGraph() {
             composable(Routes.SLEEP) {
                 SleepPage()
             }
+        }
+
+        if (shouldShowBottomBar) {
+            BottomBar(
+                navController = navController,
+                currentRoute = currentRoute,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
         }
     }
 }

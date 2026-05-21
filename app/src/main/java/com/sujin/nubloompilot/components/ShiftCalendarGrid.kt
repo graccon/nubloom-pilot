@@ -56,7 +56,7 @@ fun ShiftCalendarGrid(
                 ) {
                     Text(
                         text = weekday,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodySmall,
                         color = Gray700
                     )
                 }

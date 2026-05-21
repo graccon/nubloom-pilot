@@ -3,7 +3,6 @@ package com.sujin.nubloompilot.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -20,7 +19,8 @@ import com.sujin.nubloompilot.ui.theme.Gray900
 @Composable
 fun BottomBar(
     navController: NavController,
-    currentRoute: String?
+    currentRoute: String?,
+    modifier: Modifier = Modifier
 ) {
     val items = listOf(
         BottomNavItem.Home,
@@ -29,7 +29,7 @@ fun BottomBar(
     )
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(28.dp)
             .background(
@@ -58,7 +58,7 @@ fun BottomBar(
                 Icon(
                     painter = painterResource(id = item.iconRes),
                     contentDescription = null,
-                    modifier = Modifier.size(36.dp),
+                    modifier = Modifier.size(32.dp),
                     tint = if (selected) Gray900 else Gray600
                 )
             }
