@@ -1,5 +1,7 @@
 package com.sujin.nubloompilot.navigation
 
+import com.sujin.nubloompilot.models.MorningGloryType
+
 object Routes {
     const val OnboardingPage = "onboarding"
     const val SCHEDULE = "schedule"
@@ -22,4 +24,8 @@ object Routes {
         val safeBaselineHeartRate = baselineHeartRate ?: -1L
         return "sleep_check_in/$duration/$safeHeartRate/$safeBaselineDuration/$safeBaselineHeartRate"
     }
+
+    const val MORNING_GLORY_RESULT = "morning_glory_result/{type}"
+
+    fun morningGloryResultRoute(type: MorningGloryType): String = "morning_glory_result/${type.name}"
 }

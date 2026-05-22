@@ -23,8 +23,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import com.sujin.nubloompilot.R
+import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SleepInterpretationInput
 import com.sujin.nubloompilot.ui.theme.*
+import com.sujin.nubloompilot.utils.MorningGloryClassifier
 import com.sujin.nubloompilot.utils.SleepInterpretationEngine
 
 @Composable
@@ -34,7 +36,7 @@ fun SleepCheckInPage(
     wakeHeartRate: Long?,
     baselineSleepDurationMinutes: Long?,
     baselineWakeHeartRate: Long?,
-    onSubmitClick: () -> Unit,
+    onSubmitClick: (MorningGloryType) -> Unit,
     modifier: Modifier = Modifier
 ){
     var sleepTimePerception by remember { mutableStateOf<Int?>(null) }
@@ -197,7 +199,13 @@ fun SleepCheckInPage(
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = onSubmitClick,
+            onClick = {
+                val resultType = MorningGloryClassifier.classify(
+                    interpretation = interpretation,
+                    fatigueLevel = fatigueLevel!!
+                )
+                onSubmitClick(resultType)
+            },
             enabled = canSubmit,
             modifier = Modifier
                 .fillMaxWidth()
