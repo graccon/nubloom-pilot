@@ -29,7 +29,12 @@ fun HomePage(
     todayShift: String?,
     tomorrowShift: String?,
     dayAfterTomorrowShift: String?,
-    onNavigateToSleepCheckIn: (duration: Long, heartRate: Long) -> Unit,
+    onNavigateToSleepCheckIn: (
+        duration: Long,
+        heartRate: Long?,
+        baselineDuration: Long?,
+        baselineHeartRate: Long?
+    ) -> Unit,
     modifier: Modifier = Modifier,
     state: HomePageState = rememberHomePageState()
 ) {

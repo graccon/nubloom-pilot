@@ -101,6 +101,8 @@ class HealthSummaryRepository(
             ?.toInt()
     }
 
+
+
     private suspend fun getStepsLast24Hours(
         now: Instant
     ): Long {
@@ -113,5 +115,88 @@ class HealthSummaryRepository(
         return stepRecords.sumOf { record ->
             record.count
         }
+    }
+    suspend fun getRecentHealthSummaries(
+        limit: Int = 4,
+        lookBackDays: Long = 14
+    ): List<DailyHealthSummary> {
+        val sleepSessions =
+            healthConnectRepository.getRecentSleepSessions(
+                limit = limit,
+                lookBackDays = lookBackDays
+            )
+
+        return sleepSessions.map { sleepSession ->
+            val now = Instant.now()
+
+            val sleepDurationMinutes =
+                Duration.between(
+                    sleepSession.startTime,
+                    sleepSession.endTime
+                ).toMinutes()
+
+            val deepSleepMinutes =
+                sleepSession.stages
+                    .filter { stage ->
+                        stage.stage == SleepSessionRecord.STAGE_TYPE_DEEP
+                    }
+                    .sumOf { stage ->
+                        Duration.between(
+                            stage.startTime,
+                            stage.endTime
+                        ).toMinutes()
+                    }
+
+            val wakeHeartRate =
+                getWakeHeartRate(
+                    sleepEndTime = sleepSession.endTime
+                )
+
+            val averageHrvMillis =
+                getAverageHrvMillis(
+                    sleepSession = sleepSession
+                )
+
+            val stepsLast24Hours =
+                getStepsLast24Hours(
+                    now = now
+                )
+
+            DailyHealthSummary(
+                sleepDurationMinutes = sleepDurationMinutes,
+                deepSleepMinutes = deepSleepMinutes,
+                wakeHeartRate = wakeHeartRate,
+                averageHrvMillis = averageHrvMillis,
+                stepsLast24Hours = stepsLast24Hours
+            )
+        }
+    }
+
+    fun getBaselineSleepDurationMinutes(
+        recentSummaries: List<DailyHealthSummary>
+    ): Long? {
+        val baselineTargets = recentSummaries.drop(1)
+
+        if (baselineTargets.size < 3) return null
+
+        return baselineTargets
+            .map { it.sleepDurationMinutes }
+            .average()
+            .toLong()
+    }
+
+    fun getBaselineWakeHeartRate(
+        recentSummaries: List<DailyHealthSummary>
+    ): Long? {
+        val baselineTargets = recentSummaries.drop(1)
+
+        val heartRates =
+            baselineTargets.mapNotNull { it.wakeHeartRate }
+
+        if (heartRates.size < 3) return null
+
+        return heartRates
+            .average()
+            .toLong()
     }
 }

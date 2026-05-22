@@ -15,6 +15,7 @@ import com.sujin.nubloompilot.local.ParticipantLocalStore
 import com.sujin.nubloompilot.pages.HomePage
 import com.sujin.nubloompilot.pages.MyInfoPage
 import com.sujin.nubloompilot.pages.OnboardingPage
+import com.sujin.nubloompilot.pages.SleepCheckInPage
 import com.sujin.nubloompilot.pages.SleepPage
 import com.sujin.nubloompilot.repository.ParticipantRepository
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
@@ -56,7 +57,9 @@ fun AppNavGraph() {
     val currentRoute =
         navController.currentBackStackEntryAsState().value?.destination?.route
 
-    val shouldShowBottomBar = currentRoute != Routes.OnboardingPage
+    val shouldShowBottomBar = currentRoute != null &&
+            currentRoute != Routes.OnboardingPage &&
+            !currentRoute.startsWith("sleep_check_in")
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -102,23 +105,61 @@ fun AppNavGraph() {
                     todayShift = shiftsAroundToday.todayShift,
                     tomorrowShift = shiftsAroundToday.tomorrowShift,
                     dayAfterTomorrowShift = shiftsAroundToday.dayAfterTomorrowShift,
-                    onNavigateToSleepCheckIn = { duration, heartRate ->
-                        navController.navigate("sleep_check_in/$duration/$heartRate")
+                    onNavigateToSleepCheckIn = { duration, heartRate, baselineDuration, baselineHeartRate ->
+                        navController.navigate(
+                            Routes.sleepCheckInRoute(
+                                duration = duration,
+                                heartRate = heartRate,
+                                baselineDuration = baselineDuration,
+                                baselineHeartRate = baselineHeartRate
+                            )
+                        )
+                    }
+                )
+            }
+            composable(
+                route = Routes.SLEEP_CHECK_IN
+            ) { backStackEntry ->
+                val duration =
+                    backStackEntry.arguments
+                        ?.getString("duration")
+                        ?.toLongOrNull()
+                        ?: 0L
+
+                val heartRate =
+                    backStackEntry.arguments
+                        ?.getString("heartRate")
+                        ?.toLongOrNull()
+                        ?: -1L
+
+                val baselineDuration =
+                    backStackEntry.arguments
+                        ?.getString("baselineDuration")
+                        ?.toLongOrNull()
+                        ?: -1L
+
+                val baselineHeartRate =
+                    backStackEntry.arguments
+                        ?.getString("baselineHeartRate")
+                        ?.toLongOrNull()
+                        ?: -1L
+
+                SleepCheckInPage(
+                    participantName = participantName,
+                    sleepDurationMinutes = duration,
+                    wakeHeartRate = heartRate.takeIf { it != -1L },
+                    baselineSleepDurationMinutes = baselineDuration.takeIf { it != -1L },
+                    baselineWakeHeartRate = baselineHeartRate.takeIf { it != -1L },
+                    onSubmitClick = {
+                        navController.navigate(Routes.HOME) {
+                            popUpTo(Routes.HOME) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
 
-            composable(
-                route = Routes.SLEEP_CHECK_IN,
-            ) { backStackEntry ->
-                val duration = backStackEntry.arguments?.getString("duration")?.toLong() ?: 0L
-                val heartRate = backStackEntry.arguments?.getString("heartRate")?.toLong() ?: -1L
-                
-                // TODO: Replace with actual SleepCheckInPage
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    androidx.compose.material3.Text("Sleep Check In: $duration min, HR: $heartRate")
-                }
-            }
 
             composable(Routes.MYINFO) {
                 MyInfoPage()

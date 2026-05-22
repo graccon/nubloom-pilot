@@ -13,8 +13,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 data class HomePageUiState(
+    val latestHealthSummary: DailyHealthSummary? = null,
     val sleepReportState: SleepReportState = SleepReportState.NONE,
-    val latestHealthSummary: DailyHealthSummary? = null
+    val baselineSleepDurationMinutes: Long? = null,
+    val baselineWakeHeartRate: Long? = null
 )
 
 @Stable
@@ -43,16 +45,21 @@ class HomePageState(
     }
 
     fun onActionCardClick(
-        onNavigateToSleepCheckIn: (Long, Long) -> Unit
+        onNavigateToSleepCheckIn: (
+            duration: Long,
+            heartRate: Long?,
+            baselineDuration: Long?,
+            baselineHeartRate: Long?
+        ) -> Unit
     ) {
         val summary = uiState.latestHealthSummary ?: return
-        
-        if (uiState.sleepReportState == SleepReportState.NONE) {
-            onNavigateToSleepCheckIn(
-                summary.sleepDurationMinutes,
-                summary.wakeHeartRate ?: -1L
-            )
-        }
+
+        onNavigateToSleepCheckIn(
+            summary.sleepDurationMinutes,
+            summary.wakeHeartRate,
+            uiState.baselineSleepDurationMinutes,
+            uiState.baselineWakeHeartRate
+        )
     }
 }
 

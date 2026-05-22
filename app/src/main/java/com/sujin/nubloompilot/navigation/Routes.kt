@@ -6,6 +6,20 @@ object Routes {
     const val HOME = "home"
     const val MYINFO = "my_info"
     const val CHECK_IN = "check_in"
-    const val SLEEP_CHECK_IN = "sleep_check_in/{duration}/{heartRate}"
+
     const val SLEEP = "sleep"
+
+    const val SLEEP_CHECK_IN =
+        "sleep_check_in/{duration}/{heartRate}/{baselineDuration}/{baselineHeartRate}"
+    fun sleepCheckInRoute(
+        duration: Long,
+        heartRate: Long?,
+        baselineDuration: Long?,
+        baselineHeartRate: Long?
+    ): String {
+        val safeHeartRate = heartRate ?: -1L
+        val safeBaselineDuration = baselineDuration ?: -1L
+        val safeBaselineHeartRate = baselineHeartRate ?: -1L
+        return "sleep_check_in/$duration/$safeHeartRate/$safeBaselineDuration/$safeBaselineHeartRate"
+    }
 }
