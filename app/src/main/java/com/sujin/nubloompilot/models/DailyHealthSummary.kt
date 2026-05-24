@@ -1,6 +1,9 @@
 package com.sujin.nubloompilot.models
 
+import java.time.Instant
+
 data class DailyHealthSummary(
+    val sleepEndTime: Instant,
     val sleepDurationMinutes: Long,
     val deepSleepMinutes: Long,
     val wakeHeartRate: Long?,

@@ -12,7 +12,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.sujin.nubloompilot.components.BottomBar
 import com.sujin.nubloompilot.local.ParticipantLocalStore
+import com.sujin.nubloompilot.local.SleepSurveyLocalStore
 import com.sujin.nubloompilot.models.MorningGloryType
+import com.sujin.nubloompilot.models.SleepResult
 import com.sujin.nubloompilot.pages.HomePage
 import com.sujin.nubloompilot.pages.MorningGloryResultPage
 import com.sujin.nubloompilot.pages.MyInfoPage
@@ -21,9 +23,11 @@ import com.sujin.nubloompilot.pages.SleepCheckInPage
 import com.sujin.nubloompilot.pages.SleepPage
 import com.sujin.nubloompilot.repository.ParticipantRepository
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
+import com.sujin.nubloompilot.repository.SleepResultRepository
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
+import java.time.Instant
 
 @Composable
 fun AppNavGraph() {
@@ -42,12 +46,20 @@ fun AppNavGraph() {
         ShiftScheduleRepository(context)
     }
 
-    val hasParticipant = remember {
-        localStore.getParticipantId() != null
+    val sleepResultRepository = remember {
+        SleepResultRepository(SleepSurveyLocalStore(context))
+    }
+
+    val participantId = remember {
+        localStore.getParticipantId() ?: "unknown"
     }
 
     val participantName = remember {
         localStore.getParticipantName() ?: "간호사"
+    }
+
+    val hasParticipant = remember {
+        localStore.getParticipantId() != null
     }
 
     val startDestination = if (hasParticipant) {
@@ -108,21 +120,26 @@ fun AppNavGraph() {
                     todayShift = shiftsAroundToday.todayShift,
                     tomorrowShift = shiftsAroundToday.tomorrowShift,
                     dayAfterTomorrowShift = shiftsAroundToday.dayAfterTomorrowShift,
-                    onNavigateToSleepCheckIn = { duration, heartRate, baselineDuration, baselineHeartRate ->
+                    onNavigateToSleepCheckIn = { endTime, duration, heartRate, baselineDuration, baselineHeartRate ->
                         navController.navigate(
                             Routes.sleepCheckInRoute(
+                                endTime = endTime,
                                 duration = duration,
                                 heartRate = heartRate,
                                 baselineDuration = baselineDuration,
                                 baselineHeartRate = baselineHeartRate
                             )
                         )
+                    },
+                    onNavigateToResult = { type ->
+                        navController.navigate("morning_glory_result/${type.name}/NONE/0/-1/0")
                     }
                 )
             }
             composable(
                 route = Routes.SLEEP_CHECK_IN
             ) { backStackEntry ->
+                val endTime = backStackEntry.arguments?.getString("endTime") ?: ""
                 val duration =
                     backStackEntry.arguments
                         ?.getString("duration")
@@ -149,12 +166,21 @@ fun AppNavGraph() {
 
                 SleepCheckInPage(
                     participantName = participantName,
+                    sleepEndTime = endTime,
                     sleepDurationMinutes = duration,
                     wakeHeartRate = heartRate.takeIf { it != -1L },
                     baselineSleepDurationMinutes = baselineDuration.takeIf { it != -1L },
                     baselineWakeHeartRate = baselineHeartRate.takeIf { it != -1L },
-                    onSubmitClick = { type ->
-                        navController.navigate(Routes.morningGloryResultRoute(type))
+                    onSubmitClick = { type, time, fatigue ->
+                        navController.navigate(
+                            Routes.morningGloryResultRoute(
+                                type = type,
+                                endTime = time,
+                                duration = duration,
+                                heartRate = heartRate.takeIf { it != -1L },
+                                fatigueLevel = fatigue
+                            )
+                        )
                     }
                 )
             }
@@ -174,6 +200,10 @@ fun AppNavGraph() {
                 val type = MorningGloryType.valueOf(
                     backStackEntry.arguments?.getString("type") ?: MorningGloryType.TYPE_1.name
                 )
+                val endTime = backStackEntry.arguments?.getString("endTime") ?: "NONE"
+                val duration = backStackEntry.arguments?.getString("duration")?.toLongOrNull() ?: 0L
+                val heartRate = backStackEntry.arguments?.getString("heartRate")?.toLongOrNull() ?: -1L
+                val fatigueLevel = backStackEntry.arguments?.getString("fatigueLevel")?.toIntOrNull() ?: 0
 
                 MorningGloryResultPage(
                     participantName = participantName,
@@ -183,6 +213,20 @@ fun AppNavGraph() {
                             popUpTo(Routes.HOME) {
                                 inclusive = true
                             }
+                        }
+                    },
+                    onSaveResult = {
+                        if (endTime != "NONE") {
+                            val result = SleepResult(
+                                participantId = participantId,
+                                participantName = participantName,
+                                sleepEndTime = Instant.parse(endTime),
+                                sleepDurationMinutes = duration,
+                                wakeHeartRate = if (heartRate == -1L) null else heartRate,
+                                fatigueLevel = fatigueLevel,
+                                morningGloryType = type
+                            )
+                            sleepResultRepository.saveSleepResult(result)
                         }
                     }
                 )

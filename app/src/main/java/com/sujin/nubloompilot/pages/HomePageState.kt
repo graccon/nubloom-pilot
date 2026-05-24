@@ -3,9 +3,9 @@ package com.sujin.nubloompilot.pages
 import android.content.Context
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import com.sujin.nubloompilot.components.SleepReportState
 import com.sujin.nubloompilot.local.SleepSurveyLocalStore
 import com.sujin.nubloompilot.models.DailyHealthSummary
+import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.HealthSummaryRepository
 import com.sujin.nubloompilot.repository.SleepStatusRepository
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 data class HomePageUiState(
     val latestHealthSummary: DailyHealthSummary? = null,
-    val sleepReportState: SleepReportState = SleepReportState.NONE,
+    val morningGloryType: MorningGloryType? = null,
     val baselineSleepDurationMinutes: Long? = null,
     val baselineWakeHeartRate: Long? = null
 )
@@ -31,35 +31,43 @@ class HomePageState(
     fun loadData() {
         scope.launch {
             val summary = healthSummaryRepository.getLatestHealthSummary()
-            val reportState = if (summary == null) {
-                SleepReportState.NONE
+            val morningGloryType = if (summary == null) {
+                null
             } else {
-                sleepStatusRepository.getCurrentSleepReportState()
+                sleepStatusRepository.getCurrentMorningGloryType()
             }
 
             uiState = uiState.copy(
                 latestHealthSummary = summary,
-                sleepReportState = reportState
+                morningGloryType = morningGloryType
             )
         }
     }
 
     fun onActionCardClick(
         onNavigateToSleepCheckIn: (
+            endTime: String,
             duration: Long,
             heartRate: Long?,
             baselineDuration: Long?,
             baselineHeartRate: Long?
-        ) -> Unit
+        ) -> Unit,
+        onNavigateToResult: (MorningGloryType) -> Unit
     ) {
         val summary = uiState.latestHealthSummary ?: return
+        val currentType = uiState.morningGloryType
 
-        onNavigateToSleepCheckIn(
-            summary.sleepDurationMinutes,
-            summary.wakeHeartRate,
-            uiState.baselineSleepDurationMinutes,
-            uiState.baselineWakeHeartRate
-        )
+        if (currentType == null) {
+            onNavigateToSleepCheckIn(
+                summary.sleepEndTime.toString(),
+                summary.sleepDurationMinutes,
+                summary.wakeHeartRate,
+                uiState.baselineSleepDurationMinutes,
+                uiState.baselineWakeHeartRate
+            )
+        } else {
+            onNavigateToResult(currentType)
+        }
     }
 }
 

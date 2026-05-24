@@ -21,18 +21,11 @@ import com.sujin.nubloompilot.R
 import com.sujin.nubloompilot.ui.theme.DarkBlue
 import com.sujin.nubloompilot.ui.theme.DarkRed
 import androidx.compose.foundation.border
+import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.ui.theme.Gray300
 import com.sujin.nubloompilot.ui.theme.Gray400
 import com.sujin.nubloompilot.ui.theme.Gray800
 import androidx.compose.foundation.clickable
-
-enum class SleepReportState {
-    NONE,
-    TYPE_1,
-    TYPE_2,
-    TYPE_3,
-    TYPE_4
-}
 
 data class HomeActionCardData(
     @DrawableRes val imageRes: Int,
@@ -42,9 +35,9 @@ data class HomeActionCardData(
     val textColor: Color
 )
 
-fun SleepReportState.toHomeActionCardData(): HomeActionCardData {
+fun MorningGloryType?.toHomeActionCardData(): HomeActionCardData {
     return when (this) {
-        SleepReportState.NONE -> HomeActionCardData(
+        null -> HomeActionCardData(
             imageRes = R.drawable.sleep_flower,
             iconRes = R.drawable.ic_check,
             keyword = "수면 체크하기",
@@ -52,7 +45,7 @@ fun SleepReportState.toHomeActionCardData(): HomeActionCardData {
             textColor = Gray800
         )
 
-        SleepReportState.TYPE_1 -> HomeActionCardData(
+        MorningGloryType.TYPE_1 -> HomeActionCardData(
             imageRes = R.drawable.type_1,
             iconRes = R.drawable.icon_flower,
             keyword = "오늘의 나팔꽃",
@@ -60,7 +53,7 @@ fun SleepReportState.toHomeActionCardData(): HomeActionCardData {
             textColor = DarkRed
         )
 
-        SleepReportState.TYPE_2 -> HomeActionCardData(
+        MorningGloryType.TYPE_2 -> HomeActionCardData(
             imageRes = R.drawable.type_2,
             iconRes = R.drawable.icon_flower,
             keyword = "오늘의 나팔꽃",
@@ -68,7 +61,7 @@ fun SleepReportState.toHomeActionCardData(): HomeActionCardData {
             textColor = DarkRed
         )
 
-        SleepReportState.TYPE_3 -> HomeActionCardData(
+        MorningGloryType.TYPE_3 -> HomeActionCardData(
             imageRes = R.drawable.type_3,
             iconRes = R.drawable.icon_flower,
             keyword = "오늘의 나팔꽃",
@@ -76,11 +69,11 @@ fun SleepReportState.toHomeActionCardData(): HomeActionCardData {
             textColor = DarkBlue
         )
 
-        SleepReportState.TYPE_4 -> HomeActionCardData(
+        MorningGloryType.TYPE_4 -> HomeActionCardData(
             imageRes = R.drawable.type_4,
             iconRes = R.drawable.icon_flower,
             keyword = "오늘의 나팔꽃",
-            description = "지친 나팔꽃! >",
+            description = "웅크린 나팔꽃! >",
             textColor = DarkBlue
         )
     }
@@ -88,12 +81,12 @@ fun SleepReportState.toHomeActionCardData(): HomeActionCardData {
 
 @Composable
 fun HomeActionCard(
-    state: SleepReportState,
+    type: MorningGloryType?,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
     HomeActionCard(
-        data = state.toHomeActionCardData(),
+        data = type.toHomeActionCardData(),
         modifier = modifier,
         onClick = onClick
     )

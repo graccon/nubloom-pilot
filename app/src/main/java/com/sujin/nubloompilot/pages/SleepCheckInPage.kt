@@ -32,11 +32,12 @@ import com.sujin.nubloompilot.utils.SleepInterpretationEngine
 @Composable
 fun SleepCheckInPage(
     participantName: String,
+    sleepEndTime: String,
     sleepDurationMinutes: Long,
     wakeHeartRate: Long?,
     baselineSleepDurationMinutes: Long?,
     baselineWakeHeartRate: Long?,
-    onSubmitClick: (MorningGloryType) -> Unit,
+    onSubmitClick: (MorningGloryType, String, Int) -> Unit,
     modifier: Modifier = Modifier
 ){
     var sleepTimePerception by remember { mutableStateOf<Int?>(null) }
@@ -204,7 +205,7 @@ fun SleepCheckInPage(
                     interpretation = interpretation,
                     fatigueLevel = fatigueLevel!!
                 )
-                onSubmitClick(resultType)
+                onSubmitClick(resultType, sleepEndTime, fatigueLevel!!)
             },
             enabled = canSubmit,
             modifier = Modifier
@@ -285,11 +286,12 @@ fun SleepCheckInPagePreview() {
     NubloomPilotTheme {
         SleepCheckInPage(
             participantName = "간호사",
+            sleepEndTime = "2024-01-01T08:00:00Z",
             sleepDurationMinutes = 450L,
             wakeHeartRate = 65L,
             baselineSleepDurationMinutes = null,
             baselineWakeHeartRate = null,
-            onSubmitClick = {}
+            onSubmitClick = { _, _, _ -> }
         )
     }
 }

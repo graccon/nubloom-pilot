@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.components.HomeActionCard
-import com.sujin.nubloompilot.components.SleepReportState
+import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.components.SpiralTimeline
 import com.sujin.nubloompilot.components.rememberCurrentTime
 import com.sujin.nubloompilot.components.rememberRotatingMessage
@@ -30,11 +30,13 @@ fun HomePage(
     tomorrowShift: String?,
     dayAfterTomorrowShift: String?,
     onNavigateToSleepCheckIn: (
+        endTime: String,
         duration: Long,
         heartRate: Long?,
         baselineDuration: Long?,
         baselineHeartRate: Long?
     ) -> Unit,
+    onNavigateToResult: (MorningGloryType) -> Unit,
     modifier: Modifier = Modifier,
     state: HomePageState = rememberHomePageState()
 ) {
@@ -46,7 +48,7 @@ fun HomePage(
         dayAfterTomorrowShift = dayAfterTomorrowShift,
         uiState = state.uiState,
         onActionCardClick = {
-            state.onActionCardClick(onNavigateToSleepCheckIn)
+            state.onActionCardClick(onNavigateToSleepCheckIn, onNavigateToResult)
         },
         modifier = modifier
     )
@@ -96,13 +98,13 @@ private fun HomePageContent(
             Spacer(modifier = Modifier.height(44.dp))
 
             ReportHeader(
-                sleepReportState = uiState.sleepReportState
+                morningGloryType = uiState.morningGloryType
             )
 
             Spacer(modifier = Modifier.height(14.dp))
 
             HomeActionCard(
-                state = uiState.sleepReportState,
+                type = uiState.morningGloryType,
                 onClick = onActionCardClick
             )
         }
@@ -143,11 +145,12 @@ private fun HomeHeader(
 
 @Composable
 private fun ReportHeader(
-    sleepReportState: SleepReportState
+    morningGloryType: MorningGloryType?
 ) {
-    val subtitle = when (sleepReportState) {
-        SleepReportState.NONE -> "아직 오늘의 수면이 기록되지 않았어요."
-        else -> "오늘의 나팔꽃이 피었어요!"
+    val subtitle = if (morningGloryType == null) {
+        "아직 오늘의 수면이 기록되지 않았어요."
+    } else {
+        "오늘의 나팔꽃이 피었어요!"
     }
 
     Column(
@@ -192,7 +195,7 @@ fun HomePagePreview() {
             tomorrowShift = "N",
             dayAfterTomorrowShift = "E",
             uiState = HomePageUiState(
-                sleepReportState = SleepReportState.NONE
+                morningGloryType = null
             ),
             onActionCardClick = {}
         )

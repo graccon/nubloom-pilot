@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.sujin.nubloompilot.components.SleepReportState
+import com.sujin.nubloompilot.models.MorningGloryType
 import kotlinx.coroutines.flow.first
 import java.time.Instant
 
@@ -23,17 +23,17 @@ class SleepSurveyLocalStore(
 
     suspend fun saveSurveyForSleepSession(
         sleepEndTime: Instant,
-        reportState: SleepReportState
+        morningGloryType: MorningGloryType
     ) {
         context.sleepSurveyDataStore.edit { prefs ->
             prefs[lastSurveyedSleepEndTimeKey] = sleepEndTime.toString()
-            prefs[lastSleepReportStateKey] = reportState.name
+            prefs[lastSleepReportStateKey] = morningGloryType.name
         }
     }
 
     suspend fun getSurveyStateForSleepSession(
         sleepEndTime: Instant
-    ): SleepReportState? {
+    ): MorningGloryType? {
         val prefs = context.sleepSurveyDataStore.data.first()
 
         val savedSleepEndTime =
@@ -48,7 +48,7 @@ class SleepSurveyLocalStore(
 
         return savedState?.let {
             runCatching {
-                SleepReportState.valueOf(it)
+                MorningGloryType.valueOf(it)
             }.getOrNull()
         }
     }
