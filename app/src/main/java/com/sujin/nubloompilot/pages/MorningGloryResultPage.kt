@@ -20,6 +20,8 @@ import com.sujin.nubloompilot.components.SpriteAnimation
 import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.ui.theme.*
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.material3.Surface
 
 @Composable
 fun MorningGloryResultPage(
@@ -56,39 +58,27 @@ fun MorningGloryResultPage(
         ResultHeader(
             participantName = participantName
         )
+        Spacer(modifier = Modifier.height(20.dp))
+
+        ResultMainMessage(
+            title = resultInfo.title,
+            description = resultInfo.description,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+
         SpriteAnimation(
             frames = resultInfo.frames,
             frameDuration = resultInfo.frameDuration,
             modifier = Modifier.size(240.dp)
         )
-        Text(
-            text = resultInfo.title,
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-            color = HighlightsYellow,
-            textAlign = TextAlign.Center
-        )
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Text(
-            text = resultInfo.description,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Medium,
-            color = Gray200,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        ResultSummaryCard(
-            objectiveText = resultInfo.objectiveText,
-            subjectiveText = resultInfo.subjectiveText,
-            encouragementText = resultInfo.encouragementText
-        )
+//        ResultSummaryCard(
+//            objectiveText = resultInfo.objectiveText,
+//            subjectiveText = resultInfo.subjectiveText,
+//            encouragementText = resultInfo.encouragementText
+//        )
 
         Spacer(modifier = Modifier.weight(1f))
-        Spacer(modifier = Modifier.height(32.dp))
 
         Button(
             onClick = {
@@ -149,6 +139,66 @@ private fun ResultHeader(
             style = MaterialTheme.typography.bodyMedium,
             color = Gray800
         )
+    }
+}
+
+@Composable
+private fun ResultMainMessage(
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 14.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TypeHeader(
+            typeName = title
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
+            color = Gray900,
+            textAlign = TextAlign.Start,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+private fun TypeHeader(
+    typeName: String,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(60.dp),
+        shape = RoundedCornerShape(10.dp),
+        color = Gray900.copy(alpha = 0.1f),
+        border = BorderStroke(
+            width = 2.dp,
+            color = Gray700
+        )
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = typeName,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = Gray900,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
