@@ -9,8 +9,13 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sujin.nubloompilot.models.ShiftType
+import com.sujin.nubloompilot.models.getTimeRange
 import com.sujin.nubloompilot.ui.theme.Gray900
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -52,7 +57,9 @@ fun DrawScope.drawTimelineSpiralLayer(
         )
     )
 
+    val today = LocalDate.now()
     val shiftEvents = buildShiftEventQueue(
+        referenceDate = today,
         yesterdayShift = yesterdayShift,
         todayShift = todayShift,
         tomorrowShift = tomorrowShift,
@@ -108,45 +115,44 @@ fun DrawScope.drawTimelineSpiralLayer(
 }
 
 private fun buildShiftEventQueue(
+    referenceDate: LocalDate,
     yesterdayShift: String?,
     todayShift: String?,
     tomorrowShift: String?,
     dayAfterTomorrowShift: String?
 ): List<ShiftEvent> {
     return buildList {
-        addAll(createShiftEvents(yesterdayShift, dayOffset = -24f))
-        addAll(createShiftEvents(todayShift, dayOffset = 0f))
-        addAll(createShiftEvents(tomorrowShift, dayOffset = 24f))
-        addAll(createShiftEvents(dayAfterTomorrowShift, dayOffset = 48f))
+        addAll(createShiftEvents(ShiftType.fromString(yesterdayShift), referenceDate.minusDays(1), referenceDate))
+        addAll(createShiftEvents(ShiftType.fromString(todayShift), referenceDate, referenceDate))
+        addAll(createShiftEvents(ShiftType.fromString(tomorrowShift), referenceDate.plusDays(1), referenceDate))
+        addAll(createShiftEvents(ShiftType.fromString(dayAfterTomorrowShift), referenceDate.plusDays(2), referenceDate))
     }
 }
 
 private fun createShiftEvents(
-    shift: String?,
-    dayOffset: Float
+    shiftType: ShiftType,
+    date: LocalDate,
+    referenceDate: LocalDate
 ): List<ShiftEvent> {
-    val color = when (shift) {
-        "D" -> Color(0xFFA9C9EA)
-        "E" -> Color(0xFFF4A249)
-        "N" -> Color(0xFFEAB0D6)
-        else -> return emptyList()
-    }
+    if (shiftType == ShiftType.OFF) return emptyList()
 
-    val startEnd = when (shift) {
-        "D" -> dayOffset + 6.5f to dayOffset + 15.5f
-        "E" -> dayOffset + 14.5f to dayOffset + 23.5f
-        "N" -> dayOffset + 22.5f to dayOffset + 31.5f
-        else -> return emptyList()
-    }
+    val timeRange = shiftType.getTimeRange(date)
+    val startTime = timeRange.startTime ?: return emptyList()
+    val endTime = timeRange.endTime ?: return emptyList()
 
     return listOf(
         ShiftEvent(
-            startAbsoluteHour = startEnd.first,
-            endAbsoluteHour = startEnd.second,
-            color = color,
-            label = shift
+            startAbsoluteHour = startTime.toAbsoluteHour(referenceDate),
+            endAbsoluteHour = endTime.toAbsoluteHour(referenceDate),
+            color = shiftType.color,
+            label = shiftType.label
         )
     )
+}
+
+private fun LocalDateTime.toAbsoluteHour(referenceDate: LocalDate): Float {
+    val daysBetween = ChronoUnit.DAYS.between(referenceDate, this.toLocalDate())
+    return (daysBetween * 24f) + this.hour + this.minute / 60f
 }
 
 private fun List<ShiftEvent>.filterVisibleEvents(

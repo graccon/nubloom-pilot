@@ -1,5 +1,6 @@
 package com.sujin.nubloompilot.models
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class SleepIntervention(
@@ -28,10 +29,9 @@ data class SleepInterventionContext(
     val previousShift: ShiftType?,
     val currentShift: ShiftType,
     val nextShift: ShiftType?,
+    val workDate: LocalDate,
     val wakeTime: LocalDateTime,
     val targetSleepTime: LocalDateTime,
-    val workStartTime: LocalDateTime?,
-    val workEndTime: LocalDateTime?,
-    val subjectiveFatigueLevel: Int, // 1~5
-    val objectiveRecoveryLevel: Int  // 1~5
+    val subjectiveFatigueLevel: Int,
+    val objectiveRecoveryLevel: Int
 )

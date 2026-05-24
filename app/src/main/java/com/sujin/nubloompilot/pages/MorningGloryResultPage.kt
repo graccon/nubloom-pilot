@@ -44,9 +44,11 @@ fun MorningGloryResultPage(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFFE8E8E8),
-                        Color(0xFFE8E8E8),
-                        Color(0xFF646363),
+                        Gray100,
+                        Gray100,
+                        Gray100,
+                        Gray100,
+                        Gray600,
                         Gray900
                     )
                 )
@@ -69,7 +71,7 @@ fun MorningGloryResultPage(
         SpriteAnimation(
             frames = resultInfo.frames,
             frameDuration = resultInfo.frameDuration,
-            modifier = Modifier.size(240.dp)
+            modifier = Modifier.size(260.dp)
         )
 
 //        ResultSummaryCard(
@@ -129,7 +131,7 @@ private fun ResultHeader(
             text = "오늘의 수면 나팔꽃이 폈어요",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            color = Gray800
+            color = Gray900
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -137,7 +139,7 @@ private fun ResultHeader(
         Text(
             text = "$participantName 선생님의 오늘 상태를 확인했어요.",
             style = MaterialTheme.typography.bodyMedium,
-            color = Gray800
+            color = Gray900
         )
     }
 }
@@ -179,12 +181,12 @@ private fun TypeHeader(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .height(60.dp),
-        shape = RoundedCornerShape(10.dp),
-        color = Gray900.copy(alpha = 0.1f),
+            .height(54.dp),
+        shape = RoundedCornerShape(12.dp),
+        color = Gray100,
         border = BorderStroke(
-            width = 2.dp,
-            color = Gray700
+            width = (1.2).dp,
+            color = Gray400
         )
     ) {
         Box(
@@ -193,8 +195,8 @@ private fun TypeHeader(
         ) {
             Text(
                 text = typeName,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
                 color = Gray900,
                 textAlign = TextAlign.Center
             )
