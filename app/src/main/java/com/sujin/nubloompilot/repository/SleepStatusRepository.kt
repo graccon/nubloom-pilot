@@ -2,6 +2,7 @@ package com.sujin.nubloompilot.repository
 
 import com.sujin.nubloompilot.local.SleepSurveyLocalStore
 import com.sujin.nubloompilot.models.MorningGloryType
+import com.sujin.nubloompilot.models.SleepResult
 
 class SleepStatusRepository(
     private val healthConnectRepository: HealthConnectRepository,
@@ -15,5 +16,9 @@ class SleepStatusRepository(
         return sleepSurveyLocalStore.getSurveyStateForSleepSession(
             sleepEndTime = latestSleepSession.endTime
         )
+    }
+
+    suspend fun getLatestSavedSleepResult(): SleepResult? {
+        return sleepSurveyLocalStore.getLatestSavedResult()
     }
 }

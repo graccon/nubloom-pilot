@@ -22,6 +22,12 @@ import com.sujin.nubloompilot.ui.theme.*
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.Surface
+import java.time.LocalDate
+import java.time.LocalDateTime
+import com.sujin.nubloompilot.models.*
+import com.sujin.nubloompilot.utils.SleepInterventionEngine
+import com.sujin.nubloompilot.utils.TargetSleepTimeCalculator
+
 
 @Composable
 fun MorningGloryResultPage(
@@ -29,10 +35,16 @@ fun MorningGloryResultPage(
     type: MorningGloryType,
     onBackHome: () -> Unit,
     onSaveResult: suspend () -> Unit = {},
+    onSaveInterventions: suspend (List<SleepIntervention>, SleepInterventionContext) -> Unit = { _, _ -> },
+    interventionContext: SleepInterventionContext,
+    isReviewMode: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val resultInfo = remember(type) {
         getMorningGloryResultInfo(type)
+    }
+    val interventions = remember(interventionContext) {
+        SleepInterventionEngine.generate(interventionContext)
     }
 
     val scope = rememberCoroutineScope()
@@ -57,37 +69,44 @@ fun MorningGloryResultPage(
             .padding(horizontal = 24.dp, vertical = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ResultHeader(
-            participantName = participantName
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-
-        ResultMainMessage(
-            title = resultInfo.title,
-            description = resultInfo.description,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-
-        SpriteAnimation(
-            frames = resultInfo.frames,
-            frameDuration = resultInfo.frameDuration,
-            modifier = Modifier.size(260.dp)
-        )
-
-//        ResultSummaryCard(
-//            objectiveText = resultInfo.objectiveText,
-//            subjectiveText = resultInfo.subjectiveText,
-//            encouragementText = resultInfo.encouragementText
+//        ResultHeader(
+//            participantName = participantName
+//        )
+//        Spacer(modifier = Modifier.height(20.dp))
+//
+//        ResultMainMessage(
+//            title = resultInfo.title,
+//            description = resultInfo.description,
+//            modifier = Modifier.padding(top = 8.dp)
+//        )
+//
+//        SpriteAnimation(
+//            frames = resultInfo.frames,
+//            frameDuration = resultInfo.frameDuration,
+//            modifier = Modifier.size(260.dp)
 //        )
 
+        ResultSummaryCard(
+            objectiveText = resultInfo.objectiveText,
+            subjectiveText = resultInfo.subjectiveText,
+            encouragementText = resultInfo.encouragementText,
+            interventions = interventions
+        )
+
         Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(32.dp))
 
         Button(
             onClick = {
-                scope.launch {
-                    isSaving = true
-                    onSaveResult()
+                if (isReviewMode) {
                     onBackHome()
+                } else {
+                    scope.launch {
+                        isSaving = true
+                        onSaveResult()
+                        onSaveInterventions(interventions, interventionContext)
+                        onBackHome()
+                    }
                 }
             },
             enabled = !isSaving,
@@ -208,7 +227,8 @@ private fun TypeHeader(
 private fun ResultSummaryCard(
     objectiveText: String,
     subjectiveText: String,
-    encouragementText: String
+    encouragementText: String,
+    interventions: List<SleepIntervention>
 ) {
     Column(
         modifier = Modifier
@@ -219,39 +239,90 @@ private fun ResultSummaryCard(
             )
             .padding(horizontal = 20.dp, vertical = 18.dp)
     ) {
-        Text(
-            text = "오늘의 해석",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = Gray900
-        )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        if (interventions.isNotEmpty()) {
+            Text(
+                text = "오늘의 추천 개입",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Gray900
+            )
 
-        Text(
-            text = objectiveText,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium,
-            color = Gray900
-        )
+            Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(6.dp))
+            interventions.forEach { intervention ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .padding(14.dp)
+                ) {
+                    Text(
+                        text = intervention.title,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = Gray900
+                    )
 
-        Text(
-            text = subjectiveText,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium,
-            color = Gray900
-        )
+                    Spacer(modifier = Modifier.height(4.dp))
 
-        Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "${intervention.startTime.toLocalTime()} ~ ${intervention.endTime.toLocalTime()}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Gray600
+                    )
 
-        Text(
-            text = encouragementText,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium,
-            color = Gray900
-        )
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Text(
+                        text = intervention.description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Gray900
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+
+//        Text(
+//            text = "오늘의 해석",
+//            style = MaterialTheme.typography.titleMedium,
+//            fontWeight = FontWeight.Bold,
+//            color = Gray900
+//        )
+//
+//        Spacer(modifier = Modifier.height(12.dp))
+//
+//        Text(
+//            text = objectiveText,
+//            style = MaterialTheme.typography.bodyMedium,
+//            fontWeight = FontWeight.Medium,
+//            color = Gray900
+//        )
+//
+//        Spacer(modifier = Modifier.height(6.dp))
+//
+//        Text(
+//            text = subjectiveText,
+//            style = MaterialTheme.typography.bodyMedium,
+//            fontWeight = FontWeight.Medium,
+//            color = Gray900
+//        )
+//
+//        Spacer(modifier = Modifier.height(6.dp))
+//
+//        Text(
+//            text = encouragementText,
+//            style = MaterialTheme.typography.bodyMedium,
+//            fontWeight = FontWeight.Medium,
+//            color = Gray900
+//        )
     }
 }
 
@@ -337,7 +408,23 @@ fun MorningGloryResultPagePreview() {
         MorningGloryResultPage(
             participantName = "간호사",
             type = MorningGloryType.TYPE_1,
-            onBackHome = {}
+            onBackHome = {},
+            interventionContext = SleepInterventionContext(
+                chronotype = Chronotype.INTERMEDIATE,
+                previousShift = ShiftType.DAY,
+                currentShift = ShiftType.EVENING,
+                nextShift = ShiftType.OFF,
+                workDate = LocalDate.now(),
+                wakeTime = LocalDateTime.now()
+                    .withHour(9)
+                    .withMinute(0),
+                targetSleepTime = TargetSleepTimeCalculator.calculate(
+                    currentShift = ShiftType.EVENING,
+                    workDate = LocalDate.now()
+                ),
+                subjectiveFatigueLevel = 3,
+                objectiveRecoveryLevel = 3
+            )
         )
     }
 }

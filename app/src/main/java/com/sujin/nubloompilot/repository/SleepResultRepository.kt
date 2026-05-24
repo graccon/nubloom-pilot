@@ -1,22 +1,27 @@
 package com.sujin.nubloompilot.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.sujin.nubloompilot.local.SleepSurveyLocalStore
+import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SleepResult
 import kotlinx.coroutines.tasks.await
+import java.time.Instant
 
 class SleepResultRepository(
+    private val participantId: String,
     private val localStore: SleepSurveyLocalStore,
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
-    suspend fun saveSleepResult(result: SleepResult) {
-        // 1. Local save for Home UI
-        localStore.saveSurveyForSleepSession(
-            sleepEndTime = result.sleepEndTime,
-            morningGloryType = result.morningGloryType
-        )
+    private val resultsCollection = firestore.collection("participants")
+        .document(participantId)
+        .collection("sleep_results")
 
-        // 2. Remote save to Firebase
+    suspend fun saveSleepResult(result: SleepResult) {
+        // 1. Local save for Home UI and Data Recovery
+        localStore.saveFullSleepResult(result)
+
+        // 2. Remote save to Firebase (Subcollection structure: participants/{id}/sleep_results)
         val remoteData = hashMapOf(
             "participantId" to result.participantId,
             "participantName" to result.participantName,
@@ -28,8 +33,40 @@ class SleepResultRepository(
             "timestamp" to result.timestamp
         )
 
-        firestore.collection("sleep_results")
-            .add(remoteData)
-            .await()
+        try {
+            resultsCollection.add(remoteData).await()
+        } catch (e: Exception) {
+            println("Firestore sleep_results save failed: ${e.message}")
+        }
+    }
+
+    suspend fun getLatestSavedSleepResult(): SleepResult? {
+        return try {
+            val snapshot = resultsCollection
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .await()
+
+            if (snapshot.isEmpty) return null
+
+            val doc = snapshot.documents.first()
+            val typeStr = doc.getString("morningGloryType") ?: return null
+            val endTimeStr = doc.getString("sleepEndTime") ?: return null
+
+            SleepResult(
+                participantId = doc.getString("participantId") ?: participantId,
+                participantName = doc.getString("participantName") ?: "",
+                sleepEndTime = Instant.parse(endTimeStr),
+                sleepDurationMinutes = doc.getLong("sleepDurationMinutes") ?: 0L,
+                wakeHeartRate = doc.getLong("wakeHeartRate")?.takeIf { it != -1L },
+                fatigueLevel = doc.getLong("fatigueLevel")?.toInt() ?: 0,
+                morningGloryType = MorningGloryType.valueOf(typeStr),
+                timestamp = doc.getLong("timestamp") ?: 0L
+            )
+        } catch (e: Exception) {
+            println("Firestore getLatestSavedSleepResult failed: ${e.message}")
+            null
+        }
     }
 }
