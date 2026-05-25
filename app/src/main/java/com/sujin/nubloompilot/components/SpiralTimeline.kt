@@ -1,13 +1,17 @@
 package com.sujin.nubloompilot.components
 
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.dp
+import com.sujin.nubloompilot.models.TimelineMarker
 import java.time.LocalTime
 
 @Composable
@@ -17,12 +21,30 @@ fun SpiralTimeline(
     tomorrowShift: String?,
     dayAfterTomorrowShift: String? = null,
     currentTime: LocalTime = LocalTime.now(),
+    markers: List<TimelineMarker> = emptyList(),
     modifier: Modifier = Modifier
 ) {
     val textMeasurer = rememberTextMeasurer()
+    val context = LocalContext.current
+    
+    // Load PNG icons safely into ImageBitmap.
+    // Vectors will be null here and fall back to dots in the drawing layer.
+    val markerIcons = remember(markers) {
+        val map = mutableMapOf<Int, ImageBitmap>()
+        markers.forEach { marker ->
+            val resId = marker.iconRes
+            if (!map.containsKey(resId)) {
+                runCatching {
+                    BitmapFactory.decodeResource(context.resources, resId)?.asImageBitmap()
+                }.getOrNull()?.let {
+                    map[resId] = it
+                }
+            }
+        }
+        map
+    }
 
     Canvas(
-
         modifier = modifier
             .fillMaxWidth(0.85f)
             .aspectRatio(1f)
@@ -53,7 +75,9 @@ fun SpiralTimeline(
             tomorrowShift = tomorrowShift,
             dayAfterTomorrowShift = dayAfterTomorrowShift,
             currentTime = currentTime,
-            textMeasurer = textMeasurer
+            textMeasurer = textMeasurer,
+            markers = markers,
+            markerIcons = markerIcons
         )
     }
 }

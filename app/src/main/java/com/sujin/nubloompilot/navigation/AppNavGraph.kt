@@ -144,12 +144,17 @@ fun AppNavGraph() {
                     shiftScheduleRepository.getShiftsAroundToday()
                 }
 
+                val latestIntervention = remember {
+                    sleepInterventionRepository.getLatestLocal()
+                }
+
                 HomePage(
                     participantName = participantName,
                     yesterdayShift = shiftsAroundToday.yesterdayShift,
                     todayShift = shiftsAroundToday.todayShift,
                     tomorrowShift = shiftsAroundToday.tomorrowShift,
                     dayAfterTomorrowShift = shiftsAroundToday.dayAfterTomorrowShift,
+                    latestInterventionBundle = latestIntervention,
                     onNavigateToSleepCheckIn = { endTime, duration, heartRate, baselineDuration, baselineHeartRate ->
                         navController.navigate(
                             Routes.sleepCheckInRoute(

@@ -2,14 +2,18 @@ package com.sujin.nubloompilot.components
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sujin.nubloompilot.models.ShiftType
+import com.sujin.nubloompilot.models.TimelineMarker
 import com.sujin.nubloompilot.models.getTimeRange
 import com.sujin.nubloompilot.ui.theme.Gray900
 import java.time.LocalDate
@@ -41,7 +45,9 @@ fun DrawScope.drawTimelineSpiralLayer(
     tomorrowShift: String?,
     dayAfterTomorrowShift: String?,
     currentTime: LocalTime,
-    textMeasurer: TextMeasurer
+    textMeasurer: TextMeasurer,
+    markers: List<TimelineMarker> = emptyList(),
+    markerIcons: Map<Int, ImageBitmap> = emptyMap()
 ) {
     val basePath = createSpiralPath(
         layout = layout,
@@ -99,6 +105,27 @@ fun DrawScope.drawTimelineSpiralLayer(
         )
     }
 
+    // Draw Intervention Markers
+    val windowStart = spiralConfig.startAnchor.startHour
+    val windowEnd = windowStart + 48f
+
+    markers.forEach { marker ->
+        if (marker.absoluteHour in windowStart..windowEnd) {
+            val timelineHour = marker.absoluteHour - windowStart
+            val position = getSpiralPoint(
+                layout = layout,
+                config = spiralConfig,
+                hour = timelineHour
+            )
+
+            drawInterventionMarker(
+                position = position,
+                marker = marker,
+                icon = markerIcons[marker.iconRes]
+            )
+        }
+    }
+
     val currentHour = currentTime.hour + currentTime.minute / 60f
 
     val currentTimelineHour = toTimelineHour(
@@ -112,6 +139,39 @@ fun DrawScope.drawTimelineSpiralLayer(
         hour = currentTimelineHour,
         color = Color(0xFFFF5A1F)
     )
+}
+
+private fun DrawScope.drawInterventionMarker(
+    position: Offset,
+    marker: TimelineMarker,
+    icon: ImageBitmap?
+) {
+    val outerSize = 24.dp.toPx()
+    val innerSize = 34.dp.toPx()
+
+    // Main white circle background
+//    drawCircle(
+//        color = Color.White,
+//        radius = outerSize / 2,
+//        center = position
+//    )
+
+    if (icon != null) {
+        // Draw PNG Icon
+        val topLeft = position - Offset(innerSize / 2, innerSize / 2)
+        drawImage(
+            image = icon,
+            dstOffset = IntOffset(topLeft.x.toInt(), topLeft.y.toInt()),
+            dstSize = IntSize(innerSize.toInt(), innerSize.toInt())
+        )
+    } else {
+        // Fallback to colored dot if icon is missing
+        drawCircle(
+            color = marker.color,
+            radius = innerSize / 2.5f,
+            center = position
+        )
+    }
 }
 
 private fun buildShiftEventQueue(

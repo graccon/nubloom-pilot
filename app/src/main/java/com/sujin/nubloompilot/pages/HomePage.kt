@@ -1,7 +1,9 @@
 package com.sujin.nubloompilot.pages
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -9,18 +11,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.sujin.nubloompilot.components.HomeActionCard
 import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.components.SpiralTimeline
 import com.sujin.nubloompilot.components.rememberCurrentTime
 import com.sujin.nubloompilot.components.rememberRotatingMessage
-import com.sujin.nubloompilot.ui.theme.Gray300
-import com.sujin.nubloompilot.ui.theme.Gray800
-import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
+import com.sujin.nubloompilot.models.SavedSleepInterventionBundle
+import com.sujin.nubloompilot.models.SavedSleepIntervention
+import com.sujin.nubloompilot.models.TimelineMarker
+import com.sujin.nubloompilot.ui.theme.*
+import com.sujin.nubloompilot.utils.InterventionToMarkerMapper
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun HomePage(
@@ -29,6 +38,7 @@ fun HomePage(
     todayShift: String?,
     tomorrowShift: String?,
     dayAfterTomorrowShift: String?,
+    latestInterventionBundle: SavedSleepInterventionBundle?,
     onNavigateToSleepCheckIn: (
         endTime: String,
         duration: Long,
@@ -46,6 +56,7 @@ fun HomePage(
         todayShift = todayShift,
         tomorrowShift = tomorrowShift,
         dayAfterTomorrowShift = dayAfterTomorrowShift,
+        latestInterventionBundle = latestInterventionBundle,
         uiState = state.uiState,
         onActionCardClick = {
             state.onActionCardClick(onNavigateToSleepCheckIn, onNavigateToResult)
@@ -61,12 +72,29 @@ private fun HomePageContent(
     todayShift: String?,
     tomorrowShift: String?,
     dayAfterTomorrowShift: String?,
+    latestInterventionBundle: SavedSleepInterventionBundle?,
     uiState: HomePageUiState,
     onActionCardClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val currentTime = rememberCurrentTime()
     val greetingMessage = rememberRotatingMessage()
+
+    val isInterventionValid = remember(latestInterventionBundle) {
+        latestInterventionBundle != null && 
+        latestInterventionBundle.workDate == LocalDate.now().toString()
+    }
+
+    val timelineMarkers = remember(latestInterventionBundle, isInterventionValid) {
+        if (isInterventionValid && latestInterventionBundle != null) {
+            InterventionToMarkerMapper.map(
+                interventions = latestInterventionBundle.interventions,
+                referenceDate = LocalDate.now()
+            )
+        } else {
+            emptyList()
+        }
+    }
 
     Column(
         modifier = modifier
@@ -91,8 +119,14 @@ private fun HomePageContent(
             todayShift = todayShift,
             tomorrowShift = tomorrowShift,
             dayAfterTomorrowShift = dayAfterTomorrowShift,
-            currentTime = currentTime
+            currentTime = currentTime,
+            markers = timelineMarkers
         )
+
+        if (isInterventionValid && latestInterventionBundle != null) {
+            Spacer(modifier = Modifier.height(44.dp))
+            InterventionSection(bundle = latestInterventionBundle)
+        }
 
         if (uiState.latestHealthSummary != null) {
             Spacer(modifier = Modifier.height(44.dp))
@@ -184,6 +218,71 @@ private fun ReportHeader(
     }
 }
 
+@Composable
+private fun InterventionSection(
+    bundle: SavedSleepInterventionBundle
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        bundle.interventions.take(3).forEach { intervention ->
+            InterventionItem(intervention = intervention)
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+    }
+}
+
+@Composable
+private fun InterventionItem(
+    intervention: SavedSleepIntervention
+) {
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    
+    val formattedStart = remember(intervention.startTime) {
+        runCatching {
+            LocalDateTime.parse(intervention.startTime).format(timeFormatter)
+        }.getOrDefault("")
+    }
+    
+    val formattedEnd = remember(intervention.endTime) {
+        runCatching {
+            LocalDateTime.parse(intervention.endTime).format(timeFormatter)
+        }.getOrDefault("")
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFE8E8E8), RoundedCornerShape(16.dp))
+            .padding(16.dp)
+    ) {
+        Text(
+            text = intervention.title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = Gray900
+        )
+        
+        if (formattedStart.isNotEmpty() && formattedEnd.isNotEmpty()) {
+            Text(
+                text = "$formattedStart ~ $formattedEnd",
+                style = MaterialTheme.typography.bodySmall,
+                color = Gray700,
+                modifier = Modifier.padding(vertical = 4.dp)
+            )
+        }
+
+        Text(
+            text = intervention.description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = Gray800,
+            lineHeight = 20.sp
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun HomePagePreview() {
@@ -194,6 +293,7 @@ fun HomePagePreview() {
             todayShift = "N",
             tomorrowShift = "N",
             dayAfterTomorrowShift = "E",
+            latestInterventionBundle = null,
             uiState = HomePageUiState(
                 morningGloryType = null
             ),

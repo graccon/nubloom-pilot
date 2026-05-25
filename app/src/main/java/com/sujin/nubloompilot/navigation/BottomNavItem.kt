@@ -1,10 +1,5 @@
 package com.sujin.nubloompilot.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.sujin.nubloompilot.R
 
 //sealed class BottomNavItem(
@@ -29,7 +24,7 @@ sealed class BottomNavItem(
 
     object Sleep : BottomNavItem(
         Routes.SLEEP,
-        R.drawable.ic_sleep
+        R.drawable.ic_sleep_face
     )
 
     object MyInfo : BottomNavItem(
