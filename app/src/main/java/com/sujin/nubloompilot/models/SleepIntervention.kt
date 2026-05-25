@@ -14,6 +14,7 @@ data class SleepIntervention(
 )
 
 enum class InterventionType {
+    MAIN_SLEEP,
     CAFFEINE,
     NAP,
     LIGHT

@@ -410,20 +410,18 @@ fun MorningGloryResultPagePreview() {
             type = MorningGloryType.TYPE_1,
             onBackHome = {},
             interventionContext = SleepInterventionContext(
-                chronotype = Chronotype.INTERMEDIATE,
-                previousShift = ShiftType.DAY,
-                currentShift = ShiftType.EVENING,
-                nextShift = ShiftType.OFF,
+                chronotype = Chronotype.EVENING,
+                previousShift = ShiftType.EVENING,
+                currentShift = ShiftType.NIGHT,
+                nextShift = ShiftType.NIGHT,
                 workDate = LocalDate.now(),
-                wakeTime = LocalDateTime.now()
-                    .withHour(9)
-                    .withMinute(0),
+                wakeTime = LocalDateTime.now().withHour(14).withMinute(0),
                 targetSleepTime = TargetSleepTimeCalculator.calculate(
-                    currentShift = ShiftType.EVENING,
+                    currentShift = ShiftType.NIGHT,
                     workDate = LocalDate.now()
                 ),
-                subjectiveFatigueLevel = 3,
-                objectiveRecoveryLevel = 3
+                subjectiveFatigueLevel = 5,
+                objectiveRecoveryLevel = 1
             )
         )
     }

@@ -13,6 +13,7 @@ object SleepInterventionEngine {
             addAll(createPostWorkLightIntervention(context, shiftRange))
             addAll(createCaffeineInterventions(context, shiftRange))
             addAll(createNapInterventions(context, shiftRange))
+            addAll(createMainSleepIntervention(context))
         }
             .filter { it.startTime.isBefore(it.endTime) }
             .distinctBy { it.type to it.actionType to it.startTime to it.endTime }
@@ -31,19 +32,17 @@ object SleepInterventionEngine {
         var score = 0
 
         when (intervention.type) {
+            InterventionType.MAIN_SLEEP -> {
+                score += 100
+                if (context.objectiveRecoveryLevel <= 2) score += 20
+                if (context.currentShift == ShiftType.NIGHT) score += 15
+            }
+
             InterventionType.NAP -> {
                 score += 80
-
                 if (context.currentShift == ShiftType.NIGHT) score += 25
                 if (context.subjectiveFatigueLevel >= 4) score += 20
                 if (context.objectiveRecoveryLevel <= 2) score += 20
-
-                if (
-                    context.currentShift == ShiftType.NIGHT &&
-                    context.previousShift != ShiftType.NIGHT
-                ) {
-                    score += 10
-                }
             }
 
             InterventionType.CAFFEINE -> {
@@ -51,36 +50,27 @@ object SleepInterventionEngine {
                     InterventionActionType.DO -> 70
                     InterventionActionType.AVOID -> 45
                 }
-
                 if (context.currentShift == ShiftType.NIGHT) score += 15
                 if (context.subjectiveFatigueLevel >= 4) score += 10
             }
 
             InterventionType.LIGHT -> {
                 score += when (intervention.actionType) {
-                    InterventionActionType.DO -> 45
-                    InterventionActionType.AVOID -> 65
+                    InterventionActionType.DO -> 30
+                    InterventionActionType.AVOID -> 50
                 }
-
                 if (
                     context.currentShift == ShiftType.NIGHT &&
                     intervention.actionType == InterventionActionType.AVOID
                 ) {
-                    score += 25
-                }
-
-                if (
-                    context.currentShift == ShiftType.NIGHT &&
-                    intervention.actionType == InterventionActionType.DO &&
-                    context.subjectiveFatigueLevel >= 4
-                ) {
-                    score -= 20
+                    score += 20
                 }
             }
         }
 
         return score
     }
+
 
     private fun createPreWorkLightIntervention(
         context: SleepInterventionContext,
@@ -143,6 +133,53 @@ object SleepInterventionEngine {
                 description = "근무 후 수면을 앞두고 있다면 강한 빛 노출을 줄이는 것이 도움이 될 수 있어요.",
                 reason = "밝은 빛은 몸을 깨우는 신호가 될 수 있어, 수면 전에는 자극을 낮추는 편이 좋아요.",
                 actionType = InterventionActionType.AVOID
+            )
+        )
+    }
+
+    private fun createMainSleepIntervention(
+        context: SleepInterventionContext
+    ): List<SleepIntervention> {
+        val sleepStart = context.targetSleepTime
+
+        val sleepDurationHours = when {
+            context.objectiveRecoveryLevel <= 2 -> 7L
+            context.subjectiveFatigueLevel >= 4 -> 7L
+            else -> 6L
+        }
+
+        val sleepEnd = sleepStart.plusHours(sleepDurationHours)
+
+        return listOf(
+            SleepIntervention(
+                type = InterventionType.MAIN_SLEEP,
+                startTime = sleepStart,
+                endTime = sleepEnd,
+                title = "오늘 목표 수면",
+                description = when (context.currentShift) {
+                    ShiftType.NIGHT ->
+                        "야간 근무 후에는 가능한 일정한 시간에 회복 수면을 확보하는 것이 좋아요."
+
+                    ShiftType.EVENING ->
+                        "이브닝 근무 후에는 늦어진 리듬을 고려해 충분한 수면 시간을 확보해보세요."
+
+                    ShiftType.DAY ->
+                        "다음 날 리듬을 위해 오늘 밤에는 일정한 시간에 잠드는 것이 좋아요."
+
+                    ShiftType.OFF ->
+                        "쉬는 날에도 수면 리듬이 크게 흔들리지 않도록 목표 수면 시간을 유지해보세요."
+                },
+                reason = when {
+                    context.objectiveRecoveryLevel <= 2 ->
+                        "수면 회복이 부족한 상태라 충분한 수면 시간이 우선이에요."
+
+                    context.subjectiveFatigueLevel >= 4 ->
+                        "현재 피로감이 높아 회복 수면을 확보하는 것이 중요해요."
+
+                    else ->
+                        "수면 리듬을 안정적으로 유지하기 위한 기본 목표예요."
+                },
+                actionType = InterventionActionType.DO
             )
         )
     }
