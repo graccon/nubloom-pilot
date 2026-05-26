@@ -70,22 +70,22 @@ fun MorningGloryResultPage(
             .padding(horizontal = 24.dp, vertical = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-//        ResultHeader(
-//            participantName = participantName
-//        )
-//        Spacer(modifier = Modifier.height(20.dp))
-//
-//        ResultMainMessage(
-//            title = resultInfo.title,
-//            description = resultInfo.description,
-//            modifier = Modifier.padding(top = 8.dp)
-//        )
-//
-//        SpriteAnimation(
-//            frames = resultInfo.frames,
-//            frameDuration = resultInfo.frameDuration,
-//            modifier = Modifier.size(260.dp)
-//        )
+        ResultHeader(
+            participantName = participantName
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+
+        ResultMainMessage(
+            title = resultInfo.title,
+            description = resultInfo.description,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+
+        SpriteAnimation(
+            frames = resultInfo.frames,
+            frameDuration = resultInfo.frameDuration,
+            modifier = Modifier.size(260.dp)
+        )
 
         ResultSummaryCard(
             objectiveText = resultInfo.objectiveText,
@@ -235,7 +235,7 @@ private fun ResultSummaryCard(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = Color(0xFFE8E8E8),
+                color = Gray700.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(24.dp)
             )
             .padding(horizontal = 20.dp, vertical = 18.dp)
@@ -246,7 +246,8 @@ private fun ResultSummaryCard(
                 text = "오늘의 추천 개입",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = Gray900
+                color = Gray900,
+                modifier = Modifier.padding(horizontal = 8.dp)
             )
 
             Spacer(modifier = Modifier.height(12.dp))

@@ -24,7 +24,7 @@ sealed class BottomNavItem(
 
     object Sleep : BottomNavItem(
         Routes.SLEEP,
-        R.drawable.ic_sleep_face
+        R.drawable.ic_sleep
     )
 
     object MyInfo : BottomNavItem(
