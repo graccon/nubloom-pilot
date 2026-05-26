@@ -19,15 +19,12 @@ import com.sujin.nubloompilot.R
 import com.sujin.nubloompilot.components.SpriteAnimation
 import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.ui.theme.*
-import kotlinx.coroutines.launch
+import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.Surface
 import java.time.LocalDate
 import java.time.LocalDateTime
 import com.sujin.nubloompilot.models.*
-import com.sujin.nubloompilot.utils.MainSleepDurationCalculator
-import com.sujin.nubloompilot.utils.SleepInterventionEngine
-import com.sujin.nubloompilot.utils.TargetSleepTimeCalculator
 
 
 @Composable
@@ -35,21 +32,13 @@ fun MorningGloryResultPage(
     participantName: String,
     type: MorningGloryType,
     onBackHome: () -> Unit,
-    onSaveResult: suspend () -> Unit = {},
-    onSaveInterventions: suspend (List<SleepIntervention>, SleepInterventionContext) -> Unit = { _, _ -> },
-    interventionContext: SleepInterventionContext,
+    interventions: List<SavedSleepIntervention>,
     isReviewMode: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val resultInfo = remember(type) {
         getMorningGloryResultInfo(type)
     }
-    val interventions = remember(interventionContext) {
-        SleepInterventionEngine.generate(interventionContext)
-    }
-
-    val scope = rememberCoroutineScope()
-    var isSaving by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -98,19 +87,7 @@ fun MorningGloryResultPage(
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = {
-                if (isReviewMode) {
-                    onBackHome()
-                } else {
-                    scope.launch {
-                        isSaving = true
-                        onSaveResult()
-                        onSaveInterventions(interventions, interventionContext)
-                        onBackHome()
-                    }
-                }
-            },
-            enabled = !isSaving,
+            onClick = { onBackHome() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -120,20 +97,12 @@ fun MorningGloryResultPage(
             ),
             shape = RoundedCornerShape(46.dp)
         ) {
-            if (isSaving) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    color = Gray900,
-                    strokeWidth = 2.dp
-                )
-            } else {
-                Text(
-                    text = "홈으로 돌아가기",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = Gray900
-                )
-            }
+            Text(
+                text = "홈으로 돌아가기",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = Gray900
+            )
         }
     }
 }
@@ -229,13 +198,13 @@ private fun ResultSummaryCard(
     objectiveText: String,
     subjectiveText: String,
     encouragementText: String,
-    interventions: List<SleepIntervention>
+    interventions: List<SavedSleepIntervention>
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = Gray700.copy(alpha = 0.3f),
+                color = Gray600.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(24.dp)
             )
             .padding(horizontal = 20.dp, vertical = 18.dp)
@@ -251,6 +220,8 @@ private fun ResultSummaryCard(
             )
 
             Spacer(modifier = Modifier.height(12.dp))
+
+            val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
             interventions.forEach { intervention ->
                 Column(
@@ -271,8 +242,14 @@ private fun ResultSummaryCard(
 
                     Spacer(modifier = Modifier.height(4.dp))
 
+                    val timeRange = runCatching {
+                        val start = java.time.LocalDateTime.parse(intervention.startTime)
+                        val end = java.time.LocalDateTime.parse(intervention.endTime)
+                        "${start.format(timeFormatter)} ~ ${end.format(timeFormatter)}"
+                    }.getOrDefault("${intervention.startTime} ~ ${intervention.endTime}")
+
                     Text(
-                        text = "${intervention.startTime.toLocalTime()} ~ ${intervention.endTime.toLocalTime()}",
+                        text = timeRange,
                         style = MaterialTheme.typography.bodySmall,
                         color = Gray600
                     )
@@ -406,49 +383,21 @@ private fun getMorningGloryResultInfo(
 @Preview(showBackground = true)
 @Composable
 fun MorningGloryResultPagePreview() {
-    val workDate = LocalDate.now()
-    val chronotype = Chronotype.INTERMEDIATE
-    val previousShift = ShiftType.OFF
-    val currentShift = ShiftType.NIGHT
-    val nextShift = ShiftType.NIGHT
-    val fatigueLevel = 4
-    val recoveryLevel = 4
-    val commuteMinutes = 60L
-    val preWorkPreparationMinutes = 60L
-
-    val mainSleepDuration = MainSleepDurationCalculator.calculate(
-        currentShift = currentShift,
-        previousShift = previousShift,
-        nextShift = nextShift,
-        subjectiveFatigueLevel = fatigueLevel,
-        objectiveRecoveryLevel = recoveryLevel,
-        chronotype = chronotype
-    )
-
     NubloomPilotTheme {
         MorningGloryResultPage(
             participantName = "간호사",
             onBackHome = {},
             type = MorningGloryType.TYPE_3,
-            interventionContext = SleepInterventionContext(
-                chronotype = chronotype,
-                previousShift = previousShift,
-                currentShift = currentShift,
-                nextShift = nextShift,
-                workDate = workDate,
-                wakeTime = LocalDateTime.now()
-                    .withHour(9)
-                    .withMinute(0),
-                targetSleepTime = TargetSleepTimeCalculator.calculate(
-                    currentShift = currentShift,
-                    nextShift = nextShift,
-                    workDate = workDate,
-                    mainSleepDurationMinutes = mainSleepDuration.toMinutes(),
-                    commuteMinutes = commuteMinutes,
-                    preWorkPreparationMinutes = preWorkPreparationMinutes
-                ),
-                subjectiveFatigueLevel = fatigueLevel,
-                objectiveRecoveryLevel = recoveryLevel
+            interventions = listOf(
+                SavedSleepIntervention(
+                    type = "CAFFEINE",
+                    actionType = "DO",
+                    startTime = "2024-01-01T10:00:00",
+                    endTime = "2024-01-01T11:00:00",
+                    title = "커피 한 잔",
+                    description = "지금 커피를 마시면 각성 효과가 좋습니다.",
+                    reason = "테스트"
+                )
             )
         )
     }

@@ -24,6 +24,7 @@ import com.sujin.nubloompilot.pages.MorningGloryResultPage
 import com.sujin.nubloompilot.pages.MyInfoPage
 import com.sujin.nubloompilot.pages.OnboardingPage
 import com.sujin.nubloompilot.pages.SleepCheckInPage
+import com.sujin.nubloompilot.pages.SleepProcessingPage
 import com.sujin.nubloompilot.pages.SleepPage
 import com.sujin.nubloompilot.repository.ParticipantRepository
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
@@ -32,12 +33,12 @@ import com.sujin.nubloompilot.repository.SleepStatusRepository
 import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.SleepInterventionRepository
 import com.sujin.nubloompilot.local.SleepInterventionLocalStore
+import com.sujin.nubloompilot.models.SleepIntervention
 import com.sujin.nubloompilot.utils.SleepInterventionMapper
 import com.sujin.nubloompilot.utils.SleepInterventionContextBuilder
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
-import java.time.Instant
 
 
 @Composable
@@ -99,6 +100,7 @@ fun AppNavGraph() {
     val shouldShowBottomBar = currentRoute != null &&
             currentRoute != Routes.OnboardingPage &&
             !currentRoute.startsWith("sleep_check_in") &&
+            !currentRoute.startsWith("sleep_processing") &&
             !currentRoute.startsWith("morning_glory_result")
 
     Box(
@@ -204,7 +206,7 @@ fun AppNavGraph() {
                     baselineWakeHeartRate = baselineHeartRate.takeIf { it != -1L },
                     onSubmitClick = { type, time, fatigue ->
                         navController.navigate(
-                            Routes.morningGloryResultRoute(
+                            Routes.sleepProcessingRoute(
                                 type = type,
                                 endTime = time,
                                 duration = duration,
@@ -212,6 +214,60 @@ fun AppNavGraph() {
                                 fatigueLevel = fatigue
                             )
                         )
+                    }
+                )
+            }
+
+            composable(
+                route = Routes.SLEEP_PROCESSING
+            ) { backStackEntry ->
+                val args = MorningGloryResultArgs.from(backStackEntry)
+                val shiftsAroundToday = remember {
+                    shiftScheduleRepository.getShiftsAroundToday()
+                }
+                val interventionContext = SleepInterventionContextBuilder.build(
+                    type = args.type,
+                    fatigueLevel = args.fatigueLevel,
+                    endTime = args.endTime,
+                    shiftsAroundToday = shiftsAroundToday
+                )
+
+                SleepProcessingPage(
+                    participantId = participantId,
+                    participantName = participantName,
+                    type = args.type,
+                    endTime = args.endTime,
+                    duration = args.duration,
+                    heartRate = if (args.heartRate == -1L) null else args.heartRate,
+                    fatigueLevel = args.fatigueLevel,
+                    interventionContext = interventionContext,
+                    onSaveResult = { result ->
+                        sleepResultRepository.saveSleepResult(result)
+                    },
+                    onSaveInterventions = { interventions, context ->
+                        val bundle = SleepInterventionMapper.toBundle(
+                            participantId = participantId,
+                            morningGloryType = args.type,
+                            context = context,
+                            interventions = interventions
+                        )
+                        sleepInterventionRepository.save(bundle)
+                    },
+                    onProcessingComplete = {
+                        navController.navigate(
+                            Routes.morningGloryResultRoute(
+                                type = args.type,
+                                endTime = args.endTime,
+                                duration = args.duration,
+                                heartRate = args.heartRate.takeIf { it != -1L },
+                                fatigueLevel = args.fatigueLevel
+                            )
+                        ) {
+                            // pop sleep_check_in and sleep_processing from backstack
+                            popUpTo(Routes.SLEEP_CHECK_IN) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
@@ -238,62 +294,28 @@ fun AppNavGraph() {
                     }
                 }
 
-                val finalEndTime = recoveredResult?.sleepEndTime?.toString() ?: args.endTime
-                val finalFatigue = recoveredResult?.fatigueLevel ?: args.fatigueLevel
                 val finalType = recoveredResult?.morningGloryType ?: args.type
 
-                val shiftsAroundToday = remember {
-                    shiftScheduleRepository.getShiftsAroundToday()
+                val latestInterventionBundle = remember {
+                    sleepInterventionRepository.getLatestLocal()
                 }
-
-                val interventionContext = SleepInterventionContextBuilder.build(
-                    type = finalType,
-                    fatigueLevel = finalFatigue,
-                    endTime = finalEndTime,
-                    shiftsAroundToday = shiftsAroundToday
-                )
+                val interventions = latestInterventionBundle?.interventions ?: emptyList()
 
                 MorningGloryResultPage(
                     participantName = participantName,
                     type = finalType,
+                    interventions = interventions,
                     isReviewMode = args.endTime == "NONE",
-                    interventionContext = interventionContext,
                     onBackHome = {
                         navController.navigate(Routes.HOME) {
                             popUpTo(Routes.HOME) {
                                 inclusive = true
                             }
                         }
-                    },
-                    onSaveResult = {
-                        if (args.endTime != "NONE") {
-                            val result = SleepResult(
-                                participantId = participantId,
-                                participantName = participantName,
-                                sleepEndTime = Instant.parse(args.endTime),
-                                sleepDurationMinutes = args.duration,
-                                wakeHeartRate = if (args.heartRate == -1L) null else args.heartRate,
-                                fatigueLevel = args.fatigueLevel,
-                                morningGloryType = args.type
-                            )
-                            sleepResultRepository.saveSleepResult(result)
-                        }
-                    },
-                    onSaveInterventions = { interventions, context ->
-                        if (args.endTime != "NONE") {
-                            val bundle = SleepInterventionMapper.toBundle(
-                                participantId = participantId,
-                                morningGloryType = finalType,
-                                context = context,
-                                interventions = interventions
-                            )
-                            sleepInterventionRepository.save(bundle)
-                        }
                     }
                 )
             }
         }
-
 
         if (shouldShowBottomBar) {
             BottomBar(

@@ -42,4 +42,17 @@ object Routes {
     fun morningGloryReviewRoute(type: MorningGloryType): String {
         return "morning_glory_result/${type.name}/NONE/0/-1/0"
     }
+
+    const val SLEEP_PROCESSING = "sleep_processing/{type}/{endTime}/{duration}/{heartRate}/{fatigueLevel}"
+
+    fun sleepProcessingRoute(
+        type: MorningGloryType,
+        endTime: String,
+        duration: Long,
+        heartRate: Long?,
+        fatigueLevel: Int
+    ): String {
+        val safeHeartRate = heartRate ?: -1L
+        return "sleep_processing/${type.name}/$endTime/$duration/$safeHeartRate/$fatigueLevel"
+    }
 }
