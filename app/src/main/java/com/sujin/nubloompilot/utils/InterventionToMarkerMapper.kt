@@ -19,7 +19,21 @@ object InterventionToMarkerMapper {
     ): List<TimelineMarker> {
         return interventions.mapNotNull { intervention ->
             val start = runCatching { LocalDateTime.parse(intervention.startTime) }.getOrNull() ?: return@mapNotNull null
-            val absoluteHour = start.toAbsoluteHour(referenceDate)
+            
+            // For caffeine, use the midpoint of the intervention window for the marker
+            val targetTime = if (intervention.type == InterventionType.CAFFEINE.name) {
+                val end = runCatching { LocalDateTime.parse(intervention.endTime) }.getOrNull()
+                if (end != null) {
+                    val halfDurationMinutes = ChronoUnit.MINUTES.between(start, end) / 2
+                    start.plusMinutes(halfDurationMinutes)
+                } else {
+                    start
+                }
+            } else {
+                start
+            }
+
+            val absoluteHour = targetTime.toAbsoluteHour(referenceDate)
 
             TimelineMarker(
                 id = intervention.startTime,

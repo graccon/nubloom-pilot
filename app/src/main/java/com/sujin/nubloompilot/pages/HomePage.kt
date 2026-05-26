@@ -160,7 +160,7 @@ private fun HomePageContent(
         }
 
         if (uiState.latestHealthSummary != null) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             ReportHeader(
                 morningGloryType = uiState.morningGloryType
@@ -266,7 +266,7 @@ private fun InterventionSection(
                 isExpanded = intervention.startTime == expandedId,
                 onToggleExpand = { onExpandedIdChange(intervention.startTime) }
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

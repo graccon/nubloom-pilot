@@ -233,7 +233,7 @@ private fun TimelineSelectionHeader(
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth(0.85f)
+            .fillMaxWidth() // 0.85f
             .height(36.dp),
         contentAlignment = Alignment.BottomStart
     ) {
