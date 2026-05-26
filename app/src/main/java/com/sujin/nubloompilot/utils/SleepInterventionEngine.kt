@@ -1,6 +1,7 @@
 package com.sujin.nubloompilot.utils
 
 import com.sujin.nubloompilot.models.*
+import com.sujin.nubloompilot.utils.TargetSleepTimeCalculator
 
 object SleepInterventionEngine {
 
@@ -8,7 +9,12 @@ object SleepInterventionEngine {
         context: SleepInterventionContext
     ): List<SleepIntervention> {
         val shiftRange = context.currentShift.getTimeRange(context.workDate)
+        val isShiftChanged =
+            context.previousShift != null &&
+                    context.previousShift != context.currentShift
+
         val candidates = buildList {
+            addAll(createSleepPreparationIntervention(context))
             addAll(createPreWorkLightIntervention(context, shiftRange))
             addAll(createPostWorkLightIntervention(context, shiftRange))
             addAll(createCaffeineInterventions(context, shiftRange))
@@ -20,7 +26,7 @@ object SleepInterventionEngine {
 
         return candidates
             .sortedByDescending { getPriorityScore(it, context) }
-            .take(3)
+            .take(4)
             .sortedBy { it.startTime }
 
     }
@@ -33,9 +39,17 @@ object SleepInterventionEngine {
 
         when (intervention.type) {
             InterventionType.MAIN_SLEEP -> {
-                score += 100
+                score += 200
                 if (context.objectiveRecoveryLevel <= 2) score += 20
                 if (context.currentShift == ShiftType.NIGHT) score += 15
+            }
+
+            InterventionType.SLEEP_PREPARATION -> {
+                score += 150
+
+                if (context.objectiveRecoveryLevel <= 2) score += 20
+                if (context.subjectiveFatigueLevel >= 4) score += 15
+                if (context.currentShift == ShiftType.NIGHT) score += 10
             }
 
             InterventionType.NAP -> {
@@ -47,17 +61,60 @@ object SleepInterventionEngine {
 
             InterventionType.CAFFEINE -> {
                 score += when (intervention.actionType) {
-                    InterventionActionType.DO -> 70
-                    InterventionActionType.AVOID -> 45
+                    InterventionActionType.DO -> {
+                        when (context.currentShift) {
+                            ShiftType.NIGHT -> 95
+                            ShiftType.EVENING -> 75
+                            ShiftType.DAY -> 65
+                            ShiftType.OFF -> 0
+                        }
+                    }
+
+                    InterventionActionType.AVOID -> {
+                        when (context.currentShift) {
+                            ShiftType.OFF -> 120
+                            ShiftType.NIGHT -> 90
+                            ShiftType.EVENING -> 75
+                            ShiftType.DAY -> 70
+                        }
+                    }
                 }
-                if (context.currentShift == ShiftType.NIGHT) score += 15
-                if (context.subjectiveFatigueLevel >= 4) score += 10
+
+                if (context.subjectiveFatigueLevel >= 4 &&
+                    intervention.actionType == InterventionActionType.DO
+                ) {
+                    score += 10
+                }
+
+                if (context.objectiveRecoveryLevel <= 2 &&
+                    intervention.actionType == InterventionActionType.AVOID
+                ) {
+                    score += 15
+                }
+
+                if (
+                    context.currentShift == ShiftType.OFF &&
+                    intervention.actionType == InterventionActionType.AVOID
+                ) {
+                    score += 20
+                }
             }
 
             InterventionType.LIGHT -> {
+                val isShiftChanged =
+                    context.previousShift != null &&
+                            context.previousShift != context.currentShift
+
                 score += when (intervention.actionType) {
-                    InterventionActionType.DO -> 30
-                    InterventionActionType.AVOID -> 50
+                    InterventionActionType.DO -> {
+                        if (isShiftChanged) 100 else 10
+                    }
+                    InterventionActionType.AVOID -> {
+                        if (context.currentShift == ShiftType.NIGHT) 80 else 35
+                    }
+                }
+                if (isShiftChanged) {
+                    score += 15
                 }
                 if (
                     context.currentShift == ShiftType.NIGHT &&
@@ -69,6 +126,53 @@ object SleepInterventionEngine {
         }
 
         return score
+    }
+
+    private fun createSleepPreparationIntervention(
+        context: SleepInterventionContext
+    ): List<SleepIntervention> {
+        val sleepStart = context.targetSleepTime
+
+        val preparationMinutes = when {
+            context.objectiveRecoveryLevel <= 2 -> 45L
+            context.subjectiveFatigueLevel >= 4 -> 45L
+            else -> 30L
+        }
+
+        val preparationStart = sleepStart.minusMinutes(preparationMinutes)
+
+        return listOf(
+            SleepIntervention(
+                type = InterventionType.SLEEP_PREPARATION,
+                startTime = preparationStart,
+                endTime = sleepStart,
+                title = "수면 환경 조성",
+                description = when {
+                    context.currentShift == ShiftType.NIGHT ->
+                        "야간 근무 후에는 아침 빛과 소음을 줄이는 것이 중요해요. 암막, 눈가리개, 알림 차단을 준비해보세요."
+
+                    context.objectiveRecoveryLevel <= 2 || context.subjectiveFatigueLevel >= 4 ->
+                        "오늘은 회복이 더 필요한 상태예요. 조명을 낮추고, 휴대폰 알림과 주변 자극을 줄여 바로 쉴 수 있는 환경을 만들어보세요."
+
+                    else ->
+                        "잠들기 전 조명을 낮추고, 알림과 주변 자극을 줄여 수면에 들어갈 준비를 해보세요."
+                },
+                reason = when {
+                    context.currentShift == ShiftType.NIGHT ->
+                        "야간 근무 후에는 밝은 빛과 소음이 수면 진입을 방해할 수 있어요."
+
+                    context.objectiveRecoveryLevel <= 2 ->
+                        "수면 회복이 부족한 날에는 수면 전 방해 요소를 줄이는 것이 중요해요."
+
+                    context.subjectiveFatigueLevel >= 4 ->
+                        "피로감이 높은 날에는 잠들기 전 자극을 줄여 회복 수면을 돕는 것이 좋아요."
+
+                    else ->
+                        "수면 전 환경을 정리하면 목표 수면 시간에 맞춰 잠들기 쉬워요."
+                },
+                actionType = InterventionActionType.DO
+            )
+        )
     }
 
 
@@ -142,13 +246,15 @@ object SleepInterventionEngine {
     ): List<SleepIntervention> {
         val sleepStart = context.targetSleepTime
 
-        val sleepDurationHours = when {
-            context.objectiveRecoveryLevel <= 2 -> 7L
-            context.subjectiveFatigueLevel >= 4 -> 7L
-            else -> 6L
-        }
-
-        val sleepEnd = sleepStart.plusHours(sleepDurationHours)
+        val sleepDuration = MainSleepDurationCalculator.calculate(
+            currentShift = context.currentShift,
+            previousShift = context.previousShift,
+            nextShift = context.nextShift,
+            subjectiveFatigueLevel = context.subjectiveFatigueLevel,
+            objectiveRecoveryLevel = context.objectiveRecoveryLevel,
+            chronotype = context.chronotype
+        )
+        val sleepEnd = sleepStart.plus(sleepDuration)
 
         return listOf(
             SleepIntervention(
@@ -183,60 +289,121 @@ object SleepInterventionEngine {
             )
         )
     }
-
     private fun createCaffeineInterventions(
         context: SleepInterventionContext,
         shiftRange: ShiftTimeRange
     ): List<SleepIntervention> {
-        val result = mutableListOf<SleepIntervention>()
+        return buildList {
+            addAll(createCaffeineDoIntervention(context, shiftRange))
+            addAll(createCaffeineAvoidIntervention(context))
+        }
+    }
 
-        val workStart = shiftRange.startTime
-        val workEnd = shiftRange.endTime
+    private fun createCaffeineDoIntervention(
+        context: SleepInterventionContext,
+        shiftRange: ShiftTimeRange
+    ): List<SleepIntervention> {
+        val workStart = shiftRange.startTime ?: return emptyList()
+        val workEnd = shiftRange.endTime ?: return emptyList()
 
-        val caffeineCutoff = when (context.chronotype) {
-            Chronotype.MORNING -> context.targetSleepTime.minusHours(8)
-            Chronotype.INTERMEDIATE -> context.targetSleepTime.minusHours(6)
-            Chronotype.EVENING -> context.targetSleepTime.minusHours(6)
+        if (context.currentShift == ShiftType.OFF) {
+            return emptyList()
         }
 
-        if (workStart != null && workEnd != null) {
-            val caffeineUseStart = workStart
-            val caffeineUseEnd = minOf(
-                workStart.plusHours(3),
-                workEnd,
-                caffeineCutoff
+        val caffeineCutoff = getCaffeineCutoffTime(context)
+
+        val doEnd = when (context.currentShift) {
+            ShiftType.DAY -> workStart.plusHours(3)
+            ShiftType.EVENING -> workStart.plusHours(3)
+            ShiftType.NIGHT -> workStart.plusHours(3)
+            ShiftType.OFF -> return emptyList()
+        }
+
+        val caffeineUseEnd = minOf(
+            doEnd,
+            workEnd,
+            caffeineCutoff
+        )
+
+        if (!workStart.isBefore(caffeineUseEnd)) {
+            return emptyList()
+        }
+
+        return listOf(
+            SleepIntervention(
+                type = InterventionType.CAFFEINE,
+                startTime = workStart,
+                endTime = caffeineUseEnd,
+                title = "카페인 활용 가능",
+                description = when (context.currentShift) {
+                    ShiftType.DAY ->
+                        "카페인이 필요하다면 주간 근무 초반에만 가볍게 활용하는 것이 좋아요."
+
+                    ShiftType.EVENING ->
+                        "이브닝 근무에서는 너무 늦지 않은 초반 시간대에만 카페인을 활용해보세요."
+
+                    ShiftType.NIGHT ->
+                        "야간 근무에서는 근무 초반에만 카페인을 활용하는 것이 다음 수면에 부담이 적어요."
+
+                    ShiftType.OFF ->
+                        ""
+                },
+                reason = "카페인은 각성에는 도움이 될 수 있지만, 늦은 섭취는 다음 수면을 방해할 수 있어요.",
+                actionType = InterventionActionType.DO
             )
+        )
+    }
 
-            if (caffeineUseStart.isBefore(caffeineUseEnd)) {
-                result += SleepIntervention(
-                    type = InterventionType.CAFFEINE,
-                    startTime = caffeineUseStart,
-                    endTime = caffeineUseEnd,
-                    title = "카페인 활용 가능",
-                    description = "카페인이 필요하다면 근무 초반에만 활용하는 것이 좋아요.",
-                    reason = "근무 후반의 카페인은 다음 수면에 영향을 줄 수 있어요.",
-                    actionType = InterventionActionType.DO
-                )
-            }
+    private fun createCaffeineAvoidIntervention(
+        context: SleepInterventionContext
+    ): List<SleepIntervention> {
+        val caffeineCutoff = getCaffeineCutoffTime(context)
+        val sleepStart = context.targetSleepTime
+
+        if (!caffeineCutoff.isBefore(sleepStart)) {
+            return emptyList()
         }
 
-        if (caffeineCutoff.isBefore(context.targetSleepTime)) {
-            result += SleepIntervention(
+        return listOf(
+            SleepIntervention(
                 type = InterventionType.CAFFEINE,
                 startTime = caffeineCutoff,
-                endTime = context.targetSleepTime,
+                endTime = sleepStart,
                 title = "카페인 줄이기",
-                description = "다음 수면을 위해 이 시간대에는 카페인을 줄이는 것이 좋아요.",
+                description = when (context.currentShift) {
+                    ShiftType.DAY ->
+                        "밤 수면을 위해 오후 늦은 시간부터는 카페인을 줄이는 것이 좋아요."
+
+                    ShiftType.EVENING ->
+                        "이브닝 근무 후 수면이 늦어질 수 있으니, 목표 수면 전에는 카페인을 줄여보세요."
+
+                    ShiftType.NIGHT ->
+                        "야간 근무 후 회복 수면을 위해 근무 후반부터는 카페인을 줄이는 것이 좋아요."
+
+                    ShiftType.OFF ->
+                        "쉬는 날에도 수면 리듬을 지키기 위해 목표 수면 전에는 카페인을 줄여보세요."
+                },
                 reason = when (context.chronotype) {
-                    Chronotype.MORNING -> "아침형은 늦은 카페인에 더 민감할 수 있어 조금 더 일찍 제한해요."
-                    Chronotype.INTERMEDIATE -> "취침 전 카페인은 잠드는 시간을 늦출 수 있어요."
-                    Chronotype.EVENING -> "저녁형이어도 취침 전 카페인은 수면 회복을 방해할 수 있어요."
+                    Chronotype.MORNING ->
+                        "아침형은 늦은 카페인에 더 민감할 수 있어 조금 더 일찍 줄이는 것이 좋아요."
+
+                    Chronotype.INTERMEDIATE ->
+                        "취침 전 카페인은 잠드는 시간을 늦출 수 있어요."
+
+                    Chronotype.EVENING ->
+                        "저녁형이어도 목표 수면 전 카페인은 수면 회복을 방해할 수 있어요."
                 },
                 actionType = InterventionActionType.AVOID
             )
-        }
+        )
+    }
 
-        return result
+    private fun getCaffeineCutoffTime(
+        context: SleepInterventionContext
+    ) = when (context.chronotype) {
+        Chronotype.MORNING -> context.targetSleepTime.minusHours(8)
+        Chronotype.INTERMEDIATE -> context.targetSleepTime.minusHours(6)
+        Chronotype.EVENING -> context.targetSleepTime.minusHours(6)
     }
 
     private fun createNapInterventions(

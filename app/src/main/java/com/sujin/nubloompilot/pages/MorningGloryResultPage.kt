@@ -25,6 +25,7 @@ import androidx.compose.material3.Surface
 import java.time.LocalDate
 import java.time.LocalDateTime
 import com.sujin.nubloompilot.models.*
+import com.sujin.nubloompilot.utils.MainSleepDurationCalculator
 import com.sujin.nubloompilot.utils.SleepInterventionEngine
 import com.sujin.nubloompilot.utils.TargetSleepTimeCalculator
 
@@ -404,24 +405,49 @@ private fun getMorningGloryResultInfo(
 @Preview(showBackground = true)
 @Composable
 fun MorningGloryResultPagePreview() {
+    val workDate = LocalDate.now()
+    val chronotype = Chronotype.INTERMEDIATE
+    val previousShift = ShiftType.OFF
+    val currentShift = ShiftType.NIGHT
+    val nextShift = ShiftType.NIGHT
+    val fatigueLevel = 4
+    val recoveryLevel = 4
+    val commuteMinutes = 60L
+    val preWorkPreparationMinutes = 60L
+
+    val mainSleepDuration = MainSleepDurationCalculator.calculate(
+        currentShift = currentShift,
+        previousShift = previousShift,
+        nextShift = nextShift,
+        subjectiveFatigueLevel = fatigueLevel,
+        objectiveRecoveryLevel = recoveryLevel,
+        chronotype = chronotype
+    )
+
     NubloomPilotTheme {
         MorningGloryResultPage(
             participantName = "간호사",
-            type = MorningGloryType.TYPE_1,
             onBackHome = {},
+            type = MorningGloryType.TYPE_3,
             interventionContext = SleepInterventionContext(
-                chronotype = Chronotype.EVENING,
-                previousShift = ShiftType.EVENING,
-                currentShift = ShiftType.NIGHT,
-                nextShift = ShiftType.NIGHT,
-                workDate = LocalDate.now(),
-                wakeTime = LocalDateTime.now().withHour(14).withMinute(0),
+                chronotype = chronotype,
+                previousShift = previousShift,
+                currentShift = currentShift,
+                nextShift = nextShift,
+                workDate = workDate,
+                wakeTime = LocalDateTime.now()
+                    .withHour(9)
+                    .withMinute(0),
                 targetSleepTime = TargetSleepTimeCalculator.calculate(
-                    currentShift = ShiftType.NIGHT,
-                    workDate = LocalDate.now()
+                    currentShift = currentShift,
+                    nextShift = nextShift,
+                    workDate = workDate,
+                    mainSleepDurationMinutes = mainSleepDuration.toMinutes(),
+                    commuteMinutes = commuteMinutes,
+                    preWorkPreparationMinutes = preWorkPreparationMinutes
                 ),
-                subjectiveFatigueLevel = 5,
-                objectiveRecoveryLevel = 1
+                subjectiveFatigueLevel = fatigueLevel,
+                objectiveRecoveryLevel = recoveryLevel
             )
         )
     }
