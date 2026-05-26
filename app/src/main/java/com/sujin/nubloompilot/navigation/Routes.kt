@@ -38,4 +38,8 @@ object Routes {
         val safeHeartRate = heartRate ?: -1L
         return "morning_glory_result/${type.name}/$endTime/$duration/$safeHeartRate/$fatigueLevel"
     }
+
+    fun morningGloryReviewRoute(type: MorningGloryType): String {
+        return "morning_glory_result/${type.name}/NONE/0/-1/0"
+    }
 }

@@ -1,8 +1,10 @@
 package com.sujin.nubloompilot.pages
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
@@ -11,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -96,6 +100,21 @@ private fun HomePageContent(
         }
     }
 
+    val activeInterventions = remember(latestInterventionBundle, isInterventionValid, currentTime) {
+        if (isInterventionValid && latestInterventionBundle != null) {
+            val now = LocalDateTime.now()
+            latestInterventionBundle.interventions
+                .filter { intervention ->
+                    val end = runCatching { LocalDateTime.parse(intervention.endTime) }.getOrNull()
+                    end?.isAfter(now) ?: false
+                }
+                .sortedBy { it.startTime }
+                .take(2)
+        } else {
+            emptyList()
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -123,9 +142,9 @@ private fun HomePageContent(
             markers = timelineMarkers
         )
 
-        if (isInterventionValid && latestInterventionBundle != null) {
+        if (activeInterventions.isNotEmpty()) {
             Spacer(modifier = Modifier.height(44.dp))
-            InterventionSection(bundle = latestInterventionBundle)
+            InterventionSection(interventions = activeInterventions)
         }
 
         if (uiState.latestHealthSummary != null) {
@@ -220,14 +239,14 @@ private fun ReportHeader(
 
 @Composable
 private fun InterventionSection(
-    bundle: SavedSleepInterventionBundle
+    interventions: List<SavedSleepIntervention>
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        bundle.interventions.take(4).forEach { intervention ->
+        interventions.forEach { intervention ->
             InterventionItem(intervention = intervention)
             Spacer(modifier = Modifier.height(12.dp))
         }
@@ -239,50 +258,86 @@ private fun InterventionItem(
     intervention: SavedSleepIntervention
 ) {
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-    
+
     val formattedStart = remember(intervention.startTime) {
         runCatching {
             LocalDateTime.parse(intervention.startTime).format(timeFormatter)
         }.getOrDefault("")
     }
-    
+
     val formattedEnd = remember(intervention.endTime) {
         runCatching {
             LocalDateTime.parse(intervention.endTime).format(timeFormatter)
         }.getOrDefault("")
     }
 
+    val iconRes = remember(intervention) {
+        InterventionToMarkerMapper.getIconRes(
+            intervention.type,
+            intervention.actionType
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFE8E8E8), RoundedCornerShape(16.dp))
+            .background(
+                Color(0xFFE8E8E8),
+                RoundedCornerShape(16.dp)
+            )
             .padding(16.dp)
     ) {
-        Text(
-            text = intervention.title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = Gray900
-        )
-        
-        if (formattedStart.isNotEmpty() && formattedEnd.isNotEmpty()) {
-            Text(
-                text = "$formattedStart ~ $formattedEnd",
-                style = MaterialTheme.typography.bodySmall,
-                color = Gray700,
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .background(Color.White),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = iconRes),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = intervention.title,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Gray900
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+
+                if (formattedStart.isNotEmpty() && formattedEnd.isNotEmpty()) {
+                    Text(
+                        text = "$formattedStart ~ $formattedEnd",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Gray700
+                    )
+                }
+            }
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         Text(
             text = intervention.description,
             style = MaterialTheme.typography.bodyMedium,
             color = Gray800,
-            lineHeight = 20.sp
+            modifier = Modifier.padding(horizontal = 4.dp)
         )
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun HomePagePreview() {

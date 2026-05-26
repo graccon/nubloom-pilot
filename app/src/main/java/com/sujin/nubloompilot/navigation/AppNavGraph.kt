@@ -33,18 +33,12 @@ import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.SleepInterventionRepository
 import com.sujin.nubloompilot.local.SleepInterventionLocalStore
 import com.sujin.nubloompilot.utils.SleepInterventionMapper
+import com.sujin.nubloompilot.utils.SleepInterventionContextBuilder
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
-import com.sujin.nubloompilot.models.Chronotype
-import com.sujin.nubloompilot.models.ShiftType
-import com.sujin.nubloompilot.models.SleepInterventionContext
-import com.sujin.nubloompilot.utils.MainSleepDurationCalculator
-import com.sujin.nubloompilot.utils.TargetSleepTimeCalculator
-import java.time.ZoneId
 import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
+
 
 @Composable
 fun AppNavGraph() {
@@ -168,10 +162,11 @@ fun AppNavGraph() {
                         )
                     },
                     onNavigateToResult = { type ->
-                        navController.navigate("morning_glory_result/${type.name}/NONE/0/-1/0")
+                        navController.navigate(Routes.morningGloryReviewRoute(type))
                     }
                 )
             }
+
             composable(
                 route = Routes.SLEEP_CHECK_IN
             ) { backStackEntry ->
@@ -233,85 +228,35 @@ fun AppNavGraph() {
             composable(
                 route = Routes.MORNING_GLORY_RESULT
             ) { backStackEntry ->
-                val typeFromArg = MorningGloryType.valueOf(
-                    backStackEntry.arguments?.getString("type") ?: MorningGloryType.TYPE_1.name
-                )
-                val endTimeFromArg = backStackEntry.arguments?.getString("endTime") ?: "NONE"
-                val durationFromArg =
-                    backStackEntry.arguments?.getString("duration")?.toLongOrNull() ?: 0L
-                val heartRateFromArg =
-                    backStackEntry.arguments?.getString("heartRate")?.toLongOrNull() ?: -1L
-                val fatigueFromArg =
-                    backStackEntry.arguments?.getString("fatigueLevel")?.toIntOrNull() ?: 0
+                val args = MorningGloryResultArgs.from(backStackEntry)
 
                 var recoveredResult by remember { mutableStateOf<SleepResult?>(null) }
 
-                LaunchedEffect(endTimeFromArg) {
-                    if (endTimeFromArg == "NONE") {
+                LaunchedEffect(args.endTime) {
+                    if (args.endTime == "NONE") {
                         recoveredResult = sleepStatusRepository.getLatestSavedSleepResult()
                     }
                 }
 
-                val finalEndTime = recoveredResult?.sleepEndTime?.toString() ?: endTimeFromArg
-                val finalFatigue = recoveredResult?.fatigueLevel ?: fatigueFromArg
-                val finalType = recoveredResult?.morningGloryType ?: typeFromArg
-
-                val objectiveRecoveryLevel = when (finalType) {
-                    MorningGloryType.TYPE_1 -> 5
-                    MorningGloryType.TYPE_2 -> 2
-                    MorningGloryType.TYPE_3 -> 4
-                    MorningGloryType.TYPE_4 -> 1
-                }
+                val finalEndTime = recoveredResult?.sleepEndTime?.toString() ?: args.endTime
+                val finalFatigue = recoveredResult?.fatigueLevel ?: args.fatigueLevel
+                val finalType = recoveredResult?.morningGloryType ?: args.type
 
                 val shiftsAroundToday = remember {
                     shiftScheduleRepository.getShiftsAroundToday()
                 }
 
-                val chronotype = Chronotype.INTERMEDIATE // TODO: 나중에 사용자 설정값으로 교체
-                val currentShift = ShiftType.fromString(shiftsAroundToday.todayShift)
-                val nextShift = ShiftType.fromString(shiftsAroundToday.tomorrowShift)
-                val previousShift = ShiftType.fromString(shiftsAroundToday.yesterdayShift)
-                val workDate = LocalDate.now()
-
-                val mainSleepDuration = MainSleepDurationCalculator.calculate(
-                    currentShift = currentShift,
-                    previousShift = previousShift,
-                    nextShift = nextShift,
-                    subjectiveFatigueLevel = finalFatigue,
-                    objectiveRecoveryLevel = objectiveRecoveryLevel,
-                    chronotype = chronotype
-                )
-
-                val targetSleepTime = TargetSleepTimeCalculator.calculate(
-                    currentShift = currentShift,
-                    nextShift = nextShift,
-                    workDate = workDate,
-                    mainSleepDurationMinutes = mainSleepDuration.toMinutes(),
-                    commuteMinutes = 60L, // TODO
-                    preWorkPreparationMinutes = 60L // TODO
-                )
-
-                val wakeTime =
-                    (if (finalEndTime == "NONE") Instant.now() else Instant.parse(finalEndTime))
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDateTime()
-
-                val interventionContext = SleepInterventionContext(
-                    chronotype = chronotype,
-                    previousShift = previousShift,
-                    currentShift = currentShift,
-                    nextShift = nextShift,
-                    workDate = workDate,
-                    wakeTime = wakeTime,
-                    targetSleepTime = targetSleepTime,
-                    subjectiveFatigueLevel = finalFatigue,
-                    objectiveRecoveryLevel = objectiveRecoveryLevel
+                val interventionContext = SleepInterventionContextBuilder.build(
+                    type = finalType,
+                    fatigueLevel = finalFatigue,
+                    endTime = finalEndTime,
+                    shiftsAroundToday = shiftsAroundToday
                 )
 
                 MorningGloryResultPage(
                     participantName = participantName,
                     type = finalType,
-                    isReviewMode = endTimeFromArg == "NONE",
+                    isReviewMode = args.endTime == "NONE",
                     interventionContext = interventionContext,
                     onBackHome = {
                         navController.navigate(Routes.HOME) {
@@ -321,21 +266,21 @@ fun AppNavGraph() {
                         }
                     },
                     onSaveResult = {
-                        if (endTimeFromArg != "NONE") {
+                        if (args.endTime != "NONE") {
                             val result = SleepResult(
                                 participantId = participantId,
                                 participantName = participantName,
-                                sleepEndTime = Instant.parse(endTimeFromArg),
-                                sleepDurationMinutes = durationFromArg,
-                                wakeHeartRate = if (heartRateFromArg == -1L) null else heartRateFromArg,
-                                fatigueLevel = fatigueFromArg,
-                                morningGloryType = typeFromArg
+                                sleepEndTime = Instant.parse(args.endTime),
+                                sleepDurationMinutes = args.duration,
+                                wakeHeartRate = if (args.heartRate == -1L) null else args.heartRate,
+                                fatigueLevel = args.fatigueLevel,
+                                morningGloryType = args.type
                             )
                             sleepResultRepository.saveSleepResult(result)
                         }
                     },
                     onSaveInterventions = { interventions, context ->
-                        if (endTimeFromArg != "NONE") {
+                        if (args.endTime != "NONE") {
                             val bundle = SleepInterventionMapper.toBundle(
                                 participantId = participantId,
                                 morningGloryType = finalType,

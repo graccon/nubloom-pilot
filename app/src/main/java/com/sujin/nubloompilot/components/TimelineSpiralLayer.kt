@@ -147,7 +147,7 @@ private fun DrawScope.drawInterventionMarker(
     icon: ImageBitmap?
 ) {
     val outerSize = 24.dp.toPx()
-    val innerSize = 34.dp.toPx()
+    val innerSize = 32.dp.toPx()
 
     // Main white circle background
 //    drawCircle(

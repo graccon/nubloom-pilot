@@ -55,7 +55,7 @@ object InterventionToMarkerMapper {
         }
     }
 
-    private fun getIconRes(type: String, actionType: String): Int {
+    fun getIconRes(type: String, actionType: String): Int {
         // MUST return PNG resource IDs, because ImageBitmap.imageResource crashes on XML VectorDrawables
         return when (type) {
             InterventionType.CAFFEINE.name -> R.drawable.ic_coffee // Placeholder PNG
