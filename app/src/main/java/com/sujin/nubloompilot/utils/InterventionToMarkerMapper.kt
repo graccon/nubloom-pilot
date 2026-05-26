@@ -19,13 +19,8 @@ object InterventionToMarkerMapper {
     ): List<TimelineMarker> {
         return interventions.mapNotNull { intervention ->
             val start = runCatching { LocalDateTime.parse(intervention.startTime) }.getOrNull() ?: return@mapNotNull null
-            val end = runCatching { LocalDateTime.parse(intervention.endTime) }.getOrNull() ?: return@mapNotNull null
-            
-            // Calculate midpoint for marker position
-            val midpoint = start.plusMinutes(ChronoUnit.MINUTES.between(start, end) / 2)
-            
-            val absoluteHour = midpoint.toAbsoluteHour(referenceDate)
-            
+            val absoluteHour = start.toAbsoluteHour(referenceDate)
+
             TimelineMarker(
                 absoluteHour = absoluteHour,
                 color = getMarkerColor(intervention.type, intervention.actionType),
@@ -42,13 +37,20 @@ object InterventionToMarkerMapper {
 
     private fun getMarkerColor(type: String, actionType: String): Color {
         return when (type) {
+            InterventionType.MAIN_SLEEP.name -> Color(0xFF1E3A5F)
+
+            InterventionType.SLEEP_PREPARATION.name -> Color(0xFF6A5ACD)
+
             InterventionType.CAFFEINE.name -> {
                 if (actionType == InterventionActionType.DO.name) Primary else Color(0xFF795548)
             }
+
             InterventionType.NAP.name -> Color(0xFF3F51B5)
+
             InterventionType.LIGHT.name -> {
                 if (actionType == InterventionActionType.DO.name) Color(0xFFFFEB3B) else Color(0xFF212121)
             }
+
             else -> Primary
         }
     }
@@ -59,12 +61,16 @@ object InterventionToMarkerMapper {
             InterventionType.CAFFEINE.name -> R.drawable.ic_coffee // Placeholder PNG
             InterventionType.NAP.name -> R.drawable.ic_sleep_face // PNG
             InterventionType.LIGHT.name -> R.drawable.ic_light // Placeholder PNG
-            else -> R.drawable.sleep_good // Placeholder PNG
+            InterventionType.MAIN_SLEEP.name -> R.drawable.ic_sleep_face
+            InterventionType.SLEEP_PREPARATION.name -> R.drawable.ic_prepare
+            else -> R.drawable.ic_intervention // Placeholder PNG
         }
     }
 
     private fun getShortLabel(title: String): String {
         return when {
+            title.contains("목표 수면") -> "수면"
+            title.contains("수면 환경") -> "준비"
             title.contains("카페인") -> "카페인"
             title.contains("낮잠") -> "낮잠"
             title.contains("빛") -> "빛"

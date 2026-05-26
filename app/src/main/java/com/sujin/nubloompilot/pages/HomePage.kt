@@ -227,7 +227,7 @@ private fun InterventionSection(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        bundle.interventions.take(3).forEach { intervention ->
+        bundle.interventions.take(4).forEach { intervention ->
             InterventionItem(intervention = intervention)
             Spacer(modifier = Modifier.height(12.dp))
         }
