@@ -47,7 +47,8 @@ fun DrawScope.drawTimelineSpiralLayer(
     currentTime: LocalTime,
     textMeasurer: TextMeasurer,
     markers: List<TimelineMarker> = emptyList(),
-    markerIcons: Map<Int, ImageBitmap> = emptyMap()
+    markerIcons: Map<Int, ImageBitmap> = emptyMap(),
+    showCurrentTimeIndicator: Boolean = true
 ) {
     val basePath = createSpiralPath(
         layout = layout,
@@ -133,12 +134,14 @@ fun DrawScope.drawTimelineSpiralLayer(
         startAnchor = spiralConfig.startAnchor
     )
 
-    drawCurrentTimeMarker(
-        layout = layout,
-        config = spiralConfig,
-        hour = currentTimelineHour,
-        color = Color(0xFFFF5A1F)
-    )
+    if (showCurrentTimeIndicator) {
+        drawCurrentTimeMarker(
+            layout = layout,
+            config = spiralConfig,
+            hour = currentTimelineHour,
+            color = Color(0xFFFF5A1F)
+        )
+    }
 }
 
 private fun DrawScope.drawInterventionMarker(

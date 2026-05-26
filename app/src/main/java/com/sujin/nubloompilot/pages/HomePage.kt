@@ -130,9 +130,7 @@ private fun HomePageContent(
             participantName = participantName,
             greetingMessage = greetingMessage
         )
-
-        Spacer(modifier = Modifier.height(44.dp))
-
+        Spacer(modifier = Modifier.height(24.dp))
         SpiralTimeline(
             yesterdayShift = yesterdayShift,
             todayShift = todayShift,
