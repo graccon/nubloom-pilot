@@ -48,7 +48,8 @@ fun DrawScope.drawTimelineSpiralLayer(
     textMeasurer: TextMeasurer,
     markers: List<TimelineMarker> = emptyList(),
     markerIcons: Map<Int, ImageBitmap> = emptyMap(),
-    showCurrentTimeIndicator: Boolean = true
+    showCurrentTimeIndicator: Boolean = true,
+    highlightedMarkerId: String? = null
 ) {
     val basePath = createSpiralPath(
         layout = layout,
@@ -109,9 +110,11 @@ fun DrawScope.drawTimelineSpiralLayer(
     // Draw Intervention Markers
     val windowStart = spiralConfig.startAnchor.startHour
     val windowEnd = windowStart + 48f
+    val isAnyHighlighted = highlightedMarkerId != null
 
+    // 1. Draw normal markers first
     markers.forEach { marker ->
-        if (marker.absoluteHour in windowStart..windowEnd) {
+        if (marker.id != highlightedMarkerId && marker.absoluteHour in windowStart..windowEnd) {
             val timelineHour = marker.absoluteHour - windowStart
             val position = getSpiralPoint(
                 layout = layout,
@@ -122,8 +125,30 @@ fun DrawScope.drawTimelineSpiralLayer(
             drawInterventionMarker(
                 position = position,
                 marker = marker,
-                icon = markerIcons[marker.iconRes]
+                icon = markerIcons[marker.iconRes],
+                alpha = if (isAnyHighlighted) 0.3f else 1.0f
             )
+        }
+    }
+
+    // 2. Draw highlighted marker last to be on top
+    highlightedMarkerId?.let { id ->
+        markers.find { it.id == id }?.let { marker ->
+            if (marker.absoluteHour in windowStart..windowEnd) {
+                val timelineHour = marker.absoluteHour - windowStart
+                val position = getSpiralPoint(
+                    layout = layout,
+                    config = spiralConfig,
+                    hour = timelineHour
+                )
+
+                drawInterventionMarker(
+                    position = position,
+                    marker = marker,
+                    icon = markerIcons[marker.iconRes],
+                    scale = 1.2f // Highlight scale
+                )
+            }
         }
     }
 
@@ -147,17 +172,15 @@ fun DrawScope.drawTimelineSpiralLayer(
 private fun DrawScope.drawInterventionMarker(
     position: Offset,
     marker: TimelineMarker,
-    icon: ImageBitmap?
+    icon: ImageBitmap?,
+    scale: Float = 1.0f,
+    alpha: Float = 1.0f
 ) {
-    val outerSize = 24.dp.toPx()
-    val innerSize = 32.dp.toPx()
-
-    // Main white circle background
-//    drawCircle(
-//        color = Color.White,
-//        radius = outerSize / 2,
-//        center = position
-//    )
+    val baseOuterSize = 24.dp.toPx()
+    val baseInnerSize = 32.dp.toPx()
+    
+    val outerSize = baseOuterSize * scale
+    val innerSize = baseInnerSize * scale
 
     if (icon != null) {
         // Draw PNG Icon
@@ -165,13 +188,14 @@ private fun DrawScope.drawInterventionMarker(
         drawImage(
             image = icon,
             dstOffset = IntOffset(topLeft.x.toInt(), topLeft.y.toInt()),
-            dstSize = IntSize(innerSize.toInt(), innerSize.toInt())
+            dstSize = IntSize(innerSize.toInt(), innerSize.toInt()),
+            alpha = alpha
         )
     } else {
         // Fallback to colored dot if icon is missing
         drawCircle(
-            color = marker.color,
-            radius = innerSize / 2.5f,
+            color = marker.color.copy(alpha = alpha),
+            radius = (innerSize / 2.5f) * scale,
             center = position
         )
     }

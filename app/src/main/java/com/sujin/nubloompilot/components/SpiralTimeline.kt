@@ -37,6 +37,7 @@ fun SpiralTimeline(
     dayAfterTomorrowShift: String? = null,
     currentTime: LocalTime = LocalTime.now(),
     markers: List<TimelineMarker> = emptyList(),
+    highlightedMarkerId: String? = null,
     modifier: Modifier = Modifier
 ) {
     val textMeasurer = rememberTextMeasurer()
@@ -141,7 +142,8 @@ fun SpiralTimeline(
                 textMeasurer = textMeasurer,
                 markers = markers,
                 markerIcons = markerIcons,
-                showCurrentTimeIndicator = !isPressed
+                showCurrentTimeIndicator = !isPressed,
+                highlightedMarkerId = highlightedMarkerId
             )
 
             // Step 5: Draw a focus point at the nearest location on the spiral (Visible only when pressed)
@@ -231,9 +233,8 @@ private fun TimelineSelectionHeader(
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(0.85f)
             .height(36.dp),
-
         contentAlignment = Alignment.BottomStart
     ) {
         if (isPressed) {
@@ -276,4 +277,3 @@ private fun TimelineSelectionHeader(
         }
     }
 }
-

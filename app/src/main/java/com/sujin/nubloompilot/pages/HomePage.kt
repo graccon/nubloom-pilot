@@ -1,7 +1,9 @@
 package com.sujin.nubloompilot.pages
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -20,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.sujin.nubloompilot.components.HomeActionCard
 import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.components.SpiralTimeline
@@ -115,6 +116,8 @@ private fun HomePageContent(
         }
     }
 
+    var expandedInterventionId by remember { mutableStateOf<String?>(null) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -130,23 +133,29 @@ private fun HomePageContent(
             participantName = participantName,
             greetingMessage = greetingMessage
         )
-        Spacer(modifier = Modifier.height(24.dp))
         SpiralTimeline(
             yesterdayShift = yesterdayShift,
             todayShift = todayShift,
             tomorrowShift = tomorrowShift,
             dayAfterTomorrowShift = dayAfterTomorrowShift,
             currentTime = currentTime,
-            markers = timelineMarkers
+            markers = timelineMarkers,
+            highlightedMarkerId = expandedInterventionId
         )
 
         if (activeInterventions.isNotEmpty()) {
             Spacer(modifier = Modifier.height(44.dp))
-            InterventionSection(interventions = activeInterventions)
+            InterventionSection(
+                interventions = activeInterventions,
+                expandedId = expandedInterventionId,
+                onExpandedIdChange = { id ->
+                    expandedInterventionId = if (expandedInterventionId == id) null else id
+                }
+            )
         }
 
         if (uiState.latestHealthSummary != null) {
-            Spacer(modifier = Modifier.height(44.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             ReportHeader(
                 morningGloryType = uiState.morningGloryType
@@ -237,15 +246,21 @@ private fun ReportHeader(
 
 @Composable
 private fun InterventionSection(
-    interventions: List<SavedSleepIntervention>
+    interventions: List<SavedSleepIntervention>,
+    expandedId: String?,
+    onExpandedIdChange: (String?) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         interventions.forEach { intervention ->
-            InterventionItem(intervention = intervention)
+            InterventionItem(
+                intervention = intervention,
+                isExpanded = intervention.startTime == expandedId,
+                onToggleExpand = { onExpandedIdChange(intervention.startTime) }
+            )
             Spacer(modifier = Modifier.height(12.dp))
         }
     }
@@ -253,7 +268,9 @@ private fun InterventionSection(
 
 @Composable
 private fun InterventionItem(
-    intervention: SavedSleepIntervention
+    intervention: SavedSleepIntervention,
+    isExpanded: Boolean,
+    onToggleExpand: () -> Unit
 ) {
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
@@ -279,11 +296,11 @@ private fun InterventionItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                Color(0xFFE8E8E8),
-                RoundedCornerShape(16.dp)
-            )
-            .padding(16.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(0xFFE8E8E8))
+            .clickable { onToggleExpand() }
+            .animateContentSize()
+            .padding(10.dp)
     ) {
 
         Row(
@@ -291,7 +308,7 @@ private fun InterventionItem(
         ) {
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(32.dp)
                     .clip(CircleShape)
                     .background(Color.White),
                 contentAlignment = Alignment.Center
@@ -305,35 +322,32 @@ private fun InterventionItem(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = intervention.title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Gray900
-                )
-                Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = intervention.title,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = Gray900
+            )
 
-                if (formattedStart.isNotEmpty() && formattedEnd.isNotEmpty()) {
-                    Text(
-                        text = "$formattedStart ~ $formattedEnd",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Gray700
-                    )
-                }
+            Spacer(modifier = Modifier.width(12.dp))
+
+            if (formattedStart.isNotEmpty() && formattedEnd.isNotEmpty()) {
+                Text(
+                    text = "$formattedStart ~ $formattedEnd",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Gray700
+                )
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Text(
-            text = intervention.description,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Gray800,
-            modifier = Modifier.padding(horizontal = 4.dp)
-        )
+        if (isExpanded) {
+            Text(
+                text = intervention.description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Gray800,
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
+            )
+        }
     }
 }
 @Preview(showBackground = true)

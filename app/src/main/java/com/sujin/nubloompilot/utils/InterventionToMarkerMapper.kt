@@ -22,6 +22,7 @@ object InterventionToMarkerMapper {
             val absoluteHour = start.toAbsoluteHour(referenceDate)
 
             TimelineMarker(
+                id = intervention.startTime,
                 absoluteHour = absoluteHour,
                 color = getMarkerColor(intervention.type, intervention.actionType),
                 label = getShortLabel(intervention.title),
