@@ -4,7 +4,7 @@ import android.text.Highlights
 import androidx.compose.ui.graphics.Color
 
 // Brand
-val Primary = Color(0xFFF4A249)
+val Primary = Color(0xFFF4A14B)
 val SecondaryYellow = Color(0xFFFFED7A)
 val SecondaryRed = Color(0xFFE06E49)
 

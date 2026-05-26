@@ -3,6 +3,7 @@ package com.sujin.nubloompilot.repository
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sujin.nubloompilot.local.ParticipantLocalStore
+import com.sujin.nubloompilot.models.BaselineAssessment
 import com.sujin.nubloompilot.models.Participant
 import java.util.UUID
 
@@ -15,6 +16,7 @@ class ParticipantRepository(
     fun registerParticipant(
         name: String,
         birthYear: Int,
+        assessment: BaselineAssessment? = null,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
@@ -25,10 +27,23 @@ class ParticipantRepository(
         )
 
         localStore.saveParticipant(participant)
+        assessment?.let { localStore.saveBaselineAssessment(it) }
 
-        db.collection("participants")
+        val docRef = db.collection("participants")
             .document(participant.participantId)
-            .set(participant)
+
+        // Use map to include assessment data without modifying existing Participant model
+        val data = mutableMapOf<String, Any?>(
+            "participantId" to participant.participantId,
+            "name" to participant.name,
+            "birthYear" to participant.birthYear,
+            "createdAt" to participant.createdAt
+        )
+        if (assessment != null) {
+            data["assessment"] = assessment
+        }
+
+        docRef.set(data)
             .addOnSuccessListener {
                 onSuccess()
             }

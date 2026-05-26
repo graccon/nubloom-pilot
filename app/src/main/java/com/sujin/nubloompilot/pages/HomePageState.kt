@@ -11,6 +11,7 @@ import com.sujin.nubloompilot.repository.HealthSummaryRepository
 import com.sujin.nubloompilot.repository.SleepStatusRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 data class HomePageUiState(
     val latestHealthSummary: DailyHealthSummary? = null,
@@ -42,6 +43,24 @@ class HomePageState(
                 morningGloryType = morningGloryType
             )
         }
+    }
+
+    fun onDebugSleepCheckInClick(
+        onNavigateToSleepCheckIn: (
+            endTime: String,
+            duration: Long,
+            heartRate: Long?,
+            baselineDuration: Long?,
+            baselineHeartRate: Long?
+        ) -> Unit
+    ) {
+        onNavigateToSleepCheckIn(
+            Instant.now().toString(),
+            420L,
+            68L,
+            450L,
+            70L
+        )
     }
 
     fun onActionCardClick(
@@ -99,3 +118,5 @@ fun rememberHomePageState(
 
     return state
 }
+
+

@@ -33,10 +33,11 @@ class HealthConnectRepository(
     }
 
     suspend fun hasHealthPermissions(): Boolean {
-        val grantedPermissions =
-            client.permissionController.getGrantedPermissions()
-
-        return grantedPermissions.containsAll(healthPermissions)
+        return runCatching {
+            val grantedPermissions =
+                client.permissionController.getGrantedPermissions()
+            grantedPermissions.containsAll(healthPermissions)
+        }.getOrDefault(false)
     }
 
     suspend fun readSleepSessions(
@@ -55,17 +56,18 @@ class HealthConnectRepository(
         startTime: Instant,
         endTime: Instant
     ): List<SleepSessionRecord> {
-        val response = client.readRecords(
-            ReadRecordsRequest(
-                recordType = SleepSessionRecord::class,
-                timeRangeFilter = TimeRangeFilter.between(
-                    startTime,
-                    endTime
+        return runCatching {
+            val response = client.readRecords(
+                ReadRecordsRequest(
+                    recordType = SleepSessionRecord::class,
+                    timeRangeFilter = TimeRangeFilter.between(
+                        startTime,
+                        endTime
+                    )
                 )
             )
-        )
-
-        return response.records
+            response.records
+        }.getOrDefault(emptyList())
     }
 
     suspend fun getLatestSleepSession(
@@ -110,50 +112,53 @@ class HealthConnectRepository(
         startTime: Instant,
         endTime: Instant
     ): List<HeartRateRecord> {
-        val response = client.readRecords(
-            ReadRecordsRequest(
-                recordType = HeartRateRecord::class,
-                timeRangeFilter = TimeRangeFilter.between(
-                    startTime,
-                    endTime
+        return runCatching {
+            val response = client.readRecords(
+                ReadRecordsRequest(
+                    recordType = HeartRateRecord::class,
+                    timeRangeFilter = TimeRangeFilter.between(
+                        startTime,
+                        endTime
+                    )
                 )
             )
-        )
-
-        return response.records
+            response.records
+        }.getOrDefault(emptyList())
     }
 
     suspend fun readHrvRecords(
         startTime: Instant,
         endTime: Instant
     ): List<HeartRateVariabilityRmssdRecord> {
-        val response = client.readRecords(
-            ReadRecordsRequest(
-                recordType = HeartRateVariabilityRmssdRecord::class,
-                timeRangeFilter = TimeRangeFilter.between(
-                    startTime,
-                    endTime
+        return runCatching {
+            val response = client.readRecords(
+                ReadRecordsRequest(
+                    recordType = HeartRateVariabilityRmssdRecord::class,
+                    timeRangeFilter = TimeRangeFilter.between(
+                        startTime,
+                        endTime
+                    )
                 )
             )
-        )
-
-        return response.records
+            response.records
+        }.getOrDefault(emptyList())
     }
 
     suspend fun readSteps(
         startTime: Instant,
         endTime: Instant
     ): List<StepsRecord> {
-        val response = client.readRecords(
-            ReadRecordsRequest(
-                recordType = StepsRecord::class,
-                timeRangeFilter = TimeRangeFilter.between(
-                    startTime,
-                    endTime
+        return runCatching {
+            val response = client.readRecords(
+                ReadRecordsRequest(
+                    recordType = StepsRecord::class,
+                    timeRangeFilter = TimeRangeFilter.between(
+                        startTime,
+                        endTime
+                    )
                 )
             )
-        )
-
-        return response.records
+            response.records
+        }.getOrDefault(emptyList())
     }
 }

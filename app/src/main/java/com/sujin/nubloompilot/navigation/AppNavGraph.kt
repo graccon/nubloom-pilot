@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sujin.nubloompilot.components.BottomBar
 import com.sujin.nubloompilot.local.ParticipantLocalStore
 import com.sujin.nubloompilot.local.SleepSurveyLocalStore
+import com.sujin.nubloompilot.models.BaselineAssessment
 import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SleepResult
 import com.sujin.nubloompilot.pages.HomePage
@@ -117,10 +118,11 @@ fun AppNavGraph() {
         ) {
             composable(Routes.OnboardingPage) {
                 OnboardingPage(
-                    onSubmit = { name, birthYear ->
+                    onSubmit = { name, birthYear, assessment ->
                         participantRepository.registerParticipant(
                             name = name,
                             birthYear = birthYear,
+                            assessment = assessment,
                             onSuccess = {
                                 navController.navigate(Routes.HOME) {
                                     popUpTo(Routes.OnboardingPage) {

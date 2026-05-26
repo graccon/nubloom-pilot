@@ -40,6 +40,8 @@ import com.sujin.nubloompilot.utils.InterventionToMarkerMapper
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import androidx.compose.material3.Button
+import java.time.Instant
 
 @Composable
 fun HomePage(
@@ -71,6 +73,15 @@ fun HomePage(
         onActionCardClick = {
             state.onActionCardClick(onNavigateToSleepCheckIn, onNavigateToResult)
         },
+        onDebugSleepCheckInClick = {
+            onNavigateToSleepCheckIn(
+                Instant.now().toString(),
+                420L,
+                68L,
+                450L,
+                70L
+            )
+        },
         modifier = modifier
     )
 }
@@ -85,6 +96,7 @@ private fun HomePageContent(
     latestInterventionBundle: SavedSleepInterventionBundle?,
     uiState: HomePageUiState,
     onActionCardClick: () -> Unit,
+    onDebugSleepCheckInClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val currentTime = rememberCurrentTime()
@@ -138,6 +150,14 @@ private fun HomePageContent(
             participantName = participantName,
             greetingMessage = greetingMessage
         )
+
+        Button(
+            onClick = onDebugSleepCheckInClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("테스트 수면 체크인")
+        }
+
         SpiralTimeline(
             yesterdayShift = yesterdayShift,
             todayShift = todayShift,
@@ -333,6 +353,7 @@ private fun InterventionItem(
 
             Spacer(modifier = Modifier.width(12.dp))
 
+
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -342,6 +363,8 @@ private fun InterventionItem(
                     fontWeight = FontWeight.SemiBold,
                     color = Gray900
                 )
+
+
 
                 if (formattedStart.isNotEmpty() && formattedEnd.isNotEmpty()) {
                     Text(
@@ -386,7 +409,8 @@ fun HomePagePreview() {
             uiState = HomePageUiState(
                 morningGloryType = null
             ),
-            onActionCardClick = {}
+            onActionCardClick = {},
+            onDebugSleepCheckInClick = {}
         )
     }
 }

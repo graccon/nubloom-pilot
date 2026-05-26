@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -136,7 +137,7 @@ fun SleepProcessingPage(
             )
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
         ProcessingContent(
             step = currentStep,
@@ -147,20 +148,6 @@ fun SleepProcessingPage(
             onConfirmSelection = { currentStep = SleepProcessingStep.GENERATING_INTERVENTIONS },
             onRetry = { currentStep = SleepProcessingStep.UNDERSTANDING_DATA }
         )
-        
-        // Temporarily added buttons for Step verification in Preview/Debug
-        Spacer(modifier = Modifier.height(48.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button(onClick = { currentStep = SleepProcessingStep.UNDERSTANDING_DATA }) {
-                Text("Step 1")
-            }
-            Button(onClick = { currentStep = SleepProcessingStep.SELECTING_SLEEP_PLAN }) {
-                Text("Step 2")
-            }
-            Button(onClick = { currentStep = SleepProcessingStep.GENERATING_INTERVENTIONS }) {
-                Text("Step 3")
-            }
-        }
     }
 }
 
@@ -207,9 +194,30 @@ private fun ProcessingContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Spacer(modifier = Modifier.height(62.dp))
+        Text(
+            text = pageTitle,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = HighlightsYellow,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+
 
         if (step != SleepProcessingStep.SELECTING_SLEEP_PLAN) {
-
+            Spacer(modifier = Modifier.weight(1f))
             SpriteAnimation(
                 frames = listOf(
                     R.drawable.loading_1,
@@ -224,27 +232,9 @@ private fun ProcessingContent(
                 modifier = Modifier.size(84.dp),
                 frameDuration = 180L
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.weight(1f))
         }
-        Text(
-            text = pageTitle,
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = HighlightsYellow,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.White,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
         
         if (step == SleepProcessingStep.SELECTING_SLEEP_PLAN) {
             Spacer(modifier = Modifier.height(32.dp))
@@ -258,7 +248,7 @@ private fun ProcessingContent(
                     )
                 }
             }
-
+            Spacer(modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
@@ -268,17 +258,18 @@ private fun ProcessingContent(
                     .fillMaxWidth()
                     .height(56.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Primary,
+                    containerColor = HighlightsYellow,
                     disabledContainerColor = Gray700
                 ),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(50.dp)
             ) {
                 Text(
                     text = if (selectedCandidate != null) "${selectedCandidate.title} 할래요" else "계획을 선택해주세요",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.labelLarge,
                 )
             }
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }
@@ -293,11 +284,11 @@ private fun SleepPlanCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        color = if (isSelected) Primary.copy(alpha = 0.2f) else Color.White.copy(alpha = 0.05f),
+        color = if (isSelected) HighlightsYellow.copy(alpha = 0.1f) else Color.White.copy(alpha = 0.05f),
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(
             width = 2.dp,
-            color = if (isSelected) Primary else Color.White.copy(alpha = 0.1f)
+            color = if (isSelected) HighlightsYellow else Color.White.copy(alpha = 0.1f)
         )
     ) {
         Column(
@@ -306,14 +297,14 @@ private fun SleepPlanCard(
             Text(
                 text = candidate.title,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = if (isSelected) Primary else Color.White
+                fontWeight = FontWeight.SemiBold,
+                color = if (isSelected) HighlightsYellow else Color.White
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = candidate.description,
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.White.copy(alpha = 0.7f),
+                color = Color.White.copy(alpha = 0.9f),
                 lineHeight = 20.sp
             )
         }
