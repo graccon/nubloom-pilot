@@ -151,12 +151,12 @@ private fun HomePageContent(
             greetingMessage = greetingMessage
         )
 
-        Button(
-            onClick = onDebugSleepCheckInClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("테스트 수면 체크인")
-        }
+//        Button(
+//            onClick = onDebugSleepCheckInClick,
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Text("테스트 수면 체크인")
+//        }
 
         SpiralTimeline(
             yesterdayShift = yesterdayShift,

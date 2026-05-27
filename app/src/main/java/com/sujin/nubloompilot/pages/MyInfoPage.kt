@@ -1,7 +1,9 @@
 package com.sujin.nubloompilot.pages
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,6 +18,7 @@ import com.sujin.nubloompilot.components.DutyScheduleSection
 import com.sujin.nubloompilot.components.TopBanner
 import com.sujin.nubloompilot.local.ParticipantLocalStore
 import com.sujin.nubloompilot.models.MctqBaselineProfile
+import com.sujin.nubloompilot.models.MctqBehaviorProfile
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
 import com.sujin.nubloompilot.ui.theme.Gray200
 import com.sujin.nubloompilot.ui.theme.Gray300
@@ -43,6 +46,10 @@ fun MyInfoPage(
 
     val baselineProfile = remember {
         participantLocalStore.getBaselineProfile()
+    }
+
+    val mctqBehaviorProfile = remember {
+        participantLocalStore.getMctqBehaviorProfile()
     }
 
     var currentYearMonth by remember {
@@ -139,6 +146,8 @@ fun MyInfoPage(
 
             MctqBaselineSection(baselineProfile)
 
+            MctqBehaviorSection(mctqBehaviorProfile)
+
             Spacer(modifier = Modifier.height(120.dp))
         }
 
@@ -206,6 +215,86 @@ private fun MctqBaselineSection(profile: MctqBaselineProfile?) {
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun MctqBehaviorSection(profile: MctqBehaviorProfile?) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp, vertical = 20.dp)
+    ) {
+        Text(
+            text = "MCTQ 수면 행동 패턴",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = Gray900
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if (profile == null) {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = Gray800.copy(alpha = 0.5f),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Text(
+                    text = "아직 수면 행동 분석 정보가 없습니다.",
+                    modifier = Modifier.padding(16.dp),
+                    color = Gray200
+                )
+            }
+        } else {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = Gray300),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Column(modifier = Modifier.padding(20.dp, vertical = 14.dp)) {
+                    InfoRow("평균 수면 진입 시간", "${profile.averageSleepLatencyMinutes}분")
+                    InfoRow("평균 침대-수면 간격", "${profile.averageBedGapMinutes}분")
+                    InfoRow("취약 근무", profile.vulnerableShift?.label ?: "-")
+                    
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp), color = Gray400)
+
+                    BehaviorTagRow("잠들기 오래 걸리는 편", profile.hasSleepLatencyRisk)
+                    BehaviorTagRow("침대에 오래 머무는 편", profile.hasBedInefficiency)
+                    BehaviorTagRow("낮잠 습관 있음", profile.hasNapHabit)
+                    BehaviorTagRow("늦은 낮잠 위험", profile.hasLateNapRisk)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun BehaviorTagRow(label: String, isActive: Boolean) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Medium,
+            color = if (isActive) Gray900 else Gray500
+        )
+        Text(
+            text = if (isActive) "YES" else "NO",
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Bold,
+            color = if (isActive) HighlightsYellow else Gray400,
+            modifier = Modifier
+                .background(
+                    if (isActive) Gray900 else Gray200,
+                    RoundedCornerShape(4.dp)
+                )
+                .padding(horizontal = 8.dp, vertical = 2.dp)
+        )
     }
 }
 

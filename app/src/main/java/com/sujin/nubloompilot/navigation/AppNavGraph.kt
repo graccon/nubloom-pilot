@@ -43,6 +43,7 @@ import com.sujin.nubloompilot.utils.MctqProcessor
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
+import com.sujin.nubloompilot.utils.MctqBehaviorAnalyzer
 import java.time.Instant
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -158,6 +159,15 @@ fun AppNavGraph() {
                         val baselineProfile = assessment?.mctqResponses?.let { responses ->
                             MctqProcessor.process(responses)
                         }
+
+                        val mctqBehaviorProfile = baselineProfile?.let { bp ->
+                            assessment?.mctqResponses?.let { responses ->
+                                MctqBehaviorAnalyzer.analyze(
+                                    responses = responses,
+                                    baseline = bp
+                                )
+                            }
+                        }
                         
                         // Perform actual registration and save
                         kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
@@ -166,6 +176,7 @@ fun AppNavGraph() {
                                 birthYear = birthYear,
                                 assessment = assessment,
                                 baselineProfile = baselineProfile,
+                                mctqBehaviorProfile = mctqBehaviorProfile,
                                 onSuccess = {
                                     continuation.resume(Unit)
                                 },

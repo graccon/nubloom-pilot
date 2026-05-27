@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.sujin.nubloompilot.local.ParticipantLocalStore
 import com.sujin.nubloompilot.models.BaselineAssessment
 import com.sujin.nubloompilot.models.MctqBaselineProfile
+import com.sujin.nubloompilot.models.MctqBehaviorProfile
 import com.sujin.nubloompilot.models.Participant
 import java.util.UUID
 
@@ -20,6 +21,7 @@ class ParticipantRepository(
         birthYear: Int,
         assessment: BaselineAssessment? = null,
         baselineProfile: MctqBaselineProfile? = null,
+        mctqBehaviorProfile: MctqBehaviorProfile? = null,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
@@ -32,6 +34,7 @@ class ParticipantRepository(
         localStore.saveParticipant(participant)
         assessment?.let { localStore.saveBaselineAssessment(it) }
         baselineProfile?.let { localStore.saveBaselineProfile(it) }
+        mctqBehaviorProfile?.let { localStore.saveMctqBehaviorProfile(it) }
 
         val docRef = db.collection("participants")
             .document(participant.participantId)
@@ -48,6 +51,9 @@ class ParticipantRepository(
         }
         if (baselineProfile != null) {
             data["baselineProfile"] = baselineProfile
+        }
+        if (mctqBehaviorProfile != null) {
+            data["mctqBehaviorProfile"] = mctqBehaviorProfile
         }
 
         docRef.set(data)

@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.sujin.nubloompilot.models.BaselineAssessment
 import com.sujin.nubloompilot.models.MctqBaselineProfile
+import com.sujin.nubloompilot.models.MctqBehaviorProfile
 import com.sujin.nubloompilot.models.Participant
 
 class ParticipantLocalStore(
@@ -12,6 +13,7 @@ class ParticipantLocalStore(
     private val gson = Gson()
     private val KEY_BASELINE_ASSESSMENT = "baseline_assessment_json"
     private val KEY_BASELINE_PROFILE = "baseline_profile_json"
+    private val KEY_MCTQ_BEHAVIOR_PROFILE = "mctq_behavior_profile_json"
 
     private val prefs = context.getSharedPreferences(
         "participant_prefs",
@@ -60,6 +62,20 @@ class ParticipantLocalStore(
         val json = prefs.getString(KEY_BASELINE_PROFILE, null) ?: return null
         return runCatching {
             gson.fromJson(json, MctqBaselineProfile::class.java)
+        }.getOrNull()
+    }
+
+    fun saveMctqBehaviorProfile(profile: MctqBehaviorProfile) {
+        val json = gson.toJson(profile)
+        prefs.edit()
+            .putString(KEY_MCTQ_BEHAVIOR_PROFILE, json)
+            .apply()
+    }
+
+    fun getMctqBehaviorProfile(): MctqBehaviorProfile? {
+        val json = prefs.getString(KEY_MCTQ_BEHAVIOR_PROFILE, null) ?: return null
+        return runCatching {
+            gson.fromJson(json, MctqBehaviorProfile::class.java)
         }.getOrNull()
     }
 }
