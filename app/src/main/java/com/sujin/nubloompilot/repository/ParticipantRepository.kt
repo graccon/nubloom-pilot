@@ -23,8 +23,6 @@ class ParticipantRepository(
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        Log.d("OnboardingDebug", "registerParticipant started: name=$name, hasAssessment=${assessment != null}, hasProfile=${baselineProfile != null}")
-        
         val participant = Participant(
             participantId = UUID.randomUUID().toString(),
             name = name,
@@ -51,8 +49,6 @@ class ParticipantRepository(
         if (baselineProfile != null) {
             data["baselineProfile"] = baselineProfile
         }
-
-        Log.d("OnboardingDebug", "Firestore set() call. data.keys=${data.keys}, hasProfileKey=${data.containsKey("baselineProfile")}")
 
         docRef.set(data)
             .addOnSuccessListener {
