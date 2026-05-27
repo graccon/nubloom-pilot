@@ -114,11 +114,13 @@ fun toTimelineHour(
 fun createSpiralPath(
     layout: TimelineLayout,
     config: TimelineSpiralConfig,
-    steps: Int = 240
+    steps: Int = 240,
+    revealProgress: Float = 1f
 ): Path {
     val path = Path()
+    val visibleSteps = (steps * revealProgress).toInt()
 
-    for (i in 0..steps) {
+    for (i in 0..visibleSteps) {
         val progress = i / steps.toFloat()
         val point = getSpiralPointByProgress(
             layout = layout,
@@ -202,3 +204,11 @@ private fun getSpiralPointByProgress(
         y = layout.spiralCenter.y + sin(angleRad).toFloat() * radius
     )
 }
+
+/**
+ * Helper to map a global progress into a sub-range [start, end].
+ */
+fun segmentProgress(progress: Float, start: Float, end: Float): Float {
+    return ((progress - start) / (end - start)).coerceIn(0f, 1f)
+}
+

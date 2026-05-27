@@ -1,7 +1,10 @@
 package com.sujin.nubloompilot.pages
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -102,6 +105,18 @@ private fun HomePageContent(
     val currentTime = rememberCurrentTime()
     val greetingMessage = rememberRotatingMessage()
 
+    val timelineRevealProgress = remember { Animatable(0f) }
+
+    LaunchedEffect(Unit) {
+        timelineRevealProgress.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(
+                durationMillis = 2200,
+                easing = FastOutSlowInEasing
+            )
+        )
+    }
+
     val isInterventionValid = remember(latestInterventionBundle) {
         latestInterventionBundle != null && 
         latestInterventionBundle.workDate == LocalDate.now().toString()
@@ -165,7 +180,8 @@ private fun HomePageContent(
             dayAfterTomorrowShift = dayAfterTomorrowShift,
             currentTime = currentTime,
             markers = timelineMarkers,
-            highlightedMarkerId = expandedInterventionId
+            highlightedMarkerId = expandedInterventionId,
+            revealProgress = timelineRevealProgress.value
         )
         Spacer(modifier = Modifier.height(44.dp))
 

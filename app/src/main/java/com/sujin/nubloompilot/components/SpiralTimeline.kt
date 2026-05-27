@@ -27,7 +27,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.sujin.nubloompilot.ui.theme.Gray800
+import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 
 @Composable
 fun SpiralTimeline(
@@ -38,6 +40,7 @@ fun SpiralTimeline(
     currentTime: LocalTime = LocalTime.now(),
     markers: List<TimelineMarker> = emptyList(),
     highlightedMarkerId: String? = null,
+    revealProgress: Float = 1f,
     modifier: Modifier = Modifier
 ) {
     val textMeasurer = rememberTextMeasurer()
@@ -128,7 +131,8 @@ fun SpiralTimeline(
             drawTimelineBackground(
                 layout = layout,
                 textMeasurer = textMeasurer,
-                currentHour = currentHour
+                currentHour = currentHour,
+                revealProgress = revealProgress
             )
 
             drawTimelineSpiralLayer(
@@ -143,7 +147,8 @@ fun SpiralTimeline(
                 markers = markers,
                 markerIcons = markerIcons,
                 showCurrentTimeIndicator = !isPressed,
-                highlightedMarkerId = highlightedMarkerId
+                highlightedMarkerId = highlightedMarkerId,
+                revealProgress = revealProgress
             )
 
             // Step 5: Draw a focus point at the nearest location on the spiral (Visible only when pressed)
@@ -277,3 +282,19 @@ private fun TimelineSelectionHeader(
         }
     }
 }
+
+@Preview(showBackground = true, backgroundColor = 0xFFF5F5F5)
+@Composable
+fun SpiralTimelineRevealPreview() {
+    NubloomPilotTheme {
+        Box(modifier = Modifier.padding(16.dp)) {
+            SpiralTimeline(
+                yesterdayShift = "N",
+                todayShift = "N",
+                tomorrowShift = "E",
+                revealProgress = 0.3f
+            )
+        }
+    }
+}
+

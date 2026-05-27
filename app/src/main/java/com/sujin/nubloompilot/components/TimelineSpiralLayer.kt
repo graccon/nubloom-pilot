@@ -49,11 +49,16 @@ fun DrawScope.drawTimelineSpiralLayer(
     markers: List<TimelineMarker> = emptyList(),
     markerIcons: Map<Int, ImageBitmap> = emptyMap(),
     showCurrentTimeIndicator: Boolean = true,
-    highlightedMarkerId: String? = null
+    highlightedMarkerId: String? = null,
+    revealProgress: Float = 1f
 ) {
+    // 1. Background Spiral Reveal (0.00f -> 0.75f)
+    val backgroundReveal = segmentProgress(revealProgress, 0.00f, 0.75f)
+
     val basePath = createSpiralPath(
         layout = layout,
-        config = spiralConfig
+        config = spiralConfig,
+        revealProgress = backgroundReveal
     )
 
     drawPath(
@@ -64,6 +69,9 @@ fun DrawScope.drawTimelineSpiralLayer(
             cap = StrokeCap.Round
         )
     )
+
+    // 2. Shift Arc & Label Fade-in (0.70f -> 1.00f)
+    val shiftRevealAlpha = segmentProgress(revealProgress, 0.70f, 1.00f)
 
     val today = LocalDate.now()
     val shiftEvents = buildShiftEventQueue(
@@ -92,7 +100,7 @@ fun DrawScope.drawTimelineSpiralLayer(
 
         drawPath(
             path = path,
-            color = segment.color,
+            color = segment.color.copy(alpha = segment.color.alpha * shiftRevealAlpha),
             style = Stroke(
                 width = 82f,
                 cap = StrokeCap.Round
@@ -103,7 +111,8 @@ fun DrawScope.drawTimelineSpiralLayer(
             layout = layout,
             config = spiralConfig,
             segment = segment,
-            textMeasurer = textMeasurer
+            textMeasurer = textMeasurer,
+            revealAlpha = shiftRevealAlpha
         )
     }
 
@@ -111,10 +120,14 @@ fun DrawScope.drawTimelineSpiralLayer(
     val windowStart = spiralConfig.startAnchor.startHour
     val windowEnd = windowStart + 48f
     val isAnyHighlighted = highlightedMarkerId != null
+    val markerRevealProgress = segmentProgress(revealProgress, 0.88f, 1.00f)
 
     // 1. Draw normal markers first
-    markers.forEach { marker ->
+    markers.forEachIndexed { index, marker ->
         if (marker.id != highlightedMarkerId && marker.absoluteHour in windowStart..windowEnd) {
+            val delay = index * 0.08f
+            val localProgress = ((markerRevealProgress - delay) / 0.25f).coerceIn(0f, 1f)
+
             val timelineHour = marker.absoluteHour - windowStart
             val position = getSpiralPoint(
                 layout = layout,
@@ -126,15 +139,20 @@ fun DrawScope.drawTimelineSpiralLayer(
                 position = position,
                 marker = marker,
                 icon = markerIcons[marker.iconRes],
-                alpha = if (isAnyHighlighted) 0.3f else 1.0f
+                alpha = if (isAnyHighlighted) 0.3f else 1.0f,
+                localProgress = localProgress
             )
         }
     }
 
     // 2. Draw highlighted marker last to be on top
     highlightedMarkerId?.let { id ->
+        val index = markers.indexOfFirst { it.id == id }
         markers.find { it.id == id }?.let { marker ->
             if (marker.absoluteHour in windowStart..windowEnd) {
+                val delay = if (index != -1) index * 0.08f else 0f
+                val localProgress = ((markerRevealProgress - delay) / 0.25f).coerceIn(0f, 1f)
+
                 val timelineHour = marker.absoluteHour - windowStart
                 val position = getSpiralPoint(
                     layout = layout,
@@ -146,7 +164,8 @@ fun DrawScope.drawTimelineSpiralLayer(
                     position = position,
                     marker = marker,
                     icon = markerIcons[marker.iconRes],
-                    scale = 1.2f // Highlight scale
+                    scale = 1.2f, // Highlight scale
+                    localProgress = localProgress
                 )
             }
         }
@@ -164,7 +183,8 @@ fun DrawScope.drawTimelineSpiralLayer(
             layout = layout,
             config = spiralConfig,
             hour = currentTimelineHour,
-            color = Color(0xFFFF5A1F)
+            color = Color(0xFFFF5A1F),
+            revealProgress = revealProgress
         )
     }
 }
@@ -174,13 +194,20 @@ private fun DrawScope.drawInterventionMarker(
     marker: TimelineMarker,
     icon: ImageBitmap?,
     scale: Float = 1.0f,
-    alpha: Float = 1.0f
+    alpha: Float = 1.0f,
+    localProgress: Float = 1f
 ) {
+    if (localProgress <= 0f) return
+
+    val popScale = 0.7f + (0.3f * localProgress)
+    val finalScale = scale * popScale
+    val finalAlpha = alpha * localProgress
+
     val baseOuterSize = 24.dp.toPx()
     val baseInnerSize = 32.dp.toPx()
     
-    val outerSize = baseOuterSize * scale
-    val innerSize = baseInnerSize * scale
+    val outerSize = baseOuterSize * finalScale
+    val innerSize = baseInnerSize * finalScale
 
     if (icon != null) {
         // Draw PNG Icon
@@ -189,13 +216,13 @@ private fun DrawScope.drawInterventionMarker(
             image = icon,
             dstOffset = IntOffset(topLeft.x.toInt(), topLeft.y.toInt()),
             dstSize = IntSize(innerSize.toInt(), innerSize.toInt()),
-            alpha = alpha
+            alpha = finalAlpha
         )
     } else {
         // Fallback to colored dot if icon is missing
         drawCircle(
-            color = marker.color.copy(alpha = alpha),
-            radius = (innerSize / 2.5f) * scale,
+            color = marker.color.copy(alpha = finalAlpha),
+            radius = (innerSize / 2.5f) * finalScale,
             center = position
         )
     }
@@ -281,7 +308,8 @@ private fun DrawScope.drawCurrentTimeMarker(
     layout: TimelineLayout,
     config: TimelineSpiralConfig,
     hour: Float,
-    color: Color
+    color: Color,
+    revealProgress: Float = 1f
 ) {
     val progress = hour / 48f
 
@@ -313,7 +341,8 @@ private fun DrawScope.drawShiftStartLabel(
     layout: TimelineLayout,
     config: TimelineSpiralConfig,
     segment: ShiftTimelineSegment,
-    textMeasurer: TextMeasurer
+    textMeasurer: TextMeasurer,
+    revealAlpha: Float = 1f
 ) {
     val segmentDuration = segment.endHour - segment.startHour
 
@@ -333,7 +362,7 @@ private fun DrawScope.drawShiftStartLabel(
         textMeasurer = textMeasurer,
         text = segment.label,
         position = labelPosition,
-        color = Gray900,
+        color = Gray900.copy(alpha = Gray900.alpha * revealAlpha),
         fontSize = 20.sp,
         fontWeight = FontWeight.Black
     )

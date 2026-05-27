@@ -26,11 +26,14 @@ private data class TimelineTimeMark(
 fun DrawScope.drawTimelineBackground(
     layout: TimelineLayout,
     textMeasurer: TextMeasurer,
-    currentHour: Float
+    currentHour: Float,
+    revealProgress: Float = 1f
 ) {
-    val nightColor = Color(0xFFB8B5B5)
-    val outlineColor = Color(0xFF3A3A3A)
-    val textColor = Color(0xFF2F2F2F)
+    val backgroundReveal = segmentProgress(revealProgress, 0.00f, 0.75f)
+    
+    val nightColor = Color(0xFFB8B5B5).copy(alpha = backgroundReveal)
+    val outlineColor = Color(0xFF3A3A3A).copy(alpha = backgroundReveal)
+    val textColor = Color(0xFF2F2F2F).copy(alpha = backgroundReveal)
 
     drawNightArea(
         center = layout.circleCenter,
@@ -48,7 +51,7 @@ fun DrawScope.drawTimelineBackground(
     drawDashedVerticalLine(
         center = layout.circleCenter,
         radius = layout.clockRadius,
-        color = Gray700
+        color = Gray700.copy(alpha = Gray700.alpha * backgroundReveal)
     )
 
     val timeMarks = listOf(
@@ -84,7 +87,8 @@ fun DrawScope.drawTimelineBackground(
         textMeasurer = textMeasurer,
         color = outlineColor,
         textColor = textColor,
-        currentHour = currentHour
+        currentHour = currentHour,
+        revealProgress = revealProgress
     )
 
 
@@ -233,8 +237,11 @@ private fun DrawScope.drawMinorTimeMarks(
     textMeasurer: TextMeasurer,
     color: Color,
     textColor: Color,
-    currentHour: Float
+    currentHour: Float,
+    revealProgress: Float = 1f
 ) {
+    val backgroundReveal = segmentProgress(revealProgress, 0.00f, 0.75f)
+
     val activeRange = when {
         currentHour < 6f -> 0 until 6
         currentHour < 12f -> 6 until 12
@@ -271,7 +278,7 @@ private fun DrawScope.drawMinorTimeMarks(
         )
 
         drawCircle(
-            color = color.copy(alpha = 0.55f),
+            color = color.copy(alpha = 0.55f * backgroundReveal),
             radius = (3.5).dp.toPx(),
             center = dotPosition
         )
@@ -288,7 +295,7 @@ private fun DrawScope.drawMinorTimeMarks(
                 textMeasurer = textMeasurer,
                 text = label,
                 position = labelPosition,
-                color = textColor,
+                color = textColor.copy(alpha = textColor.alpha * backgroundReveal),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
