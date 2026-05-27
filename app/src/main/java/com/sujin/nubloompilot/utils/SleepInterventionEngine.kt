@@ -1,6 +1,7 @@
 package com.sujin.nubloompilot.utils
 
 import com.sujin.nubloompilot.models.*
+import java.time.LocalDateTime
 
 object SleepInterventionEngine {
 
@@ -19,5 +20,13 @@ object SleepInterventionEngine {
         } else {
             FallbackInterventionFactory.create(context)
         }
+    }
+
+    fun findMainSleepEndTime(
+        interventions: List<SleepIntervention>
+    ): LocalDateTime? {
+        return interventions
+            .firstOrNull { it.type == InterventionType.MAIN_SLEEP }
+            ?.endTime
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,6 +20,7 @@ import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SleepIntervention
 import com.sujin.nubloompilot.models.SleepInterventionContext
 import com.sujin.nubloompilot.models.SleepResult
+import com.sujin.nubloompilot.notifications.SleepCheckInNotificationScheduler
 import com.sujin.nubloompilot.ui.theme.*
 import com.sujin.nubloompilot.utils.SleepInterventionEngine
 import kotlinx.coroutines.delay
@@ -45,6 +47,7 @@ fun SleepProcessingPage(
     onProcessingComplete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     var currentStep by remember { mutableStateOf(SleepProcessingStep.UNDERSTANDING_DATA) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
@@ -65,6 +68,7 @@ fun SleepProcessingPage(
                         morningGloryType = type
                     )
                     onSaveResult(result)
+                    SleepCheckInNotificationScheduler.cancelScheduledCheckIn(context)
                     
                     val elapsed = System.currentTimeMillis() - startTime
                     val remaining = 4000L - elapsed
@@ -85,6 +89,13 @@ fun SleepProcessingPage(
                 try {
                     val interventions = SleepInterventionEngine.generate(interventionContext)
                     onSaveInterventions(interventions, interventionContext)
+
+                    // Schedule sleep check-in notification based on main sleep end time
+                    val mainSleepEndTime =
+                        SleepInterventionEngine.findMainSleepEndTime(interventions)
+                    mainSleepEndTime?.let { endTime ->
+                        SleepCheckInNotificationScheduler.scheduleAfterMainSleep(context, endTime)
+                    }
 
                     val elapsed = System.currentTimeMillis() - startTime
                     val remaining = 3000L - elapsed

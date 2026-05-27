@@ -1,110 +1,105 @@
 package com.sujin.nubloompilot.pages
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.health.connect.client.PermissionController
-import com.sujin.nubloompilot.repository.HealthConnectRepository
-import com.sujin.nubloompilot.repository.HealthSummaryRepository
-import kotlinx.coroutines.launch
+import androidx.core.content.ContextCompat
+import com.sujin.nubloompilot.notifications.SleepCheckInNotificationHelper
 
 @Composable
 fun SleepPage() {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-
-    val healthRepository = remember {
-        HealthConnectRepository(context)
-    }
-
-    val healthSummaryRepository = remember {
-        HealthSummaryRepository(healthRepository)
-    }
-
-    var hasPermission by remember {
-        mutableStateOf(false)
-    }
-
-    var sleepResult by remember {
-        mutableStateOf("아직 데이터 없음")
-    }
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = PermissionController.createRequestPermissionResultContract()
-    ) { grantedPermissions ->
-        hasPermission = grantedPermissions.containsAll(
-            healthRepository.healthPermissions
+    var permissionStatus by remember {
+        mutableStateOf(
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                "이 버전에서는 알림 권한 요청이 필요하지 않습니다"
+            } else {
+                "알림 권한 미확인"
+            }
         )
     }
+    var notificationRequestStatus by remember { mutableStateOf("") }
 
-    LaunchedEffect(Unit) {
-        hasPermission = healthRepository.hasHealthPermissions()
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        permissionStatus = if (isGranted) "알림 권한 허용됨" else "알림 권한 거부됨"
     }
 
     Column(
         modifier = Modifier.padding(24.dp)
     ) {
         Text(
-            text = "Health Connect 사용 가능: ${healthRepository.isHealthConnectAvailable()}"
+            text = "알림 권한 테스트",
+            style = MaterialTheme.typography.headlineSmall
         )
-
-        Text(
-            text = "건강 데이터 권한 허용됨: $hasPermission"
-        )
-
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Text(text = permissionStatus)
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
         Button(
             onClick = {
-                permissionLauncher.launch(
-                    healthRepository.healthPermissions
-                )
-            }
-        ) {
-            Text("건강 데이터 권한 요청")
-        }
-
-        Spacer(modifier = Modifier.height(44.dp))
-
-        Button(
-            onClick = {
-                scope.launch {
-                    try {
-                        val summary =
-                            healthSummaryRepository.getLatestHealthSummary()
-
-                        sleepResult =
-                            if (summary == null) {
-                                "최근 수면 없음"
-                            } else {
-                                """
-                                최근 수면 요약
-
-                                수면 시간: ${summary.sleepDurationMinutes / 60}시간 ${summary.sleepDurationMinutes % 60}분
-                                깊은 수면: ${summary.deepSleepMinutes}분
-                                기상 직후 HR: ${summary.wakeHeartRate ?: "없음"} bpm
-                                HRV(RMSSD): ${summary.averageHrvMillis ?: "없음"} ms
-                                걸음 수(24시간): ${summary.stepsLast24Hours}
-                                """.trimIndent()
-                            }
-
-                    } catch (e: Exception) {
-                        sleepResult = "에러: ${e.message}"
-                    }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    permissionStatus = "이 버전에서는 알림 권한 요청이 필요하지 않습니다"
                 }
             }
         ) {
-            Text("건강 요약 데이터 읽기")
+            Text("알림 권한 요청")
         }
 
-        Text(
-            text = sleepResult
-        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        val isNotificationEnabled = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionStatus == "알림 권한 허용됨"
+        } else {
+            true
+        }
+
+        Button(
+            onClick = {
+                val hasNotificationPermission =
+                    Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) == PackageManager.PERMISSION_GRANTED
+
+                if (hasNotificationPermission) {
+                    SleepCheckInNotificationHelper.showSleepCheckInNotification(context)
+                    notificationRequestStatus = "수면 체크인 알림을 요청했습니다"
+                } else {
+                    notificationRequestStatus = "알림 권한이 없어 알림을 표시할 수 없습니다"
+                }
+            },
+            enabled = isNotificationEnabled
+        ) {
+            Text("수면 체크인 알림 테스트")
+        }
+
+        if (notificationRequestStatus.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = notificationRequestStatus,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
     }
 }
