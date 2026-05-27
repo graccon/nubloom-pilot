@@ -35,5 +35,7 @@ data class SleepInterventionContext(
     val wakeTime: LocalDateTime,
     val targetSleepTime: LocalDateTime,
     val subjectiveFatigueLevel: Int,
-    val objectiveRecoveryLevel: Int
+    val objectiveRecoveryLevel: Int,
+    val mctqBaselineProfile: MctqBaselineProfile? = null,
+    val mctqBehaviorProfile: MctqBehaviorProfile? = null
 )

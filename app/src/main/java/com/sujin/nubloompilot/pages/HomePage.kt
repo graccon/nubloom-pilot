@@ -167,6 +167,7 @@ private fun HomePageContent(
             markers = timelineMarkers,
             highlightedMarkerId = expandedInterventionId
         )
+        Spacer(modifier = Modifier.height(44.dp))
 
         if (activeInterventions.isNotEmpty()) {
             Spacer(modifier = Modifier.height(44.dp))

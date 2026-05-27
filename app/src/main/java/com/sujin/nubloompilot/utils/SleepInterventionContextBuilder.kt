@@ -25,7 +25,9 @@ object SleepInterventionContextBuilder {
         chronotype: Chronotype = Chronotype.INTERMEDIATE,
         workDate: LocalDate = LocalDate.now(),
         commuteMinutes: Long = 60L,
-        preWorkPreparationMinutes: Long = 60L
+        preWorkPreparationMinutes: Long = 60L,
+        mctqBaselineProfile: MctqBaselineProfile? = null,
+        mctqBehaviorProfile: MctqBehaviorProfile? = null
     ): SleepInterventionContext {
         val objectiveRecoveryLevel = getObjectiveRecoveryLevel(type)
         
@@ -64,7 +66,9 @@ object SleepInterventionContextBuilder {
             wakeTime = wakeTime,
             targetSleepTime = targetSleepTime,
             subjectiveFatigueLevel = fatigueLevel,
-            objectiveRecoveryLevel = objectiveRecoveryLevel
+            objectiveRecoveryLevel = objectiveRecoveryLevel,
+            mctqBaselineProfile = mctqBaselineProfile,
+            mctqBehaviorProfile = mctqBehaviorProfile
         )
     }
 }

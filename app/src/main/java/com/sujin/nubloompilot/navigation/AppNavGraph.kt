@@ -18,6 +18,8 @@ import com.sujin.nubloompilot.components.BottomBar
 import com.sujin.nubloompilot.local.ParticipantLocalStore
 import com.sujin.nubloompilot.local.SleepSurveyLocalStore
 import com.sujin.nubloompilot.models.BaselineAssessment
+import com.sujin.nubloompilot.models.MctqBaselineProfile
+import com.sujin.nubloompilot.models.MctqBehaviorProfile
 import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SleepResult
 import com.sujin.nubloompilot.pages.HomePage
@@ -292,11 +294,17 @@ fun AppNavGraph() {
                 val shiftsAroundToday = remember {
                     shiftScheduleRepository.getShiftsAroundToday()
                 }
+
+                val baselineProfile = remember { localStore.getBaselineProfile() }
+                val behaviorProfile = remember { localStore.getMctqBehaviorProfile() }
+
                 val interventionContext = SleepInterventionContextBuilder.build(
                     type = args.type,
                     fatigueLevel = args.fatigueLevel,
                     endTime = args.endTime,
-                    shiftsAroundToday = shiftsAroundToday
+                    shiftsAroundToday = shiftsAroundToday,
+                    mctqBaselineProfile = baselineProfile,
+                    mctqBehaviorProfile = behaviorProfile
                 )
 
                 SleepProcessingPage(
