@@ -43,6 +43,9 @@ object Routes {
         return "morning_glory_result/${type.name}/NONE/0/-1/0"
     }
 
+    const val HEALTH_CONNECT_GUIDE = "health_connect_guide"
+    const val ONBOARDING_PROCESSING = "onboarding_processing"
+
     const val SLEEP_PROCESSING = "sleep_processing/{type}/{endTime}/{duration}/{heartRate}/{fatigueLevel}"
 
     fun sleepProcessingRoute(

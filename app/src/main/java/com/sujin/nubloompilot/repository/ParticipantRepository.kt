@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sujin.nubloompilot.local.ParticipantLocalStore
 import com.sujin.nubloompilot.models.BaselineAssessment
+import com.sujin.nubloompilot.models.MctqBaselineProfile
 import com.sujin.nubloompilot.models.Participant
 import java.util.UUID
 
@@ -17,6 +18,7 @@ class ParticipantRepository(
         name: String,
         birthYear: Int,
         assessment: BaselineAssessment? = null,
+        baselineProfile: MctqBaselineProfile? = null,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
@@ -41,6 +43,9 @@ class ParticipantRepository(
         )
         if (assessment != null) {
             data["assessment"] = assessment
+        }
+        if (baselineProfile != null) {
+            data["baselineProfile"] = baselineProfile
         }
 
         docRef.set(data)

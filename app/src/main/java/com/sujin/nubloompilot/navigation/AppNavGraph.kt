@@ -24,6 +24,8 @@ import com.sujin.nubloompilot.pages.HomePage
 import com.sujin.nubloompilot.pages.MorningGloryResultPage
 import com.sujin.nubloompilot.pages.MyInfoPage
 import com.sujin.nubloompilot.pages.OnboardingPage
+import com.sujin.nubloompilot.pages.HealthConnectGuidePage
+import com.sujin.nubloompilot.pages.OnboardingProcessingPage
 import com.sujin.nubloompilot.pages.SleepCheckInPage
 import com.sujin.nubloompilot.pages.SleepProcessingPage
 import com.sujin.nubloompilot.pages.SleepPage
@@ -35,12 +37,16 @@ import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.SleepInterventionRepository
 import com.sujin.nubloompilot.local.SleepInterventionLocalStore
 import com.sujin.nubloompilot.models.SleepIntervention
+import com.sujin.nubloompilot.models.SavedSleepIntervention
 import com.sujin.nubloompilot.utils.SleepInterventionMapper
 import com.sujin.nubloompilot.utils.SleepInterventionContextBuilder
+import com.sujin.nubloompilot.utils.MctqProcessor
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
-
+import java.time.Instant
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 @Composable
 fun AppNavGraph() {
@@ -89,6 +95,11 @@ fun AppNavGraph() {
         localStore.getParticipantId() != null
     }
 
+    // Pending states for onboarding (Reset after completion)
+    // TODO: Consider rememberSaveable or temporary local store for better process death handling
+    var pendingDemographics by remember { mutableStateOf<Pair<String, Int>?>(null) }
+    var pendingAssessment by remember { mutableStateOf<BaselineAssessment?>(null) }
+
     val startDestination = if (hasParticipant) {
         Routes.HOME
     } else {
@@ -100,6 +111,8 @@ fun AppNavGraph() {
 
     val shouldShowBottomBar = currentRoute != null &&
             currentRoute != Routes.OnboardingPage &&
+            currentRoute != Routes.HEALTH_CONNECT_GUIDE &&
+            currentRoute != Routes.ONBOARDING_PROCESSING &&
             !currentRoute.startsWith("sleep_check_in") &&
             !currentRoute.startsWith("sleep_processing") &&
             !currentRoute.startsWith("morning_glory_result")
@@ -119,21 +132,58 @@ fun AppNavGraph() {
             composable(Routes.OnboardingPage) {
                 OnboardingPage(
                     onSubmit = { name, birthYear, assessment ->
-                        participantRepository.registerParticipant(
-                            name = name,
-                            birthYear = birthYear,
-                            assessment = assessment,
-                            onSuccess = {
-                                navController.navigate(Routes.HOME) {
-                                    popUpTo(Routes.OnboardingPage) {
-                                        inclusive = true
-                                    }
+                        pendingDemographics = name to birthYear
+                        pendingAssessment = assessment
+                        navController.navigate(Routes.HEALTH_CONNECT_GUIDE)
+                    }
+                )
+            }
+
+            composable(Routes.HEALTH_CONNECT_GUIDE) {
+                HealthConnectGuidePage(
+                    onNext = {
+                        navController.navigate(Routes.ONBOARDING_PROCESSING)
+                    }
+                )
+            }
+
+            composable(Routes.ONBOARDING_PROCESSING) {
+                OnboardingProcessingPage(
+                    onAction = {
+                        val (name, birthYear) = pendingDemographics ?: ("간호사" to 1990)
+                        val assessment = pendingAssessment
+                        
+                        // MCTQ Processing
+                        val baselineProfile = assessment?.mctqResponses?.let { responses ->
+                            MctqProcessor.process(responses)
+                        }
+                        
+                        // Perform actual registration and save
+                        kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
+                            participantRepository.registerParticipant(
+                                name = name,
+                                birthYear = birthYear,
+                                assessment = assessment,
+                                baselineProfile = baselineProfile,
+                                onSuccess = {
+                                    continuation.resume(Unit)
+                                },
+                                onFailure = { exception ->
+                                    continuation.resumeWithException(exception)
                                 }
-                            },
-                            onFailure = { exception ->
-                                println("Participant save failed: ${exception.message}")
+                            )
+                        }
+                    },
+                    onComplete = {
+                        // Clear pending states
+                        pendingDemographics = null
+                        pendingAssessment = null
+                        
+                        navController.navigate(Routes.HOME) {
+                            popUpTo(Routes.OnboardingPage) {
+                                inclusive = true
                             }
-                        )
+                        }
                     }
                 )
             }
