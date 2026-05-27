@@ -62,3 +62,17 @@ data class MctqBaselineProfile(
     @Deprecated("Labeling logic is tentative and should be handled by UI/Classifier")
     val chronotypeLabel: String? = null
 )
+
+/**
+ * Behavioral insights derived from MCTQ responses.
+ */
+data class MctqBehaviorProfile(
+    val hasSleepLatencyRisk: Boolean,
+    val hasBedInefficiency: Boolean,
+    val hasNapHabit: Boolean,
+    val hasLateNapRisk: Boolean,
+    val vulnerableShift: ShiftType?,
+    val averageSleepLatencyMinutes: Int,
+    val averageBedGapMinutes: Int
+)
+

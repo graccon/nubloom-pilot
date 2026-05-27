@@ -65,19 +65,24 @@ fun AppNavGraph() {
         ShiftScheduleRepository(context)
     }
 
-    val participantId = remember {
-        localStore.getParticipantId() ?: "unknown"
-    }
-
-    val participantName = remember {
-        localStore.getParticipantName() ?: "간호사"
-    }
 
     val sleepStatusRepository = remember {
         SleepStatusRepository(
             HealthConnectRepository(context),
             SleepSurveyLocalStore(context)
         )
+    }
+
+    var participantId by remember {
+        mutableStateOf(localStore.getParticipantId() ?: "unknown")
+    }
+
+    var participantName by remember {
+        mutableStateOf(localStore.getParticipantName() ?: "간호사")
+    }
+
+    var hasParticipant by remember {
+        mutableStateOf(localStore.getParticipantId() != null)
     }
 
     val sleepResultRepository = remember(participantId) {
@@ -89,10 +94,6 @@ fun AppNavGraph() {
 
     val sleepInterventionRepository = remember {
         SleepInterventionRepository(SleepInterventionLocalStore(context))
-    }
-
-    val hasParticipant = remember {
-        localStore.getParticipantId() != null
     }
 
     // Pending states for onboarding (Reset after completion)
@@ -175,7 +176,10 @@ fun AppNavGraph() {
                         }
                     },
                     onComplete = {
-                        // Clear pending states
+                        participantId = localStore.getParticipantId() ?: "unknown"
+                        participantName = localStore.getParticipantName() ?: "간호사"
+                        hasParticipant = true
+
                         pendingDemographics = null
                         pendingAssessment = null
                         
