@@ -37,16 +37,17 @@ import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.SleepInterventionRepository
 import com.sujin.nubloompilot.local.SleepInterventionLocalStore
 import com.sujin.nubloompilot.models.SleepIntervention
-import com.sujin.nubloompilot.models.SavedSleepIntervention
 import com.sujin.nubloompilot.utils.SleepInterventionMapper
 import com.sujin.nubloompilot.utils.SleepInterventionContextBuilder
 import com.sujin.nubloompilot.utils.MctqProcessor
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
+import android.util.Log
 import java.time.Instant
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+
 
 @Composable
 fun AppNavGraph() {
@@ -132,8 +133,10 @@ fun AppNavGraph() {
             composable(Routes.OnboardingPage) {
                 OnboardingPage(
                     onSubmit = { name, birthYear, assessment ->
+                        Log.d("OnboardingDebug", "Onboarding onSubmit received: name=$name, responses=${assessment.mctqResponses.size}")
                         pendingDemographics = name to birthYear
                         pendingAssessment = assessment
+                        Log.d("OnboardingDebug", "pendingAssessment stored")
                         navController.navigate(Routes.HEALTH_CONNECT_GUIDE)
                     }
                 )
@@ -150,15 +153,22 @@ fun AppNavGraph() {
             composable(Routes.ONBOARDING_PROCESSING) {
                 OnboardingProcessingPage(
                     onAction = {
+                        Log.d("OnboardingDebug", "ONBOARDING_PROCESSING onAction started")
                         val (name, birthYear) = pendingDemographics ?: ("간호사" to 1990)
                         val assessment = pendingAssessment
                         
+                        Log.d("OnboardingDebug", "Processing with mctqResponses size: ${assessment?.mctqResponses?.size ?: 0}")
+
                         // MCTQ Processing
+                        Log.d("OnboardingDebug", "Calling MctqProcessor.process()")
                         val baselineProfile = assessment?.mctqResponses?.let { responses ->
-                            MctqProcessor.process(responses)
+                            val profile = MctqProcessor.process(responses)
+                            Log.d("OnboardingDebug", "MctqProcessor.process() finished. Result null?: ${profile == null}")
+                            profile
                         }
                         
                         // Perform actual registration and save
+                        Log.d("OnboardingDebug", "Starting participant registration flow. baselineProfile null?: ${baselineProfile == null}")
                         kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
                             participantRepository.registerParticipant(
                                 name = name,
@@ -368,6 +378,7 @@ fun AppNavGraph() {
                 )
             }
         }
+
 
         if (shouldShowBottomBar) {
             BottomBar(

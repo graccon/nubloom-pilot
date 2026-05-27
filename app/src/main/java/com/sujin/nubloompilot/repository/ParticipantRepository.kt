@@ -1,6 +1,7 @@
 package com.sujin.nubloompilot.repository
 
 import android.content.Context
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.sujin.nubloompilot.local.ParticipantLocalStore
 import com.sujin.nubloompilot.models.BaselineAssessment
@@ -22,6 +23,8 @@ class ParticipantRepository(
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
+        Log.d("OnboardingDebug", "registerParticipant started: name=$name, hasAssessment=${assessment != null}, hasProfile=${baselineProfile != null}")
+        
         val participant = Participant(
             participantId = UUID.randomUUID().toString(),
             name = name,
@@ -30,6 +33,7 @@ class ParticipantRepository(
 
         localStore.saveParticipant(participant)
         assessment?.let { localStore.saveBaselineAssessment(it) }
+        baselineProfile?.let { localStore.saveBaselineProfile(it) }
 
         val docRef = db.collection("participants")
             .document(participant.participantId)
@@ -48,11 +52,15 @@ class ParticipantRepository(
             data["baselineProfile"] = baselineProfile
         }
 
+        Log.d("OnboardingDebug", "Firestore set() call. data.keys=${data.keys}, hasProfileKey=${data.containsKey("baselineProfile")}")
+
         docRef.set(data)
             .addOnSuccessListener {
+                Log.d("OnboardingDebug", "Firestore save success")
                 onSuccess()
             }
             .addOnFailureListener { exception ->
+                Log.e("OnboardingDebug", "Firestore save failed", exception)
                 onFailure(exception)
             }
     }

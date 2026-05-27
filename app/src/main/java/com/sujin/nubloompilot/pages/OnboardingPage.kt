@@ -24,6 +24,7 @@ import com.sujin.nubloompilot.models.ShiftType
 import com.sujin.nubloompilot.ui.theme.Gray600
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 import kotlinx.coroutines.launch
+import android.util.Log
 
 private enum class OnboardingStep {
     DEMOGRAPHICS,
@@ -280,6 +281,8 @@ fun OnboardingPage(
                                     }
                                     val isWorkday = index % 2 == 0
 
+                                    Log.d("OnboardingDebug", "MCTQ Response [$index]: shift=$shiftType, isWorkday=$isWorkday, bedTime=${state.bedTime}, tryToSleep=${state.tryToSleepTime}, wakeUp=${state.wakeUpTime}")
+
                                     MCTQShiftResponse(
                                         shiftType = shiftType,
                                         isWorkday = isWorkday,
@@ -296,6 +299,7 @@ fun OnboardingPage(
                                         reasonIfCannotChoose = if (state.canChooseSleepFreely) null else state.reasonIfCannotChoose
                                     )
                                 }
+                                Log.d("OnboardingDebug", "Final mctqResponses size: ${mctqResponses.size}")
                                 val assessment = BaselineAssessment(
                                     commuteMinutes = commuteTime.toIntOrNull() ?: 0,
                                     preWorkPreparationMinutes = prepTime.toIntOrNull() ?: 0,
