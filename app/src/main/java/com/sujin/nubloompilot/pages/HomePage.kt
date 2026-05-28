@@ -45,6 +45,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import androidx.compose.material3.Button
+import com.sujin.nubloompilot.components.TopBannerManager
 import java.time.Instant
 
 @Composable
@@ -64,7 +65,8 @@ fun HomePage(
     ) -> Unit,
     onNavigateToResult: (MorningGloryType) -> Unit,
     modifier: Modifier = Modifier,
-    state: HomePageState = rememberHomePageState()
+    state: HomePageState = rememberHomePageState(),
+    topBannerManager: TopBannerManager
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         HomePageContent(
@@ -90,13 +92,11 @@ fun HomePage(
             modifier = Modifier.fillMaxSize()
         )
 
-        TopBanner(
-            visible = state.uiState.showForegroundBanner,
-            message = "최신 수면 데이터를 확인했어요",
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 16.dp)
-        )
+        LaunchedEffect(state.uiState.showForegroundBanner) {
+            if (state.uiState.showForegroundBanner) {
+                topBannerManager.show("최신 수면 데이터를 확인했어요")
+            }
+        }
     }
 }
 
@@ -127,6 +127,7 @@ private fun HomePageContent(
             )
         )
     }
+
 
     val isInterventionValid = remember(latestInterventionBundle) {
         latestInterventionBundle != null && 

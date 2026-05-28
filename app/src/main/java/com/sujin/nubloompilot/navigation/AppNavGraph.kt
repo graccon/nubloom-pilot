@@ -18,9 +18,6 @@ import com.sujin.nubloompilot.components.BottomBar
 import com.sujin.nubloompilot.local.ParticipantLocalStore
 import com.sujin.nubloompilot.local.SleepSurveyLocalStore
 import com.sujin.nubloompilot.models.BaselineAssessment
-import com.sujin.nubloompilot.models.MctqBaselineProfile
-import com.sujin.nubloompilot.models.MctqBehaviorProfile
-import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SleepResult
 import com.sujin.nubloompilot.pages.HomePage
 import com.sujin.nubloompilot.pages.MorningGloryResultPage
@@ -44,7 +41,12 @@ import com.sujin.nubloompilot.utils.SleepInterventionContextBuilder
 import com.sujin.nubloompilot.utils.MctqProcessor
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
+import com.sujin.nubloompilot.components.TopBannerHost
+import com.sujin.nubloompilot.components.TopBannerManager
 import com.sujin.nubloompilot.utils.MctqBehaviorAnalyzer
 import java.time.Instant
 import kotlin.coroutines.resume
@@ -93,6 +95,10 @@ fun AppNavGraph() {
             participantId = participantId,
             localStore = SleepSurveyLocalStore(context)
         )
+    }
+
+    val topBannerManager = remember {
+        TopBannerManager()
     }
 
     val sleepInterventionRepository = remember {
@@ -232,6 +238,7 @@ fun AppNavGraph() {
                             )
                         )
                     },
+                    topBannerManager = topBannerManager,
                     onNavigateToResult = { type ->
                         navController.navigate(Routes.morningGloryReviewRoute(type))
                     }
@@ -349,7 +356,9 @@ fun AppNavGraph() {
 
 
             composable(Routes.MYINFO) {
-                MyInfoPage()
+                MyInfoPage(
+                    topBannerManager = topBannerManager
+                )
             }
 
             composable(Routes.SLEEP) {
@@ -392,6 +401,13 @@ fun AppNavGraph() {
             }
         }
 
+        TopBannerHost(
+            manager = topBannerManager,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .statusBarsPadding()
+                .padding(top = 16.dp)
+        )
 
         if (shouldShowBottomBar) {
             BottomBar(
