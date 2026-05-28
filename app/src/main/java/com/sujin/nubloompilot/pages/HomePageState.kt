@@ -5,7 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.sujin.nubloompilot.local.SleepSurveyLocalStore
 import com.sujin.nubloompilot.models.DailyHealthSummary
 import com.sujin.nubloompilot.models.MorningGloryType
@@ -125,17 +125,21 @@ fun rememberHomePageState(
         )
     }
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
+    DisposableEffect(Unit) {
+        var isInitialResume = true
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                state.loadData()
-                state.showForegroundRefreshMessage()
+                if (!isInitialResume) {
+                    state.loadData()
+                    state.showForegroundRefreshMessage()
+                }
+                isInitialResume = false
             }
         }
-        lifecycleOwner.lifecycle.addObserver(observer)
+        val lifecycle = ProcessLifecycleOwner.get().lifecycle
+        lifecycle.addObserver(observer)
         onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
+            lifecycle.removeObserver(observer)
         }
     }
 

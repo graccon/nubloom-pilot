@@ -92,7 +92,7 @@ fun HomePage(
 
         TopBanner(
             visible = state.uiState.showForegroundBanner,
-            message = "포그라운드로 돌아왔네요",
+            message = "최신 수면 데이터를 확인했어요",
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 16.dp)
@@ -194,10 +194,10 @@ private fun HomePageContent(
             highlightedMarkerId = expandedInterventionId,
             revealProgress = timelineRevealProgress.value
         )
-        Spacer(modifier = Modifier.height(44.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         if (activeInterventions.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(44.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             InterventionSection(
                 interventions = activeInterventions,
                 expandedId = expandedInterventionId,
@@ -222,7 +222,7 @@ private fun HomePageContent(
             )
         }
 
-        Spacer(modifier = Modifier.height(188.dp))
+        Spacer(modifier = Modifier.height(88.dp))
     }
 }
 
@@ -306,8 +306,6 @@ private fun InterventionSection(
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Spacer(modifier = Modifier.height(10.dp))
-
         interventions.forEach { intervention ->
             InterventionItem(
                 intervention = intervention,
