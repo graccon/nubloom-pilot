@@ -104,5 +104,17 @@ val Typography = Typography(
         lineHeight = 20.sp,
         letterSpacing = 0.5.sp,
         color = Gray900
+    ),
+
+    labelMedium = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        letterSpacing = 0.5.sp,
+        color = Gray900
     )
+
+
+
+
 )
