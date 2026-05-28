@@ -31,10 +31,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.components.HomeActionCard
-import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.components.SpiralTimeline
+import com.sujin.nubloompilot.components.TopBanner
 import com.sujin.nubloompilot.components.rememberCurrentTime
 import com.sujin.nubloompilot.components.rememberRotatingMessage
+import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SavedSleepInterventionBundle
 import com.sujin.nubloompilot.models.SavedSleepIntervention
 import com.sujin.nubloompilot.models.TimelineMarker
@@ -65,28 +66,38 @@ fun HomePage(
     modifier: Modifier = Modifier,
     state: HomePageState = rememberHomePageState()
 ) {
-    HomePageContent(
-        participantName = participantName,
-        yesterdayShift = yesterdayShift,
-        todayShift = todayShift,
-        tomorrowShift = tomorrowShift,
-        dayAfterTomorrowShift = dayAfterTomorrowShift,
-        latestInterventionBundle = latestInterventionBundle,
-        uiState = state.uiState,
-        onActionCardClick = {
-            state.onActionCardClick(onNavigateToSleepCheckIn, onNavigateToResult)
-        },
-        onDebugSleepCheckInClick = {
-            onNavigateToSleepCheckIn(
-                Instant.now().toString(),
-                420L,
-                68L,
-                450L,
-                70L
-            )
-        },
-        modifier = modifier
-    )
+    Box(modifier = modifier.fillMaxSize()) {
+        HomePageContent(
+            participantName = participantName,
+            yesterdayShift = yesterdayShift,
+            todayShift = todayShift,
+            tomorrowShift = tomorrowShift,
+            dayAfterTomorrowShift = dayAfterTomorrowShift,
+            latestInterventionBundle = latestInterventionBundle,
+            uiState = state.uiState,
+            onActionCardClick = {
+                state.onActionCardClick(onNavigateToSleepCheckIn, onNavigateToResult)
+            },
+            onDebugSleepCheckInClick = {
+                onNavigateToSleepCheckIn(
+                    Instant.now().toString(),
+                    420L,
+                    68L,
+                    450L,
+                    70L
+                )
+            },
+            modifier = Modifier.fillMaxSize()
+        )
+
+        TopBanner(
+            visible = state.uiState.showForegroundBanner,
+            message = "포그라운드로 돌아왔네요",
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 16.dp)
+        )
+    }
 }
 
 @Composable

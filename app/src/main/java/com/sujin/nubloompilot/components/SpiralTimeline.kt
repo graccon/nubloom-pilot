@@ -240,6 +240,7 @@ private fun TimelineSelectionHeader(
         modifier = modifier
             .fillMaxWidth() // 0.85f
             .height(36.dp),
+        // TODO 위치 재조정 - 롱프레스시에 겹침
         contentAlignment = Alignment.BottomStart
     ) {
         if (isPressed) {

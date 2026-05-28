@@ -3,6 +3,9 @@ package com.sujin.nubloompilot.pages
 import android.content.Context
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.sujin.nubloompilot.local.SleepSurveyLocalStore
 import com.sujin.nubloompilot.models.DailyHealthSummary
 import com.sujin.nubloompilot.models.MorningGloryType
@@ -10,6 +13,7 @@ import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.HealthSummaryRepository
 import com.sujin.nubloompilot.repository.SleepStatusRepository
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.Instant
 
@@ -17,7 +21,8 @@ data class HomePageUiState(
     val latestHealthSummary: DailyHealthSummary? = null,
     val morningGloryType: MorningGloryType? = null,
     val baselineSleepDurationMinutes: Long? = null,
-    val baselineWakeHeartRate: Long? = null
+    val baselineWakeHeartRate: Long? = null,
+    val showForegroundBanner: Boolean = false
 )
 
 @Stable
@@ -42,6 +47,14 @@ class HomePageState(
                 latestHealthSummary = summary,
                 morningGloryType = morningGloryType
             )
+        }
+    }
+
+    fun showForegroundRefreshMessage() {
+        scope.launch {
+            uiState = uiState.copy(showForegroundBanner = true)
+            delay(2000)
+            uiState = uiState.copy(showForegroundBanner = false)
         }
     }
 
@@ -110,6 +123,20 @@ fun rememberHomePageState(
             sleepStatusRepository = sleepStatusRepository,
             scope = scope
         )
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                state.loadData()
+                state.showForegroundRefreshMessage()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 
     LaunchedEffect(Unit) {
