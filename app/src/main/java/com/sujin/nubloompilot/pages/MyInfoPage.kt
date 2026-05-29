@@ -10,13 +10,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.sujin.nubloompilot.components.AppDiagnosticsSection
 import com.sujin.nubloompilot.components.DutyScheduleSection
 import com.sujin.nubloompilot.local.ParticipantLocalStore
+import com.sujin.nubloompilot.repository.AppDiagnosticsRepository
 import com.sujin.nubloompilot.repository.BugReportRepository
+import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
 import com.sujin.nubloompilot.components.MctqBaselineSection
 import com.sujin.nubloompilot.components.MctqBehaviorSection
 import com.sujin.nubloompilot.components.TopBannerManager
+import com.sujin.nubloompilot.models.AppDiagnosticsState
 import com.sujin.nubloompilot.models.BugReport
 import kotlinx.coroutines.launch
 import java.time.Instant
@@ -31,12 +35,23 @@ fun MyInfoPage(
     val scheduleRepository = remember {
         ShiftScheduleRepository(context)
     }
+    val healthConnectRepository = remember {
+        HealthConnectRepository(context)
+    }
     val participantLocalStore = remember {
         ParticipantLocalStore(context)
     }
 
     val bugReportRepository = remember {
         BugReportRepository()
+    }
+
+    val appDiagnosticsRepository = remember {
+        AppDiagnosticsRepository(
+            context = context,
+            healthConnectRepository = healthConnectRepository,
+            shiftScheduleRepository = scheduleRepository
+        )
     }
 
     val scope = rememberCoroutineScope()
@@ -77,6 +92,14 @@ fun MyInfoPage(
 
     var isBugReportSubmitting by remember {
         mutableStateOf(false)
+    }
+
+    var diagnosticsState by remember { mutableStateOf(AppDiagnosticsState()) }
+
+    LaunchedEffect(baselineProfile, shifts, currentYearMonth) {
+        diagnosticsState = appDiagnosticsRepository.getDiagnosticsState(
+            baselineProfileExists = baselineProfile != null
+        )
     }
 
     val daysInMonth = currentYearMonth.lengthOfMonth()
@@ -170,6 +193,8 @@ fun MyInfoPage(
                     }
                 }
             )
+
+            AppDiagnosticsSection(state = diagnosticsState)
 
             Spacer(modifier = Modifier.height(220.dp))
         }

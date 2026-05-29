@@ -429,8 +429,8 @@ fun HomePagePreview() {
         HomePageContent(
             participantName = "수진",
             yesterdayShift = "N",
-            todayShift = "N",
-            tomorrowShift = "N",
+            todayShift = "E",
+            tomorrowShift = "E",
             dayAfterTomorrowShift = "E",
             latestInterventionBundle = null,
             uiState = HomePageUiState(

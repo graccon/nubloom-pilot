@@ -1,5 +1,6 @@
 package com.sujin.nubloompilot.pages
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -20,16 +21,20 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sujin.nubloompilot.R
+import com.sujin.nubloompilot.ui.theme.DarkRed
 import com.sujin.nubloompilot.ui.theme.Gray100
+import com.sujin.nubloompilot.ui.theme.Gray300
 import com.sujin.nubloompilot.ui.theme.Gray400
 import com.sujin.nubloompilot.ui.theme.Gray500
 import com.sujin.nubloompilot.ui.theme.Gray800
 import com.sujin.nubloompilot.ui.theme.Gray900
+import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 import com.sujin.nubloompilot.ui.theme.Primary
-
+import androidx.compose.foundation.rememberScrollState
 data class MctqSleepBlockInfo(
     val title: String,
     val subtitle: String
@@ -88,10 +93,8 @@ fun MctqSleepForm(
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = blockInfo.subtitle,
-            style = MaterialTheme.typography.titleSmall,
-            color = Gray800
+        ScheduleBadgeRow(
+            subtitle = blockInfo.subtitle
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -108,7 +111,7 @@ fun MctqSleepForm(
         Spacer(modifier = Modifier.height(14.dp))
         MctqQuestionCard(
             question = "2. 실제 잠을 청하려고 불을 끄거나 눈을 감은 시간",
-            imageResList = listOf(R.drawable.mctq_2)
+            imageResList = listOf(R.drawable.mctq_2, R.drawable.mctq_3)
         ) {
             MctqTimeInput(
                 value = tryToSleepTime,
@@ -323,7 +326,7 @@ fun MctqTimeInput(
     modifier: Modifier = Modifier,
     placeholder: String = "HH:mm"
 ) {
-    var textFieldValue by remember(value) {
+    var textFieldValue by remember {
         mutableStateOf(
             TextFieldValue(
                 text = value,
@@ -332,8 +335,21 @@ fun MctqTimeInput(
         )
     }
 
-    val periodLabel = remember(value) {
-        if (value.length == 5) getTimePeriodLabel(value) else ""
+    LaunchedEffect(value) {
+        if (value != textFieldValue.text) {
+            textFieldValue = TextFieldValue(
+                text = value,
+                selection = TextRange(value.length)
+            )
+        }
+    }
+
+    val periodLabel = remember(textFieldValue.text) {
+        if (textFieldValue.text.length == 5) {
+            getTimePeriodLabel(textFieldValue.text)
+        } else {
+            ""
+        }
     }
 
     OutlinedTextField(
@@ -348,18 +364,26 @@ fun MctqTimeInput(
 
             onValueChange(formatted)
         },
-        placeholder = { Text(placeholder) },
+        placeholder = {
+            Text(
+                text = placeholder,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        },
         trailingIcon = {
             if (periodLabel.isNotBlank()) {
                 Text(
                     text = periodLabel,
+                    modifier = Modifier.padding(end = 8.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Gray800,
                     fontWeight = FontWeight.SemiBold
                 )
             }
         },
-        modifier = modifier.fillMaxWidth().height(MctqInputHeight),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(MctqInputHeight),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         ),
@@ -541,5 +565,108 @@ fun MctqWakeUpInput(
                 style = MaterialTheme.typography.bodyMedium
             )
         }
+    }
+}
+
+
+@Composable
+private fun ScheduleBadgeRow(
+    subtitle: String,
+    modifier: Modifier = Modifier
+) {
+    val items = remember(subtitle) {
+        subtitle.split(" - ")
+    }
+
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        items.forEachIndexed { index, rawItem ->
+
+            val isSleepBlock = rawItem.contains("*")
+            val displayText = rawItem.replace("*", "")
+
+            Surface(
+                color = if (isSleepBlock) {
+                    Primary.copy(alpha = 0.3f)
+                } else {
+                    Gray100
+                },
+                shape = RoundedCornerShape(5.dp),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = if (isSleepBlock) {
+                        Primary.copy(alpha = 0.8f)
+                    } else {
+                        Gray400
+                    }
+                )
+            ) {
+                Text(
+                    text = displayText,
+                    modifier = Modifier.padding(
+                        horizontal = 12.dp,
+                        vertical = 5.dp
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = if (isSleepBlock) {
+                        FontWeight.Bold
+                    } else {
+                        FontWeight.Medium
+                    },
+                    color = if (isSleepBlock) {
+                        DarkRed
+                    } else {
+                        Gray800
+                    }
+                )
+            }
+
+            if (index != items.lastIndex) {
+                Text(
+                    text = "→",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Gray500
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MctqSleepFormFullPreview() {
+    NubloomPilotTheme {
+        MctqSleepForm(
+            blockInfo = MctqSleepBlockInfo(
+                title = "이틀 연속 주간근무 시 중간수면",
+                subtitle = "주간근무 D - 수면* - 주간근무 D"
+            ),
+            scrollState = rememberScrollState(),
+            bedTime = "22:30",
+            onBedTimeChange = {},
+            tryToSleepTime = "23:00",
+            onTryToSleepTimeChange = {},
+            sleepLatency = "15",
+            onSleepLatencyChange = {},
+            wakeUpTime = "06:30",
+            onWakeUpTimeChange = {},
+            alarmUsed = true,
+            onAlarmUsedChange = {},
+            outOfBedLatency = "10",
+            onOutOfBedLatencyChange = {},
+            napTaken = true,
+            onNapTakenChange = {},
+            napStartTime = "14:00",
+            onNapStartTimeChange = {},
+            napEndTime = "14:30",
+            onNapEndTimeChange = {},
+            canChooseSleepFreely = false,
+            onCanChooseSleepFreelyChange = {},
+            reasonIfCannotChoose = "근무 일정과 생활 패턴 때문에 자유롭게 선택하기 어렵습니다.",
+            onReasonIfCannotChooseChange = {}
+        )
     }
 }

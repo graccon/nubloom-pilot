@@ -4,9 +4,11 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.KeyboardType
@@ -21,6 +23,7 @@ import com.sujin.nubloompilot.components.SpeechBubble
 import com.sujin.nubloompilot.models.BaselineAssessment
 import com.sujin.nubloompilot.models.MCTQShiftResponse
 import com.sujin.nubloompilot.models.ShiftType
+import com.sujin.nubloompilot.ui.theme.Gray300
 import com.sujin.nubloompilot.ui.theme.Gray600
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 import kotlinx.coroutines.launch
@@ -423,12 +426,50 @@ private fun PersonalizationStep(
     }
 }
 
+//@Preview(showBackground = true)
+//@Composable
+//fun OnboardingPagePreview() {
+//    NubloomPilotTheme {
+//        OnboardingPage(
+//            onSubmit = { _, _, _ -> }
+//        )
+//    }
+//}
+
 @Preview(showBackground = true)
 @Composable
-fun OnboardingPagePreview() {
+fun MctqStepPreview() {
     NubloomPilotTheme {
-        OnboardingPage(
-            onSubmit = { _, _, _ -> }
+        val scrollState = rememberScrollState()
+
+        MctqSleepForm(
+            blockInfo = MctqSleepBlockInfo(
+                title = "이틀 연속 주간근무 시 중간수면",
+                subtitle = "주간근무 D - 수면* - 주간근무 D"
+            ),
+            scrollState = scrollState,
+            bedTime = "",
+            onBedTimeChange = {},
+            tryToSleepTime = "",
+            onTryToSleepTimeChange = {},
+            sleepLatency = "",
+            onSleepLatencyChange = {},
+            wakeUpTime = "",
+            onWakeUpTimeChange = {},
+            alarmUsed = false,
+            onAlarmUsedChange = {},
+            outOfBedLatency = "",
+            onOutOfBedLatencyChange = {},
+            napTaken = false,
+            onNapTakenChange = {},
+            napStartTime = "",
+            onNapStartTimeChange = {},
+            napEndTime = "",
+            onNapEndTimeChange = {},
+            canChooseSleepFreely = true,
+            onCanChooseSleepFreelyChange = {},
+            reasonIfCannotChoose = "",
+            onReasonIfCannotChooseChange = {}
         )
     }
 }
