@@ -74,6 +74,18 @@ fun AppDiagnosticsSection(
                 
                 DiagnosticRow("MCTQ 완료", state.mctqCompleted)
                 DiagnosticRow("오늘 듀티 등록", state.todayDutyRegistered)
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                DiagnosticRow(
+                    label = "체크인 알림 예약",
+                    isOk = state.checkInNotificationScheduled,
+                    positiveText = "예약됨",
+                    negativeText = "예약 없음"
+                )
+                if (state.nextCheckInNotificationTimeText != null) {
+                    InfoRow("  - 다음 알림", state.nextCheckInNotificationTimeText)
+                }
             }
         }
     }
@@ -105,7 +117,9 @@ private fun InfoRow(label: String, value: String) {
 @Composable
 private fun DiagnosticRow(
     label: String,
-    isOk: Boolean
+    isOk: Boolean,
+    positiveText: String = "정상",
+    negativeText: String = "확인 필요"
 ) {
     Row(
         modifier = Modifier
@@ -122,7 +136,7 @@ private fun DiagnosticRow(
         )
 
         Text(
-            text = if (isOk) "정상" else "확인 필요",
+            text = if (isOk) positiveText else negativeText,
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold,
             color = if (isOk) HighlightsYellow else Gray700,

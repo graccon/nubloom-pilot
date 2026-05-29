@@ -77,4 +77,15 @@ object SleepCheckInNotificationScheduler {
         pendingIntent.cancel()
         Log.d(TAG, "Successfully canceled scheduled sleep check-in notification.")
     }
+
+    fun isCheckInNotificationScheduled(context: Context): Boolean {
+        val intent = Intent(context, SleepCheckInNotificationReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            2001,
+            intent,
+            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+        )
+        return pendingIntent != null
+    }
 }

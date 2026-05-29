@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.sujin.nubloompilot.models.AppDiagnosticsState
+import com.sujin.nubloompilot.notifications.SleepCheckInNotificationScheduler
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -76,7 +77,9 @@ class AppDiagnosticsRepository(
             heartRateDataAvailable = heartRateAvailable,
             stepsDataAvailable = stepsAvailable,
             mctqCompleted = baselineProfileExists,
-            todayDutyRegistered = !todayShift.isNullOrBlank()
+            todayDutyRegistered = !todayShift.isNullOrBlank(),
+            checkInNotificationScheduled = SleepCheckInNotificationScheduler.isCheckInNotificationScheduled(context),
+            nextCheckInNotificationTimeText = null
         )
     }
 }

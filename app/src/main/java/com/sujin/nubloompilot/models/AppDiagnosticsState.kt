@@ -12,7 +12,9 @@ data class AppDiagnosticsState(
     val heartRateDataAvailable: Boolean = false,
     val stepsDataAvailable: Boolean = false,
     val mctqCompleted: Boolean = false,
-    val todayDutyRegistered: Boolean = false
+    val todayDutyRegistered: Boolean = false,
+    val checkInNotificationScheduled: Boolean = false,
+    val nextCheckInNotificationTimeText: String? = null
 ) {
     /**
      * True if all critical components are ready for normal operation.
