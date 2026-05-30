@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -17,11 +18,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.sujin.nubloompilot.models.DailyHealthSummary
 import com.sujin.nubloompilot.notifications.SleepCheckInNotificationHelper
+import com.sujin.nubloompilot.repository.HealthConnectRepository
+import com.sujin.nubloompilot.repository.HealthSummaryRepository
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun SleepPage() {
     val context = LocalContext.current
+    val healthConnectRepository = remember { HealthConnectRepository(context) }
+    val healthSummaryRepository = remember { HealthSummaryRepository(healthConnectRepository) }
+
+    var latestSummary by remember { mutableStateOf<DailyHealthSummary?>(null) }
+    var isLoading by remember { mutableStateOf(false) }
+
     var permissionStatus by remember {
         mutableStateOf(
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
@@ -39,9 +51,46 @@ fun SleepPage() {
         permissionStatus = if (isGranted) "알림 권한 허용됨" else "알림 권한 거부됨"
     }
 
+    LaunchedEffect(Unit) {
+        isLoading = true
+        if (healthConnectRepository.isHealthConnectAvailable() && healthConnectRepository.hasHealthPermissions()) {
+            latestSummary = healthSummaryRepository.getLatestHealthSummary()
+        }
+        isLoading = false
+    }
+
     Column(
         modifier = Modifier.padding(24.dp)
     ) {
+        Text(
+            text = "오늘의 수면 데이터",
+            style = MaterialTheme.typography.headlineSmall
+        )
+        
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if (isLoading) {
+            Text("데이터를 불러오는 중...")
+        } else if (latestSummary != null) {
+            val summary = latestSummary!!
+            val timeText = summary.sleepEndTime.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("HH:mm"))
+            
+            Text(text = "종료 시각: $timeText", style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = "총 수면 시간: ${summary.sleepDurationMinutes / 60}시간 ${summary.sleepDurationMinutes % 60}분",
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+            )
+            Text(text = "깊은 수면: ${summary.deepSleepMinutes}분", style = MaterialTheme.typography.bodyMedium)
+        } else {
+            Text("감지된 수면 데이터가 없습니다.")
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+        HorizontalDivider()
+        Spacer(modifier = Modifier.height(32.dp))
+
         Text(
             text = "알림 권한 테스트",
             style = MaterialTheme.typography.headlineSmall

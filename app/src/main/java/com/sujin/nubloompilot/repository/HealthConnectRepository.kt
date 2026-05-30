@@ -9,6 +9,8 @@ import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
+import com.sujin.nubloompilot.models.SleepEpisode
+import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -85,6 +87,81 @@ class HealthConnectRepository(
             }
             .maxByOrNull { session ->
                 session.endTime
+            }
+    }
+
+    /**
+     * Fetches and merges fragmented sleep sessions into episodes.
+     * Sessions with gaps less than [mergeThresholdMinutes] are considered part of the same episode.
+     */
+    suspend fun getLatestSleepEpisode(
+        lookBackHours: Long = 36L,
+        mergeThresholdMinutes: Long = 120L
+    ): SleepEpisode? {
+        val sessions = getRecentSleepSessions(lookBackHours = lookBackHours)
+        if (sessions.isEmpty()) return null
+
+        val episodes = mutableListOf<MutableList<SleepSessionRecord>>()
+        var currentGroup = mutableListOf<SleepSessionRecord>()
+
+        for (session in sessions) {
+            if (currentGroup.isEmpty()) {
+                currentGroup.add(session)
+            } else {
+                val lastSession = currentGroup.last()
+                val gap = Duration.between(lastSession.endTime, session.startTime).toMinutes()
+
+                if (gap <= mergeThresholdMinutes) {
+                    currentGroup.add(session)
+                } else {
+                    episodes.add(currentGroup)
+                    currentGroup = mutableListOf(session)
+                }
+            }
+        }
+        if (currentGroup.isNotEmpty()) episodes.add(currentGroup)
+
+        val latestGroup = episodes.lastOrNull() ?: return null
+        
+        val startTime = latestGroup.first().startTime
+        val endTime = latestGroup.last().endTime
+        
+        // Duration of sleep fragments only (excluding wake gaps between segments)
+        val fragmentDurationMinutes = latestGroup.sumOf { 
+            Duration.between(it.startTime, it.endTime).toMinutes() 
+        }
+
+        // Total deep sleep across fragments
+        val deepSleepMinutes = latestGroup.sumOf { session ->
+            session.stages
+                .filter { it.stage == SleepSessionRecord.STAGE_TYPE_DEEP }
+                .sumOf { Duration.between(it.startTime, it.endTime).toMinutes() }
+        }
+
+        return SleepEpisode(
+            startTime = startTime,
+            endTime = endTime,
+            durationMinutes = fragmentDurationMinutes,
+            deepSleepMinutes = deepSleepMinutes
+        )
+    }
+
+    // TODO 수면 세션 병합 로직 도입
+    suspend fun getRecentSleepSessions(
+        lookBackHours: Long = 36L
+    ): List<SleepSessionRecord> {
+        val now = Instant.now()
+        val startTime = now.minusSeconds(lookBackHours * 60 * 60)
+
+        return readSleepSessions(
+            startTime = startTime,
+            endTime = now
+        )
+            .filter { session ->
+                session.endTime <= now
+            }
+            .sortedBy { session ->
+                session.startTime
             }
     }
 

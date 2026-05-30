@@ -9,6 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SleepResult
 import kotlinx.coroutines.flow.first
+import java.time.Duration
 import java.time.Instant
 
 private val Context.sleepSurveyDataStore by preferencesDataStore(
@@ -64,15 +65,21 @@ class SleepSurveyLocalStore(
         )
     }
 
-    // Keep this for existing compatibility in SleepStatusRepository
+    // Improved check to avoid redundant surveys for fragmented data.
     suspend fun getSurveyStateForSleepSession(
         sleepEndTime: Instant
     ): MorningGloryType? {
         val prefs = context.sleepSurveyDataStore.data.first()
-        val savedSleepEndTime = prefs[lastSurveyedSleepEndTimeKey]
+        val savedSleepEndTimeStr = prefs[lastSurveyedSleepEndTimeKey] ?: return null
         val savedState = prefs[lastMorningGloryTypeKey]
 
-        if (savedSleepEndTime != sleepEndTime.toString()) {
+        val savedEndTime = runCatching { Instant.parse(savedSleepEndTimeStr) }.getOrNull() ?: return null
+
+        // If the new detected end time is within 8 hours of the already surveyed time,
+        // we assume it's part of the same sleep episode (incremental sync).
+        val diffMinutes = Duration.between(savedEndTime, sleepEndTime).abs().toMinutes()
+        
+        if (diffMinutes > 480) { // 8 hours threshold
             return null
         }
 

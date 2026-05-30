@@ -10,38 +10,15 @@ class HealthSummaryRepository(
     private val healthConnectRepository: HealthConnectRepository
 ) {
     suspend fun getLatestHealthSummary(): DailyHealthSummary? {
-        val sleepSession =
-            healthConnectRepository.getLatestSleepSession()
+        val sleepEpisode =
+            healthConnectRepository.getLatestSleepEpisode()
                 ?: return null
 
         val now = Instant.now()
 
-        val sleepDurationMinutes =
-            Duration.between(
-                sleepSession.startTime,
-                sleepSession.endTime
-            ).toMinutes()
-
-        val deepSleepMinutes =
-            sleepSession.stages
-                .filter { stage ->
-                    stage.stage == SleepSessionRecord.STAGE_TYPE_DEEP
-                }
-                .sumOf { stage ->
-                    Duration.between(
-                        stage.startTime,
-                        stage.endTime
-                    ).toMinutes()
-                }
-
         val wakeHeartRate =
             getWakeHeartRate(
-                sleepEndTime = sleepSession.endTime
-            )
-
-        val averageHrvMillis =
-            getAverageHrvMillis(
-                sleepSession = sleepSession
+                sleepEndTime = sleepEpisode.endTime
             )
 
         val stepsLast24Hours =
@@ -50,11 +27,11 @@ class HealthSummaryRepository(
             )
 
         return DailyHealthSummary(
-            sleepEndTime = sleepSession.endTime,
-            sleepDurationMinutes = sleepDurationMinutes,
-            deepSleepMinutes = deepSleepMinutes,
+            sleepEndTime = sleepEpisode.endTime,
+            sleepDurationMinutes = sleepEpisode.durationMinutes,
+            deepSleepMinutes = sleepEpisode.deepSleepMinutes,
             wakeHeartRate = wakeHeartRate,
-            averageHrvMillis = averageHrvMillis,
+            averageHrvMillis = null, // HRV merging is more complex, keeping it null for now
             stepsLast24Hours = stepsLast24Hours
         )
     }

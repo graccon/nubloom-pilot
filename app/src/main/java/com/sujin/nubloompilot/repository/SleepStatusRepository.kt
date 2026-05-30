@@ -9,12 +9,12 @@ class SleepStatusRepository(
     private val sleepSurveyLocalStore: SleepSurveyLocalStore
 ) {
     suspend fun getCurrentMorningGloryType(): MorningGloryType? {
-        val latestSleepSession =
-            healthConnectRepository.getLatestSleepSession()
+        val latestSleepEpisode =
+            healthConnectRepository.getLatestSleepEpisode()
                 ?: return null
 
         return sleepSurveyLocalStore.getSurveyStateForSleepSession(
-            sleepEndTime = latestSleepSession.endTime
+            sleepEndTime = latestSleepEpisode.endTime
         )
     }
 
