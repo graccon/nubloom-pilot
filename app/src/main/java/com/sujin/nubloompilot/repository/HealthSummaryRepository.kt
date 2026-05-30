@@ -27,6 +27,7 @@ class HealthSummaryRepository(
             )
 
         return DailyHealthSummary(
+            sleepStartTime = sleepEpisode.startTime,
             sleepEndTime = sleepEpisode.endTime,
             sleepDurationMinutes = sleepEpisode.durationMinutes,
             deepSleepMinutes = sleepEpisode.deepSleepMinutes,
@@ -141,6 +142,7 @@ class HealthSummaryRepository(
                 )
 
             DailyHealthSummary(
+                sleepStartTime = sleepSession.startTime,
                 sleepEndTime = sleepSession.endTime,
                 sleepDurationMinutes = sleepDurationMinutes,
                 deepSleepMinutes = deepSleepMinutes,
