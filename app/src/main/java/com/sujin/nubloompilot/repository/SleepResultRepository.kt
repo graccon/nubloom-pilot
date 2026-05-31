@@ -55,6 +55,35 @@ class SleepResultRepository(
         }
     }
 
+    suspend fun getSleepResultsInDateRange(days: Int = 30): List<SleepResult> {
+        return try {
+            val since = System.currentTimeMillis() - (days * 24 * 60 * 60 * 1000L)
+            val snapshot = resultsCollection
+                .whereGreaterThanOrEqualTo("timestamp", since)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .get()
+                .await()
+
+            snapshot.documents.mapNotNull { doc ->
+                val typeStr = doc.getString("morningGloryType") ?: return@mapNotNull null
+                val endTimeStr = doc.getString("sleepEndTime") ?: return@mapNotNull null
+                SleepResult(
+                    participantId = doc.getString("participantId") ?: participantId,
+                    participantName = doc.getString("participantName") ?: "",
+                    sleepEndTime = Instant.parse(endTimeStr),
+                    sleepDurationMinutes = doc.getLong("sleepDurationMinutes") ?: 0L,
+                    wakeHeartRate = doc.getLong("wakeHeartRate")?.takeIf { it != -1L },
+                    fatigueLevel = doc.getLong("fatigueLevel")?.toInt() ?: 0,
+                    morningGloryType = MorningGloryType.valueOf(typeStr),
+                    timestamp = doc.getLong("timestamp") ?: 0L
+                )
+            }
+        } catch (e: Exception) {
+            println("Firestore getSleepResultsInDateRange failed: ${e.message}")
+            emptyList()
+        }
+    }
+
     suspend fun getLatestSavedSleepResult(): SleepResult? {
         return try {
             val snapshot = resultsCollection

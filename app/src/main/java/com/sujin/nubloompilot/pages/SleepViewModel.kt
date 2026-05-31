@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.sujin.nubloompilot.models.DailyHealthSummary
+import com.sujin.nubloompilot.models.SleepResult
 import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.HealthSummaryRepository
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
+import com.sujin.nubloompilot.repository.SleepResultRepository
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
@@ -17,6 +19,7 @@ import java.time.ZoneId
 data class SleepPageUiState(
     val latestSummary: DailyHealthSummary? = null,
     val recentSummaries: List<DailyHealthSummary> = emptyList(),
+    val checkInHistory: List<SleepResult> = emptyList(),
     val averageSleepDurationMinutes: Long? = null,
     val averageShiftSleepDurationMinutes: Long? = null,
     val todayShift: String? = null,
@@ -28,20 +31,23 @@ data class SleepPageUiState(
 class SleepViewModel(
     private val healthSummaryRepository: HealthSummaryRepository,
     private val healthConnectRepository: HealthConnectRepository,
-    private val shiftScheduleRepository: ShiftScheduleRepository
+    private val shiftScheduleRepository: ShiftScheduleRepository,
+    private val sleepResultRepository: SleepResultRepository
 ) : ViewModel() {
 
     class Factory(
         private val healthSummaryRepository: HealthSummaryRepository,
         private val healthConnectRepository: HealthConnectRepository,
-        private val shiftScheduleRepository: ShiftScheduleRepository
+        private val shiftScheduleRepository: ShiftScheduleRepository,
+        private val sleepResultRepository: SleepResultRepository
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return SleepViewModel(
                 healthSummaryRepository,
                 healthConnectRepository,
-                shiftScheduleRepository
+                shiftScheduleRepository,
+                sleepResultRepository
             ) as T
         }
     }
@@ -67,7 +73,10 @@ class SleepViewModel(
                     val averageSleepDurationMinutes = healthSummaryRepository.getBaselineSleepDurationMinutes(recentSummaries)
                     val averageWakeHeartRate = healthSummaryRepository.getBaselineWakeHeartRate(recentSummaries)
 
-                    // 2. 근무조별 베이스라인 가져오기
+                    // 2. 수면 체크인 역사 가져오기 (잔디 UI용)
+                    val checkInHistory = sleepResultRepository.getSleepResultsInDateRange(days = 30)
+
+                    // 3. 근무조별 베이스라인 가져오기
                     val today = LocalDate.now()
                     val todayShift = shiftScheduleRepository.getShiftForDate(today)
                     var averageShiftSleepDurationMinutes: Long? = null
@@ -91,6 +100,7 @@ class SleepViewModel(
                     uiState = uiState.copy(
                         latestSummary = latestSummary,
                         recentSummaries = recentSummaries,
+                        checkInHistory = checkInHistory,
                         averageSleepDurationMinutes = averageSleepDurationMinutes,
                         averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes,
                         todayShift = todayShift,

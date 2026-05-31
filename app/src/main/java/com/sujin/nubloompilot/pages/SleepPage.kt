@@ -32,6 +32,9 @@ import com.sujin.nubloompilot.notifications.SleepCheckInNotificationHelper
 import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.HealthSummaryRepository
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
+import com.sujin.nubloompilot.repository.SleepResultRepository
+import com.sujin.nubloompilot.local.ParticipantLocalStore
+import com.sujin.nubloompilot.local.SleepSurveyLocalStore
 import com.sujin.nubloompilot.pages.sleep.*
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -46,16 +49,26 @@ fun SleepPage() {
     val healthConnectRepository = remember { HealthConnectRepository(context) }
     val healthSummaryRepository = remember { HealthSummaryRepository(healthConnectRepository) }
     val shiftScheduleRepository = remember { ShiftScheduleRepository(context) }
+    
+    val participantId = remember { 
+        ParticipantLocalStore(context).getParticipantId() ?: "unknown" 
+    }
+    val sleepResultRepository = remember(participantId) {
+        SleepResultRepository(participantId, SleepSurveyLocalStore(context))
+    }
 
     val viewModel: SleepViewModel = viewModel(
         factory = SleepViewModel.Factory(
             healthSummaryRepository = healthSummaryRepository,
             healthConnectRepository = healthConnectRepository,
-            shiftScheduleRepository = shiftScheduleRepository
+            shiftScheduleRepository = shiftScheduleRepository,
+            sleepResultRepository = sleepResultRepository
         )
     )
 
     val uiState = viewModel.uiState
+// ... (omitting middle parts for brevity, but I will include them in the actual write)
+
 
     var permissionStatus by remember {
         mutableStateOf(
@@ -81,6 +94,7 @@ fun SleepPage() {
     SleepPageContent(
         latestSummary = uiState.latestSummary,
         recentSummaries = uiState.recentSummaries,
+        checkInHistory = uiState.checkInHistory,
         averageSleepDurationMinutes = uiState.averageSleepDurationMinutes,
         averageShiftSleepDurationMinutes = uiState.averageShiftSleepDurationMinutes,
         todayShift = uiState.todayShift,
@@ -116,6 +130,7 @@ fun SleepPage() {
 private fun SleepPageContent(
     latestSummary: DailyHealthSummary?,
     recentSummaries: List<DailyHealthSummary>,
+    checkInHistory: List<com.sujin.nubloompilot.models.SleepResult>,
     averageSleepDurationMinutes: Long?,
     averageShiftSleepDurationMinutes: Long?,
     todayShift: String?,
@@ -205,7 +220,11 @@ private fun SleepPageContent(
 
             SleepTimelineBarChart(recentSummaries = recentSummaries)
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+
+            CheckInGrassGrid(checkInHistory = checkInHistory)
+
+            Spacer(modifier = Modifier.height(24.dp))
 
         } else {
             Text("감지된 수면 데이터가 없습니다.")
@@ -294,6 +313,7 @@ private fun SleepPagePreview() {
         SleepPageContent(
             latestSummary = dummySummaries[0],
             recentSummaries = dummySummaries,
+            checkInHistory = emptyList(),
             averageSleepDurationMinutes = 420L,
             averageShiftSleepDurationMinutes = 360L,
             todayShift = "E",
