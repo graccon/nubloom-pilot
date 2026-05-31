@@ -129,9 +129,15 @@ private fun HomePageContent(
     }
 
 
-    val isInterventionValid = remember(latestInterventionBundle) {
-        latestInterventionBundle != null && 
-        latestInterventionBundle.workDate == LocalDate.now().toString()
+    val isInterventionValid = remember(latestInterventionBundle, currentTime) {
+        if (latestInterventionBundle == null) return@remember false
+        
+        val now = LocalDateTime.now()
+        latestInterventionBundle.interventions.any { intervention ->
+            runCatching {
+                LocalDateTime.parse(intervention.endTime).isAfter(now)
+            }.getOrDefault(false)
+        }
     }
 
     val timelineMarkers = remember(latestInterventionBundle, isInterventionValid) {
