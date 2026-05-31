@@ -1,6 +1,8 @@
 package com.sujin.nubloompilot.utils
 
 import com.sujin.nubloompilot.models.*
+import com.sujin.nubloompilot.shared.models.Chronotype
+import com.sujin.nubloompilot.shared.models.ShiftType
 import com.sujin.nubloompilot.repository.ShiftAroundToday
 import java.time.Instant
 import java.time.LocalDate

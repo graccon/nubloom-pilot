@@ -1,7 +1,7 @@
 package com.sujin.nubloompilot.utils
 
-import com.sujin.nubloompilot.models.Chronotype
-import com.sujin.nubloompilot.models.ShiftType
+import com.sujin.nubloompilot.shared.models.Chronotype
+import com.sujin.nubloompilot.shared.models.ShiftType
 import java.time.Duration
 
 object MainSleepDurationCalculator {

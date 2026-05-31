@@ -5,7 +5,7 @@ import com.sujin.nubloompilot.R
 import com.sujin.nubloompilot.models.InterventionActionType
 import com.sujin.nubloompilot.models.InterventionType
 import com.sujin.nubloompilot.models.SavedSleepIntervention
-import com.sujin.nubloompilot.models.TimelineMarker
+import com.sujin.nubloompilot.shared.models.TimelineMarker
 import com.sujin.nubloompilot.ui.theme.Primary
 import java.time.LocalDate
 import java.time.LocalDateTime

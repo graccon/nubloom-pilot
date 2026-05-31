@@ -25,20 +25,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.components.HomeActionCard
-import com.sujin.nubloompilot.components.SpiralTimeline
+import com.sujin.nubloompilot.shared.components.SpiralTimeline
 import com.sujin.nubloompilot.components.TopBanner
 import com.sujin.nubloompilot.components.rememberCurrentTime
 import com.sujin.nubloompilot.components.rememberRotatingMessage
 import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SavedSleepInterventionBundle
 import com.sujin.nubloompilot.models.SavedSleepIntervention
-import com.sujin.nubloompilot.models.TimelineMarker
+import com.sujin.nubloompilot.shared.models.TimelineMarker
 import com.sujin.nubloompilot.ui.theme.*
 import com.sujin.nubloompilot.utils.InterventionToMarkerMapper
 import com.sujin.nubloompilot.utils.hasActiveIntervention
@@ -48,6 +51,7 @@ import java.time.format.DateTimeFormatter
 import androidx.compose.material3.Button
 import com.sujin.nubloompilot.components.TopBannerManager
 import java.time.Instant
+import android.graphics.BitmapFactory
 
 @Composable
 fun HomePage(
@@ -116,6 +120,7 @@ private fun HomePageContent(
 ) {
     val currentTime = rememberCurrentTime()
     val greetingMessage = rememberRotatingMessage()
+    val context = LocalContext.current
 
     val timelineRevealProgress = remember { Animatable(0f) }
 
@@ -143,6 +148,22 @@ private fun HomePageContent(
         } else {
             emptyList()
         }
+    }
+
+    val markerIcons = remember(timelineMarkers) {
+        val map = mutableMapOf<Int, ImageBitmap>()
+        timelineMarkers.forEach { marker ->
+            val resId = marker.iconRes
+            if (!map.containsKey(resId)) {
+                runCatching {
+                    BitmapFactory.decodeResource(context.resources, resId)
+                        ?.asImageBitmap()
+                }.getOrNull()?.let {
+                    map[resId] = it
+                }
+            }
+        }
+        map
     }
 
     val activeInterventions = remember(latestInterventionBundle, isInterventionValid, currentTime) {
@@ -192,6 +213,7 @@ private fun HomePageContent(
             dayAfterTomorrowShift = dayAfterTomorrowShift,
             currentTime = currentTime,
             markers = timelineMarkers,
+            markerIcons = markerIcons,
             highlightedMarkerId = expandedInterventionId,
             revealProgress = timelineRevealProgress.value
         )

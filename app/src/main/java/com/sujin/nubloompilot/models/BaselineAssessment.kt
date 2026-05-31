@@ -1,5 +1,7 @@
 package com.sujin.nubloompilot.models
 
+import com.sujin.nubloompilot.shared.models.ShiftType
+
 /**
  * Data model for the baseline assessment collected during onboarding.
  */

@@ -1,7 +1,7 @@
 package com.sujin.nubloompilot.utils
 
 import com.sujin.nubloompilot.models.MCTQShiftResponse
-import com.sujin.nubloompilot.models.ShiftType
+import com.sujin.nubloompilot.shared.models.ShiftType
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

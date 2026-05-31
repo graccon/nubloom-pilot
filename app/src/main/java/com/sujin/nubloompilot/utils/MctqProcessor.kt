@@ -1,6 +1,7 @@
 package com.sujin.nubloompilot.utils
 
 import com.sujin.nubloompilot.models.*
+import com.sujin.nubloompilot.shared.models.ShiftType
 import kotlin.math.abs
 
 object MctqProcessor {

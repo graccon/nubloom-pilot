@@ -3,7 +3,7 @@ package com.sujin.nubloompilot.utils
 import com.sujin.nubloompilot.models.MCTQShiftResponse
 import com.sujin.nubloompilot.models.MctqBaselineProfile
 import com.sujin.nubloompilot.models.MctqBehaviorProfile
-import com.sujin.nubloompilot.models.ShiftType
+import com.sujin.nubloompilot.shared.models.ShiftType
 
 object MctqBehaviorAnalyzer {
 

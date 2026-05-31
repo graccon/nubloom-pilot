@@ -1,7 +1,7 @@
 package com.sujin.nubloompilot.utils
 
-import com.sujin.nubloompilot.models.ShiftType
-import com.sujin.nubloompilot.models.getTimeRange
+import com.sujin.nubloompilot.shared.models.ShiftType
+import com.sujin.nubloompilot.shared.models.getTimeRange
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime

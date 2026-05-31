@@ -1,5 +1,7 @@
 package com.sujin.nubloompilot.models
 
+import com.sujin.nubloompilot.shared.models.Chronotype
+import com.sujin.nubloompilot.shared.models.ShiftType
 import java.time.LocalDate
 import java.time.LocalDateTime
 

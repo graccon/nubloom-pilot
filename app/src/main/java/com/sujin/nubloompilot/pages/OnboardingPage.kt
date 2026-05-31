@@ -22,7 +22,7 @@ import com.sujin.nubloompilot.components.QuestionTextField
 import com.sujin.nubloompilot.components.SpeechBubble
 import com.sujin.nubloompilot.models.BaselineAssessment
 import com.sujin.nubloompilot.models.MCTQShiftResponse
-import com.sujin.nubloompilot.models.ShiftType
+import com.sujin.nubloompilot.shared.models.ShiftType
 import com.sujin.nubloompilot.ui.theme.Gray300
 import com.sujin.nubloompilot.ui.theme.Gray600
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme

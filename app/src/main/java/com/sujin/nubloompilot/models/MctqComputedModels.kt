@@ -1,5 +1,7 @@
 package com.sujin.nubloompilot.models
 
+import com.sujin.nubloompilot.shared.models.ShiftType
+
 /**
  * Computed results for a single MCTQ block.
  */

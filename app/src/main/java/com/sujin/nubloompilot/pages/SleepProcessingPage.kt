@@ -20,6 +20,8 @@ import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SleepIntervention
 import com.sujin.nubloompilot.models.SleepInterventionContext
 import com.sujin.nubloompilot.models.SleepResult
+import com.sujin.nubloompilot.shared.models.Chronotype
+import com.sujin.nubloompilot.shared.models.ShiftType
 import com.sujin.nubloompilot.notifications.SleepCheckInNotificationScheduler
 import com.sujin.nubloompilot.ui.theme.*
 import com.sujin.nubloompilot.utils.SleepInterventionEngine
@@ -226,10 +228,10 @@ private fun ProcessingContent(
 @Composable
 fun SleepProcessingPagePreview() {
     val dummyContext = SleepInterventionContext(
-        chronotype = com.sujin.nubloompilot.models.Chronotype.INTERMEDIATE,
-        previousShift = com.sujin.nubloompilot.models.ShiftType.OFF,
-        currentShift = com.sujin.nubloompilot.models.ShiftType.DAY,
-        nextShift = com.sujin.nubloompilot.models.ShiftType.DAY,
+        chronotype = Chronotype.INTERMEDIATE,
+        previousShift = ShiftType.OFF,
+        currentShift = ShiftType.DAY,
+        nextShift = ShiftType.DAY,
         workDate = java.time.LocalDate.now(),
         wakeTime = java.time.LocalDateTime.now(),
         targetSleepTime = java.time.LocalDateTime.now().plusHours(16),

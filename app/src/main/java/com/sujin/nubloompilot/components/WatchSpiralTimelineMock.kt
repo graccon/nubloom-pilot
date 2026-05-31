@@ -8,13 +8,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sujin.nubloompilot.shared.components.SpiralTimeline
 import com.sujin.nubloompilot.R
-import com.sujin.nubloompilot.models.TimelineMarker
+import com.sujin.nubloompilot.shared.models.TimelineMarker
+import com.sujin.nubloompilot.shared.ui.theme.Primary
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
-import com.sujin.nubloompilot.ui.theme.Primary
 import java.time.LocalDateTime
+import android.graphics.BitmapFactory
+import androidx.compose.runtime.remember
 
 /**
  * A mock preview of the SpiralTimeline as it would appear on a Wear OS watch screen.
@@ -30,6 +36,23 @@ fun WatchSpiralTimelineMock(
     modifier: Modifier = Modifier,
     markers: List<TimelineMarker> = emptyList()
 ) {
+    val context = LocalContext.current
+    val markerIcons = remember(markers) {
+        val map = mutableMapOf<Int, ImageBitmap>()
+        markers.forEach { marker ->
+            val resId = marker.iconRes
+            if (!map.containsKey(resId)) {
+                runCatching {
+                    BitmapFactory.decodeResource(context.resources, resId)
+                        ?.asImageBitmap()
+                }.getOrNull()?.let {
+                    map[resId] = it
+                }
+            }
+        }
+        map
+    }
+
     Box(
         modifier = modifier
             .size(240.dp)
@@ -44,6 +67,7 @@ fun WatchSpiralTimelineMock(
             dayAfterTomorrowShift = dayAfterTomorrowShift,
             currentTime = currentTime.toLocalTime(),
             markers = markers,
+            markerIcons = markerIcons,
             modifier = Modifier.padding(0.dp), // Adjust padding to fit within circle
             isWatchMode = true
         )

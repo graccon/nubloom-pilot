@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "NubloomPilot"
 include(":app")
+include(":shared")
+include(":wear")
  
