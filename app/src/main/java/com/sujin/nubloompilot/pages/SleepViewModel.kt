@@ -16,6 +16,7 @@ import java.time.ZoneId
 
 data class SleepPageUiState(
     val latestSummary: DailyHealthSummary? = null,
+    val recentSummaries: List<DailyHealthSummary> = emptyList(),
     val averageSleepDurationMinutes: Long? = null,
     val averageShiftSleepDurationMinutes: Long? = null,
     val todayShift: String? = null,
@@ -89,6 +90,7 @@ class SleepViewModel(
 
                     uiState = uiState.copy(
                         latestSummary = latestSummary,
+                        recentSummaries = recentSummaries,
                         averageSleepDurationMinutes = averageSleepDurationMinutes,
                         averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes,
                         todayShift = todayShift,

@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +31,7 @@ import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.HealthSummaryRepository
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
 import com.sujin.nubloompilot.pages.sleep.*
+import com.sujin.nubloompilot.ui.theme.Gray800
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import androidx.compose.ui.tooling.preview.Preview
@@ -74,6 +78,7 @@ fun SleepPage() {
 
     SleepPageContent(
         latestSummary = uiState.latestSummary,
+        recentSummaries = uiState.recentSummaries,
         averageSleepDurationMinutes = uiState.averageSleepDurationMinutes,
         averageShiftSleepDurationMinutes = uiState.averageShiftSleepDurationMinutes,
         todayShift = uiState.todayShift,
@@ -108,6 +113,7 @@ fun SleepPage() {
 @Composable
 private fun SleepPageContent(
     latestSummary: DailyHealthSummary?,
+    recentSummaries: List<DailyHealthSummary>,
     averageSleepDurationMinutes: Long?,
     averageShiftSleepDurationMinutes: Long?,
     todayShift: String?,
@@ -119,7 +125,10 @@ private fun SleepPageContent(
     onShowSleepCheckInNotification: () -> Unit
 ) {
     Column(
-        modifier = Modifier.padding(24.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(24.dp)
     ) {
         Text(
             text = "오늘의 수면 데이터",
@@ -146,7 +155,7 @@ private fun SleepPageContent(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 SleepSummaryInfoCard(
                     modifier = Modifier.weight(1f),
@@ -172,9 +181,11 @@ private fun SleepPageContent(
                 averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes
             )
 
+            Spacer(modifier = Modifier.height(24.dp))
+
+            SleepTimelineBarChart(recentSummaries = recentSummaries)
+
             Spacer(modifier = Modifier.height(16.dp))
-
-
 
         } else {
             Text("감지된 수면 데이터가 없습니다.")
@@ -229,17 +240,34 @@ private fun SleepPageContent(
 @Preview(showBackground = true)
 @Composable
 private fun SleepPagePreview() {
+    val now = Instant.now()
+    val yesterday = now.minusSeconds(24 * 3600)
+    
+    val dummySummaries = listOf(
+        DailyHealthSummary(
+            sleepStartTime = now.minusSeconds(8 * 3600),
+            sleepEndTime = now.minusSeconds(1 * 3600),
+            sleepDurationMinutes = 420L,
+            deepSleepMinutes = 80L,
+            wakeHeartRate = 65L,
+            averageHrvMillis = null,
+            stepsLast24Hours = 7000L
+        ),
+        DailyHealthSummary(
+            sleepStartTime = yesterday.minusSeconds(7 * 3600),
+            sleepEndTime = yesterday.plusSeconds(1 * 3600),
+            sleepDurationMinutes = 480L,
+            deepSleepMinutes = 90L,
+            wakeHeartRate = 68L,
+            averageHrvMillis = null,
+            stepsLast24Hours = 8000L
+        )
+    )
+
     NubloomPilotTheme {
         SleepPageContent(
-            latestSummary = DailyHealthSummary(
-                sleepStartTime = Instant.now().minusSeconds(7 * 3600),
-                sleepEndTime = Instant.now(),
-                sleepDurationMinutes = 390L,
-                deepSleepMinutes = 72L,
-                wakeHeartRate = 68L,
-                averageHrvMillis = null,
-                stepsLast24Hours = 8420L
-            ),
+            latestSummary = dummySummaries[0],
+            recentSummaries = dummySummaries,
             averageSleepDurationMinutes = 420L,
             averageShiftSleepDurationMinutes = 360L,
             todayShift = "E",
