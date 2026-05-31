@@ -9,5 +9,8 @@ data class SleepEpisode(
     val startTime: Instant,
     val endTime: Instant,
     val durationMinutes: Long,
-    val deepSleepMinutes: Long
+    val deepSleepMinutes: Long,
+    val lightSleepMinutes: Long = 0L,
+    val remSleepMinutes: Long = 0L,
+    val awakeSleepMinutes: Long = 0L
 )

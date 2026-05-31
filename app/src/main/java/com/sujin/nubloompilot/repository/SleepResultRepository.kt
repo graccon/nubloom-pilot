@@ -30,11 +30,26 @@ class SleepResultRepository(
             "wakeHeartRate" to (result.wakeHeartRate ?: -1L),
             "fatigueLevel" to result.fatigueLevel,
             "morningGloryType" to result.morningGloryType.name,
-            "timestamp" to result.timestamp
+            "timestamp" to result.timestamp,
+            "sleepSummary" to result.sleepSummary?.let { summary ->
+                hashMapOf(
+                    "sleepStartTime" to summary.sleepStartTime.toString(),
+                    "sleepEndTime" to summary.sleepEndTime.toString(),
+                    "sleepDurationMinutes" to summary.sleepDurationMinutes,
+                    "lightSleepMinutes" to summary.lightSleepMinutes,
+                    "deepSleepMinutes" to summary.deepSleepMinutes,
+                    "remSleepMinutes" to summary.remSleepMinutes,
+                    "awakeSleepMinutes" to summary.awakeSleepMinutes,
+                    "wakeHeartRate" to (summary.wakeHeartRate ?: -1L),
+                    "averageHrvMillis" to (summary.averageHrvMillis ?: -1),
+                    "stepsLast24Hours" to summary.stepsLast24Hours
+                )
+            }
         )
 
         try {
             resultsCollection.add(remoteData).await()
+            println("Firestore sleep_results save success with summary: ${result.sleepSummary != null}")
         } catch (e: Exception) {
             println("Firestore sleep_results save failed: ${e.message}")
         }

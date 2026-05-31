@@ -31,7 +31,7 @@ fun BottomBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(28.dp)
+            .padding(12.dp)
             .background(
                 color = Color(0xFF1F1F1F),
                 shape = RoundedCornerShape(40.dp)

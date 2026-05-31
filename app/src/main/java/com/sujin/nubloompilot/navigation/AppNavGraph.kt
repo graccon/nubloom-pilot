@@ -33,6 +33,7 @@ import com.sujin.nubloompilot.repository.ShiftScheduleRepository
 import com.sujin.nubloompilot.repository.SleepResultRepository
 import com.sujin.nubloompilot.repository.SleepStatusRepository
 import com.sujin.nubloompilot.repository.HealthConnectRepository
+import com.sujin.nubloompilot.repository.HealthSummaryRepository
 import com.sujin.nubloompilot.repository.SleepInterventionRepository
 import com.sujin.nubloompilot.local.SleepInterventionLocalStore
 import com.sujin.nubloompilot.models.SleepIntervention
@@ -66,6 +67,9 @@ fun AppNavGraph() {
         ParticipantRepository(context)
     }
 
+    val healthConnectRepository = remember { HealthConnectRepository(context) }
+    val healthSummaryRepository = remember { HealthSummaryRepository(healthConnectRepository) }
+
     val shiftScheduleRepository = remember {
         ShiftScheduleRepository(context)
     }
@@ -73,7 +77,7 @@ fun AppNavGraph() {
 
     val sleepStatusRepository = remember {
         SleepStatusRepository(
-            HealthConnectRepository(context),
+            healthConnectRepository,
             SleepSurveyLocalStore(context)
         )
     }
@@ -323,6 +327,7 @@ fun AppNavGraph() {
                     heartRate = if (args.heartRate == -1L) null else args.heartRate,
                     fatigueLevel = args.fatigueLevel,
                     interventionContext = interventionContext,
+                    healthSummaryRepository = healthSummaryRepository,
                     onSaveResult = { result ->
                         sleepResultRepository.saveSleepResult(result)
                     },

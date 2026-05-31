@@ -1,6 +1,7 @@
 package com.sujin.nubloompilot.repository
 
 import android.content.Context
+import android.util.Log
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.HeartRateRecord
@@ -131,18 +132,40 @@ class HealthConnectRepository(
             Duration.between(it.startTime, it.endTime).toMinutes() 
         }
 
-        // Total deep sleep across fragments
-        val deepSleepMinutes = latestGroup.sumOf { session ->
-            session.stages
-                .filter { it.stage == SleepSessionRecord.STAGE_TYPE_DEEP }
-                .sumOf { Duration.between(it.startTime, it.endTime).toMinutes() }
+        // Initialize sleep stage counters
+        var deepSleepMinutes = 0L
+        var lightSleepMinutes = 0L
+        var remSleepMinutes = 0L
+        var awakeSleepMinutes = 0L
+
+        // Calculate all sleep stages by iterating through group's stages
+        latestGroup.forEach { session ->
+            session.stages.forEach { stage ->
+                val stageDuration = Duration.between(stage.startTime, stage.endTime).toMinutes()
+                when (stage.stage) {
+                    SleepSessionRecord.STAGE_TYPE_DEEP -> deepSleepMinutes += stageDuration
+                    SleepSessionRecord.STAGE_TYPE_LIGHT -> lightSleepMinutes += stageDuration
+                    SleepSessionRecord.STAGE_TYPE_REM -> remSleepMinutes += stageDuration
+                    SleepSessionRecord.STAGE_TYPE_AWAKE -> awakeSleepMinutes += stageDuration
+                }
+            }
         }
+
+        Log.d("HealthConnectRepo", "Calculated Sleep Stages for Episode:")
+        Log.d("HealthConnectRepo", " - Total Fragment: $fragmentDurationMinutes m")
+        Log.d("HealthConnectRepo", " - Deep Sleep: $deepSleepMinutes m")
+        Log.d("HealthConnectRepo", " - Light Sleep: $lightSleepMinutes m")
+        Log.d("HealthConnectRepo", " - REM Sleep: $remSleepMinutes m")
+        Log.d("HealthConnectRepo", " - Awake: $awakeSleepMinutes m")
 
         return SleepEpisode(
             startTime = startTime,
             endTime = endTime,
             durationMinutes = fragmentDurationMinutes,
-            deepSleepMinutes = deepSleepMinutes
+            deepSleepMinutes = deepSleepMinutes,
+            lightSleepMinutes = lightSleepMinutes,
+            remSleepMinutes = remSleepMinutes,
+            awakeSleepMinutes = awakeSleepMinutes
         )
     }
 

@@ -1,5 +1,6 @@
 package com.sujin.nubloompilot.repository
 
+import android.util.Log
 import androidx.health.connect.client.records.SleepSessionRecord
 import com.sujin.nubloompilot.models.DailyHealthSummary
 import java.time.Duration
@@ -31,10 +32,15 @@ class HealthSummaryRepository(
             sleepEndTime = sleepEpisode.endTime,
             sleepDurationMinutes = sleepEpisode.durationMinutes,
             deepSleepMinutes = sleepEpisode.deepSleepMinutes,
+            lightSleepMinutes = sleepEpisode.lightSleepMinutes,
+            remSleepMinutes = sleepEpisode.remSleepMinutes,
+            awakeSleepMinutes = sleepEpisode.awakeSleepMinutes,
             wakeHeartRate = wakeHeartRate,
             averageHrvMillis = null, // HRV merging is more complex, keeping it null for now
             stepsLast24Hours = stepsLast24Hours
-        )
+        ).also {
+            Log.d("HealthSummaryRepo", "Mapped Latest Summary: Deep=${it.deepSleepMinutes}, Light=${it.lightSleepMinutes}, REM=${it.remSleepMinutes}, Awake=${it.awakeSleepMinutes}")
+        }
     }
 
     private suspend fun getWakeHeartRate(
@@ -114,17 +120,20 @@ class HealthSummaryRepository(
                     sleepSession.endTime
                 ).toMinutes()
 
-            val deepSleepMinutes =
-                sleepSession.stages
-                    .filter { stage ->
-                        stage.stage == SleepSessionRecord.STAGE_TYPE_DEEP
-                    }
-                    .sumOf { stage ->
-                        Duration.between(
-                            stage.startTime,
-                            stage.endTime
-                        ).toMinutes()
-                    }
+            var deepMinutes = 0L
+            var lightMinutes = 0L
+            var remMinutes = 0L
+            var awakeMinutes = 0L
+
+            sleepSession.stages.forEach { stage ->
+                val duration = Duration.between(stage.startTime, stage.endTime).toMinutes()
+                when (stage.stage) {
+                    SleepSessionRecord.STAGE_TYPE_DEEP -> deepMinutes += duration
+                    SleepSessionRecord.STAGE_TYPE_LIGHT -> lightMinutes += duration
+                    SleepSessionRecord.STAGE_TYPE_REM -> remMinutes += duration
+                    SleepSessionRecord.STAGE_TYPE_AWAKE -> awakeMinutes += duration
+                }
+            }
 
             val wakeHeartRate =
                 getWakeHeartRate(
@@ -145,7 +154,10 @@ class HealthSummaryRepository(
                 sleepStartTime = sleepSession.startTime,
                 sleepEndTime = sleepSession.endTime,
                 sleepDurationMinutes = sleepDurationMinutes,
-                deepSleepMinutes = deepSleepMinutes,
+                deepSleepMinutes = deepMinutes,
+                lightSleepMinutes = lightMinutes,
+                remSleepMinutes = remMinutes,
+                awakeSleepMinutes = awakeMinutes,
                 wakeHeartRate = wakeHeartRate,
                 averageHrvMillis = averageHrvMillis,
                 stepsLast24Hours = stepsLast24Hours

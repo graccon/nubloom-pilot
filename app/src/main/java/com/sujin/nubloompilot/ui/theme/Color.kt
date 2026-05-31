@@ -12,6 +12,9 @@ val HighlightsYellow = Color(0xFFFFF7C4)
 val DarkRed = Color(0xFFA75733)
 val DarkBlue = Color(0xFF3F5879)
 
+val Blue = Color(0xFF518DCC)
+
+
 // Background
 val Background = Color(0xFFF6F6F6)
 

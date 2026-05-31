@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,10 +33,10 @@ import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.HealthSummaryRepository
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
 import com.sujin.nubloompilot.pages.sleep.*
-import com.sujin.nubloompilot.ui.theme.Gray800
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import androidx.compose.ui.tooling.preview.Preview
+import com.sujin.nubloompilot.ui.theme.Gray300
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 import java.time.Instant
 
@@ -161,8 +163,8 @@ private fun SleepPageContent(
                     modifier = Modifier.weight(1f),
                     firstLabel = "수면 시작 - 수면 종료",
                     firstValue = "$startTimeText - $endTimeText",
-                    secondLabel = "깊은 수면",
-                    secondValue = "${summary.deepSleepMinutes}분"
+                    secondLabel = "깬 시간",
+                    secondValue = "${summary.awakeSleepMinutes}분"
                 )
                 SleepSummaryInfoCard(
                     modifier = Modifier.weight(1f),
@@ -171,6 +173,24 @@ private fun SleepPageContent(
                     secondLabel = "평균 심박수",
                     secondValue = "${averageWakeHeartRate ?: "--"} bpm"
                 )
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = Gray300
+                )
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    SleepStageStackedBar(
+                        lightSleepMinutes = summary.lightSleepMinutes,
+                        deepSleepMinutes = summary.deepSleepMinutes,
+                        remSleepMinutes = summary.remSleepMinutes,
+                        awakeSleepMinutes = summary.awakeSleepMinutes
+                    )
+                }
             }
             
             Spacer(modifier = Modifier.height(16.dp))
@@ -248,7 +268,10 @@ private fun SleepPagePreview() {
             sleepStartTime = now.minusSeconds(8 * 3600),
             sleepEndTime = now.minusSeconds(1 * 3600),
             sleepDurationMinutes = 420L,
-            deepSleepMinutes = 80L,
+            lightSleepMinutes = 240L,
+            deepSleepMinutes = 72L,
+            remSleepMinutes = 80L,
+            awakeSleepMinutes = 20L,
             wakeHeartRate = 65L,
             averageHrvMillis = null,
             stepsLast24Hours = 7000L
@@ -257,7 +280,10 @@ private fun SleepPagePreview() {
             sleepStartTime = yesterday.minusSeconds(7 * 3600),
             sleepEndTime = yesterday.plusSeconds(1 * 3600),
             sleepDurationMinutes = 480L,
-            deepSleepMinutes = 90L,
+            lightSleepMinutes = 300L,
+            deepSleepMinutes = 60L,
+            remSleepMinutes = 90L,
+            awakeSleepMinutes = 30L,
             wakeHeartRate = 68L,
             averageHrvMillis = null,
             stepsLast24Hours = 8000L

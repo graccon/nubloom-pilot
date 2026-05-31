@@ -10,5 +10,6 @@ data class SleepResult(
     val wakeHeartRate: Long?,
     val fatigueLevel: Int,
     val morningGloryType: MorningGloryType,
-    val timestamp: Long = System.currentTimeMillis()
+    val timestamp: Long = System.currentTimeMillis(),
+    val sleepSummary: DailyHealthSummary? = null
 )

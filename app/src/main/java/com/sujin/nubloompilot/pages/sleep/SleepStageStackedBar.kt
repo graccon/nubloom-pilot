@@ -10,11 +10,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sujin.nubloompilot.ui.theme.Blue
+import com.sujin.nubloompilot.ui.theme.DarkRed
 import com.sujin.nubloompilot.ui.theme.Gray800
 import com.sujin.nubloompilot.ui.theme.Gray300
+import com.sujin.nubloompilot.ui.theme.Primary
+import com.sujin.nubloompilot.ui.theme.SecondaryRed
+import com.sujin.nubloompilot.ui.theme.SecondaryYellow
 
 @Composable
 fun SleepStageStackedBar(
@@ -62,7 +66,7 @@ fun SleepStageStackedBar(
                         modifier = Modifier
                             .weight(lightSleepMinutes.toFloat())
                             .fillMaxHeight()
-                            .background(Color(0xFF81D4FA)) // Light Blue
+                            .background(SecondaryYellow)
                     )
                 }
                 if (deepSleepMinutes > 0) {
@@ -70,7 +74,7 @@ fun SleepStageStackedBar(
                         modifier = Modifier
                             .weight(deepSleepMinutes.toFloat())
                             .fillMaxHeight()
-                            .background(Color(0xFF3F51B5)) // Indigo
+                            .background(Primary)
                     )
                 }
                 if (remSleepMinutes > 0) {
@@ -78,7 +82,7 @@ fun SleepStageStackedBar(
                         modifier = Modifier
                             .weight(remSleepMinutes.toFloat())
                             .fillMaxHeight()
-                            .background(Color(0xFFB39DDB)) // Deep Purple (Light)
+                            .background(SecondaryRed)
                     )
                 }
                 if (awakeSleepMinutes > 0) {
@@ -86,7 +90,7 @@ fun SleepStageStackedBar(
                         modifier = Modifier
                             .weight(awakeSleepMinutes.toFloat())
                             .fillMaxHeight()
-                            .background(Color(0xFFFF8A65)) // Light Red/Orange
+                            .background(Blue)
                     )
                 }
             }
@@ -96,12 +100,12 @@ fun SleepStageStackedBar(
             // Legend
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    StageLegendItem(Modifier.weight(1f), "얕은 수면", lightSleepMinutes, Color(0xFF81D4FA))
-                    StageLegendItem(Modifier.weight(1f), "깊은 수면", deepSleepMinutes, Color(0xFF3F51B5))
+                    StageLegendItem(Modifier.weight(1f), "얕은 수면", lightSleepMinutes, SecondaryYellow)
+                    StageLegendItem(Modifier.weight(1f), "깊은 수면", deepSleepMinutes, Primary)
                 }
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    StageLegendItem(Modifier.weight(1f), "렘 수면", remSleepMinutes, Color(0xFFB39DDB))
-                    StageLegendItem(Modifier.weight(1f), "깨어있음", awakeSleepMinutes, Color(0xFFFF8A65))
+                    StageLegendItem(Modifier.weight(1f), "렘 수면", remSleepMinutes, SecondaryRed)
+                    StageLegendItem(Modifier.weight(1f), "깨어있음", awakeSleepMinutes, Blue)
                 }
             }
         }

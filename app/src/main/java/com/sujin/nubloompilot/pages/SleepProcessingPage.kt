@@ -42,6 +42,7 @@ fun SleepProcessingPage(
     heartRate: Long?,
     fatigueLevel: Int,
     interventionContext: SleepInterventionContext,
+    healthSummaryRepository: com.sujin.nubloompilot.repository.HealthSummaryRepository,
     onSaveResult: suspend (SleepResult) -> Unit,
     onSaveInterventions: suspend (List<SleepIntervention>, SleepInterventionContext) -> Unit,
     onProcessingComplete: () -> Unit,
@@ -58,6 +59,8 @@ fun SleepProcessingPage(
                 errorMessage = null
                 val startTime = System.currentTimeMillis()
                 try {
+                    val summary = healthSummaryRepository.getLatestHealthSummary()
+                    
                     val result = SleepResult(
                         participantId = participantId,
                         participantName = participantName,
@@ -65,7 +68,8 @@ fun SleepProcessingPage(
                         sleepDurationMinutes = duration,
                         wakeHeartRate = heartRate,
                         fatigueLevel = fatigueLevel,
-                        morningGloryType = type
+                        morningGloryType = type,
+                        sleepSummary = summary
                     )
                     onSaveResult(result)
                     SleepCheckInNotificationScheduler.cancelScheduledCheckIn(context)
@@ -230,6 +234,12 @@ fun SleepProcessingPagePreview() {
         subjectiveFatigueLevel = 3,
         objectiveRecoveryLevel = 3
     )
+    val context = LocalContext.current
+    val dummyRepo = remember { 
+        com.sujin.nubloompilot.repository.HealthSummaryRepository(
+            com.sujin.nubloompilot.repository.HealthConnectRepository(context)
+        )
+    }
     NubloomPilotTheme {
         SleepProcessingPage(
             participantId = "test",
@@ -240,6 +250,7 @@ fun SleepProcessingPagePreview() {
             heartRate = 70L,
             fatigueLevel = 3,
             interventionContext = dummyContext,
+            healthSummaryRepository = dummyRepo,
             onSaveResult = {},
             onSaveInterventions = { _, _ -> },
             onProcessingComplete = {}
