@@ -12,7 +12,7 @@ import com.sujin.nubloompilot.ui.theme.Gray800
 
 @Composable
 fun SleepDurationComparisonCard(
-    title: String = "오늘 총 수면시간",
+    title: String = "선택된 수면",
     todayAllSleepDurationMinutes: Long,
     todaySleepDurationMinutes: Long,
     averageSleepDurationMinutes: Long?
@@ -24,24 +24,30 @@ fun SleepDurationComparisonCard(
         )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            SleepMetricRow(
-                label = title,
-                value = formatDuration(todaySleepDurationMinutes),
-                labelStyle = MaterialTheme.typography.titleMedium,
-                valueStyle = MaterialTheme.typography.titleMedium
-            )
+            // 1. Selected segment (only if different from total or if we want to emphasize selection)
+            if (todayAllSleepDurationMinutes != todaySleepDurationMinutes) {
+                SleepMetricRow(
+                    label = title,
+                    value = formatDuration(todaySleepDurationMinutes),
+                    labelStyle = MaterialTheme.typography.titleMedium,
+                    valueStyle = MaterialTheme.typography.titleMedium
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+            }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
+            // 2. Total 24h Cumulative
             SleepMetricRow(
                 label = "오늘 총 수면시간 (24h)",
                 value = formatDuration(todayAllSleepDurationMinutes),
-                labelStyle = MaterialTheme.typography.bodyLarge,
-                valueStyle = MaterialTheme.typography.bodyLarge
+                labelStyle = if (todayAllSleepDurationMinutes == todaySleepDurationMinutes) 
+                    MaterialTheme.typography.titleMedium else MaterialTheme.typography.bodyLarge,
+                valueStyle = if (todayAllSleepDurationMinutes == todaySleepDurationMinutes) 
+                    MaterialTheme.typography.titleMedium else MaterialTheme.typography.bodyLarge
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
+            // 3. Average
             SleepMetricRow(
                 label = "최근 3일 평균",
                 value = averageSleepDurationMinutes?.let {
@@ -51,8 +57,9 @@ fun SleepDurationComparisonCard(
                 valueStyle = MaterialTheme.typography.bodyLarge
             )
 
+            // 4. Difference (based on total 24h)
             if (averageSleepDurationMinutes != null) {
-                val diff = todaySleepDurationMinutes - averageSleepDurationMinutes
+                val diff = todayAllSleepDurationMinutes - averageSleepDurationMinutes
                 val diffAbs = kotlin.math.abs(diff)
 
                 val diffDescription = when {

@@ -158,89 +158,47 @@ private fun SleepPageContent(
     ) {
         Text(
             text = "오늘의 수면 데이터",
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
         )
+        // TODO : 설명글 - 영역을 눌러 세부 잠의 정보를 살펴보세요.
         
         Spacer(modifier = Modifier.height(12.dp))
 
         if (isLoading) {
             Text("데이터를 불러오는 중...")
         } else if (latestSummary != null) {
+            val total24hSleepMinutes = if (sleepSummariesLast24h.isNotEmpty()) {
+                sleepSummariesLast24h.sumOf { it.sleepDurationMinutes }
+            } else {
+                latestSummary.sleepDurationMinutes
+            }
+
+            val displayedSummary = selectedSleepSummary ?: latestSummary
+
             // Display 24h summaries timeline if available
             if (sleepSummariesLast24h.isNotEmpty()) {
-                // TODO : (1) 24시간 타임라인에서 선택
                 SleepLast24hTimeline(
                     summaries = sleepSummariesLast24h,
                     selectedSummary = selectedSleepSummary,
                     onSummarySelected = { selectedSleepSummary = it }
                 )
+
+                Spacer(modifier = Modifier.height(24.dp))
             }
 
-            val displayedSummary = selectedSleepSummary ?: latestSummary
-            val startTimeText = displayedSummary.sleepStartTime.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("HH:mm"))
-            val endTimeText = displayedSummary.sleepEndTime.atZone(ZoneId.systemDefault())
-                .format(DateTimeFormatter.ofPattern("HH:mm"))
-            
-            // TODO : (2) 해당 수면 요약
-            // TODO : SleepDurationComparisonCard / 24시간 이내 총 수면시간 / 선택된 영역의 수면시간 
-            val total24hSleepMinutes = sleepSummariesLast24h.sumOf { it.sleepDurationMinutes }
+            SelectedSleepSummarySection(
+                summary = displayedSummary,
+                total24hSleepMinutes = total24hSleepMinutes,
+                hasMultipleSleepSummaries = sleepSummariesLast24h.size > 1,
+                averageSleepDurationMinutes = averageSleepDurationMinutes,
+                averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes,
+                todayShift = todayShift,
+                averageWakeHeartRate = averageWakeHeartRate
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
-            SleepDurationComparisonCard(
-                title = "선택된 수면시간",
-                todayAllSleepDurationMinutes = total24hSleepMinutes,
-                todaySleepDurationMinutes = displayedSummary.sleepDurationMinutes,
-                averageSleepDurationMinutes = averageSleepDurationMinutes
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                SleepSummaryInfoCard(
-                    modifier = Modifier.weight(1f),
-                    firstLabel = "수면 시작 - 수면 종료",
-                    firstValue = "$startTimeText - $endTimeText",
-                    secondLabel = "깬 시간",
-                    secondValue = "${displayedSummary.awakeSleepMinutes}분"
-                )
-                SleepSummaryInfoCard(
-                    modifier = Modifier.weight(1f),
-                    firstLabel = "기상 심박수",
-                    firstValue = "${displayedSummary.wakeHeartRate ?: "--"} bpm",
-                    secondLabel = "평균 심박수",
-                    secondValue = "${averageWakeHeartRate ?: "--"} bpm"
-                )
-            }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = Gray300
-                )
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    SleepStageStackedBar(
-                        lightSleepMinutes = displayedSummary.lightSleepMinutes,
-                        deepSleepMinutes = displayedSummary.deepSleepMinutes,
-                        remSleepMinutes = displayedSummary.remSleepMinutes,
-                        awakeSleepMinutes = displayedSummary.awakeSleepMinutes
-                    )
-                }
-            }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-
-            ShiftSleepComparisonCard(
-                todaySleepDurationMinutes = displayedSummary.sleepDurationMinutes,
-                todayShift = todayShift,
-                averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes
-            )
-
+            HorizontalDivider()
             Spacer(modifier = Modifier.height(24.dp))
 
             SleepTimelineBarChart(recentSummaries = recentSummaries)
@@ -298,6 +256,78 @@ private fun SleepPageContent(
                 style = MaterialTheme.typography.bodyMedium
             )
         }
+    }
+}
+
+@Composable
+private fun SelectedSleepSummarySection(
+    summary: DailyHealthSummary,
+    total24hSleepMinutes: Long,
+    hasMultipleSleepSummaries: Boolean,
+    averageSleepDurationMinutes: Long?,
+    averageShiftSleepDurationMinutes: Long?,
+    todayShift: String?,
+    averageWakeHeartRate: Long?
+) {
+    val startTimeText = summary.sleepStartTime.atZone(ZoneId.systemDefault())
+        .format(DateTimeFormatter.ofPattern("HH:mm"))
+    val endTimeText = summary.sleepEndTime.atZone(ZoneId.systemDefault())
+        .format(DateTimeFormatter.ofPattern("HH:mm"))
+
+    Column {
+        SleepDurationComparisonCard(
+            title = if (hasMultipleSleepSummaries) "선택된 수면의 시간" else "오늘 총 수면시간",
+            todayAllSleepDurationMinutes = total24hSleepMinutes,
+            todaySleepDurationMinutes = summary.sleepDurationMinutes,
+            averageSleepDurationMinutes = averageSleepDurationMinutes
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            SleepSummaryInfoCard(
+                modifier = Modifier.weight(1f),
+                firstLabel = "수면 시작 - 수면 종료",
+                firstValue = "$startTimeText - $endTimeText",
+                secondLabel = "깬 시간",
+                secondValue = "${summary.awakeSleepMinutes}분"
+            )
+            SleepSummaryInfoCard(
+                modifier = Modifier.weight(1f),
+                firstLabel = "기상 심박수",
+                firstValue = "${summary.wakeHeartRate ?: "--"} bpm",
+                secondLabel = "평균 심박수",
+                secondValue = "${averageWakeHeartRate ?: "--"} bpm"
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = Gray300
+            )
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                SleepStageStackedBar(
+                    lightSleepMinutes = summary.lightSleepMinutes,
+                    deepSleepMinutes = summary.deepSleepMinutes,
+                    remSleepMinutes = summary.remSleepMinutes,
+                    awakeSleepMinutes = summary.awakeSleepMinutes
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ShiftSleepComparisonCard(
+            todaySleepDurationMinutes = summary.sleepDurationMinutes,
+            todayShift = todayShift,
+            averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes
+        )
     }
 }
 
