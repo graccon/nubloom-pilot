@@ -8,6 +8,8 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.sujin.nubloompilot.models.AppDiagnosticsState
 import com.sujin.nubloompilot.notifications.SleepCheckInNotificationScheduler
+import com.sujin.nubloompilot.local.SleepInterventionLocalStore
+import com.sujin.nubloompilot.utils.hasActiveIntervention
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -16,7 +18,8 @@ import java.time.format.DateTimeFormatter
 class AppDiagnosticsRepository(
     private val context: Context,
     private val healthConnectRepository: HealthConnectRepository,
-    private val shiftScheduleRepository: ShiftScheduleRepository
+    private val shiftScheduleRepository: ShiftScheduleRepository,
+    private val interventionLocalStore: SleepInterventionLocalStore
 ) {
     suspend fun getDiagnosticsState(
         baselineProfileExists: Boolean
@@ -68,6 +71,8 @@ class AppDiagnosticsRepository(
             }
         }
 
+        val activeIntervention = interventionLocalStore.getLatest().hasActiveIntervention()
+
         return AppDiagnosticsState(
             notificationEnabled = isNotificationGranted,
             healthConnectInstalled = isHealthConnectAvailable,
@@ -79,7 +84,8 @@ class AppDiagnosticsRepository(
             mctqCompleted = baselineProfileExists,
             todayDutyRegistered = !todayShift.isNullOrBlank(),
             checkInNotificationScheduled = SleepCheckInNotificationScheduler.isCheckInNotificationScheduled(context),
-            nextCheckInNotificationTimeText = null
+            nextCheckInNotificationTimeText = null,
+            activeInterventionExists = activeIntervention
         )
     }
 }

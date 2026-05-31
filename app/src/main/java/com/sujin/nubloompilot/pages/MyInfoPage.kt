@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.components.AppDiagnosticsSection
 import com.sujin.nubloompilot.components.DutyScheduleSection
 import com.sujin.nubloompilot.local.ParticipantLocalStore
+import com.sujin.nubloompilot.local.SleepInterventionLocalStore
 import com.sujin.nubloompilot.repository.AppDiagnosticsRepository
 import com.sujin.nubloompilot.repository.BugReportRepository
 import com.sujin.nubloompilot.repository.HealthConnectRepository
@@ -50,7 +51,8 @@ fun MyInfoPage(
         AppDiagnosticsRepository(
             context = context,
             healthConnectRepository = healthConnectRepository,
-            shiftScheduleRepository = scheduleRepository
+            shiftScheduleRepository = scheduleRepository,
+            interventionLocalStore = SleepInterventionLocalStore(context)
         )
     }
 

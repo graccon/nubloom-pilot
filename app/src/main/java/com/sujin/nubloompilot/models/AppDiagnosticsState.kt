@@ -14,7 +14,8 @@ data class AppDiagnosticsState(
     val mctqCompleted: Boolean = false,
     val todayDutyRegistered: Boolean = false,
     val checkInNotificationScheduled: Boolean = false,
-    val nextCheckInNotificationTimeText: String? = null
+    val nextCheckInNotificationTimeText: String? = null,
+    val activeInterventionExists: Boolean = false
 ) {
     /**
      * True if all critical components are ready for normal operation.
@@ -41,6 +42,7 @@ data class AppDiagnosticsState(
             if (!stepsDataAvailable) count++
             if (!mctqCompleted) count++
             if (!todayDutyRegistered) count++
+            if (!activeInterventionExists) count++
             return count
         }
 }

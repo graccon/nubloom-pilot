@@ -41,6 +41,7 @@ import com.sujin.nubloompilot.models.SavedSleepIntervention
 import com.sujin.nubloompilot.models.TimelineMarker
 import com.sujin.nubloompilot.ui.theme.*
 import com.sujin.nubloompilot.utils.InterventionToMarkerMapper
+import com.sujin.nubloompilot.utils.hasActiveIntervention
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -130,14 +131,7 @@ private fun HomePageContent(
 
 
     val isInterventionValid = remember(latestInterventionBundle, currentTime) {
-        if (latestInterventionBundle == null) return@remember false
-        
-        val now = LocalDateTime.now()
-        latestInterventionBundle.interventions.any { intervention ->
-            runCatching {
-                LocalDateTime.parse(intervention.endTime).isAfter(now)
-            }.getOrDefault(false)
-        }
+        latestInterventionBundle.hasActiveIntervention()
     }
 
     val timelineMarkers = remember(latestInterventionBundle, isInterventionValid) {

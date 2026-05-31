@@ -78,6 +78,13 @@ fun AppDiagnosticsSection(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 DiagnosticRow(
+                    label = "활성 개입",
+                    isOk = state.activeInterventionExists,
+                    positiveText = "정상",
+                    negativeText = "없음"
+                )
+
+                DiagnosticRow(
                     label = "체크인 알림 예약",
                     isOk = state.checkInNotificationScheduled,
                     positiveText = "예약됨",
