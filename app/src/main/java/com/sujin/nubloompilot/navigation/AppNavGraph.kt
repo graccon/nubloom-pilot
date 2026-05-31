@@ -22,6 +22,7 @@ import com.sujin.nubloompilot.models.SleepResult
 import com.sujin.nubloompilot.pages.HomePage
 import com.sujin.nubloompilot.pages.MorningGloryResultPage
 import com.sujin.nubloompilot.pages.MorningGloryTypeInfoPage
+import com.sujin.nubloompilot.pages.CheckInNotificationHelpPage
 import com.sujin.nubloompilot.pages.MyInfoPage
 import com.sujin.nubloompilot.pages.OnboardingPage
 import com.sujin.nubloompilot.pages.HealthConnectGuidePage
@@ -131,7 +132,8 @@ fun AppNavGraph() {
             !currentRoute.startsWith("sleep_check_in") &&
             !currentRoute.startsWith("sleep_processing") &&
             !currentRoute.startsWith("morning_glory_result") &&
-            currentRoute != Routes.MORNING_GLORY_TYPE_INFO
+            currentRoute != Routes.MORNING_GLORY_TYPE_INFO &&
+            currentRoute != Routes.CHECK_IN_NOTIFICATION_HELP
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -400,6 +402,9 @@ fun AppNavGraph() {
                     onOpenTypeInfo = {
                         navController.navigate(Routes.MORNING_GLORY_TYPE_INFO)
                     },
+                    onOpenNotificationHelp = {
+                        navController.navigate(Routes.CHECK_IN_NOTIFICATION_HELP)
+                    },
                     onBackHome = {
                         navController.navigate(Routes.HOME) {
                             popUpTo(Routes.HOME) {
@@ -412,6 +417,12 @@ fun AppNavGraph() {
 
             composable(Routes.MORNING_GLORY_TYPE_INFO) {
                 MorningGloryTypeInfoPage(
+                    onBack = { navController.popBackStack() }
+                )
+            }
+
+            composable(Routes.CHECK_IN_NOTIFICATION_HELP) {
+                CheckInNotificationHelpPage(
                     onBack = { navController.popBackStack() }
                 )
             }

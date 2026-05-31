@@ -34,6 +34,7 @@ fun MorningGloryResultPage(
     type: MorningGloryType,
     onBackHome: () -> Unit,
     onOpenTypeInfo: () -> Unit = {},
+    onOpenNotificationHelp: () -> Unit = {},
     interventions: List<SavedSleepIntervention>,
     isReviewMode: Boolean = false,
     modifier: Modifier = Modifier
@@ -102,7 +103,20 @@ fun MorningGloryResultPage(
             )
         }
 
-        // TODO: 수면 후 일어났는데 알림이
+        TextButton(
+            onClick = onOpenNotificationHelp,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "수면 후 체크인 알림이 안 떠요",
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    textDecoration = TextDecoration.Underline
+                ),
+                fontWeight = FontWeight.SemiBold,
+                color = Gray100
+            )
+        }
+
 
         Spacer(modifier = Modifier.height(24.dp))
 

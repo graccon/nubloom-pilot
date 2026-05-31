@@ -114,7 +114,7 @@ fun MorningGloryTypeInfoPage(
             ) {
                 Text(
                     "돌아가기",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )

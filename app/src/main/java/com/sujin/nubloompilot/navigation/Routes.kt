@@ -10,6 +10,7 @@ object Routes {
     const val CHECK_IN = "check_in"
     const val SLEEP = "sleep"
     const val MORNING_GLORY_TYPE_INFO = "morning_glory_type_info"
+    const val CHECK_IN_NOTIFICATION_HELP = "check_in_notification_help"
 
     const val SLEEP_CHECK_IN =
         "sleep_check_in/{endTime}/{duration}/{heartRate}/{baselineDuration}/{baselineHeartRate}"
