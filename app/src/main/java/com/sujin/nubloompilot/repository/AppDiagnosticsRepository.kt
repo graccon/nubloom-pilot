@@ -27,6 +27,7 @@ class AppDiagnosticsRepository(
         val isHealthConnectAvailable = healthConnectRepository.isHealthConnectAvailable()
         val today = LocalDate.now()
         val todayShift = shiftScheduleRepository.getShiftForDate(today)
+        val yesterdayShift = shiftScheduleRepository.getShiftForDate(today.minusDays(1))
 
         val isNotificationGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(
@@ -36,8 +37,6 @@ class AppDiagnosticsRepository(
         } else {
             true
         }
-
-
 
         var healthPermissionGranted = false
         var todaySleepSynced = false
@@ -50,17 +49,20 @@ class AppDiagnosticsRepository(
                 healthPermissionGranted = healthConnectRepository.hasHealthPermissions()
                 
                 if (healthPermissionGranted) {
-                    // 1. Check Sleep
+                    val now = Instant.now()
+                    
+                    // 1. Check Sleep (within last 30 hours)
                     val latestSession = healthConnectRepository.getLatestSleepSession()
                     if (latestSession != null) {
                         val zoneId = ZoneId.systemDefault()
                         val endDateTime = latestSession.endTime.atZone(zoneId)
-                        todaySleepSynced = endDateTime.toLocalDate() == today
+                        
+                        val sleepFreshThreshold = now.minusSeconds(30 * 60 * 60)
+                        todaySleepSynced = latestSession.endTime.isAfter(sleepFreshThreshold)
                         lastSleepSyncTimeText = endDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
                     }
 
                     // 2. Check Heart Rate & Steps (Last 24 hours)
-                    val now = Instant.now()
                     val dayAgo = now.minusSeconds(86400)
 
                     heartRateAvailable = healthConnectRepository.readHeartRates(dayAgo, now).isNotEmpty()
@@ -82,7 +84,7 @@ class AppDiagnosticsRepository(
             heartRateDataAvailable = heartRateAvailable,
             stepsDataAvailable = stepsAvailable,
             mctqCompleted = baselineProfileExists,
-            todayDutyRegistered = !todayShift.isNullOrBlank(),
+            todayDutyRegistered = !todayShift.isNullOrBlank() || yesterdayShift == "N",
             checkInNotificationScheduled = SleepCheckInNotificationScheduler.isCheckInNotificationScheduled(context),
             nextCheckInNotificationTimeText = null,
             activeInterventionExists = activeIntervention
