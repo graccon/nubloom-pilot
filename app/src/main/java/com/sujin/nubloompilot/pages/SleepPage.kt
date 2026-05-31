@@ -213,28 +213,49 @@ private fun SleepPageContent(
             Text("감지된 수면 데이터가 없습니다.")
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
-        HorizontalDivider()
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(44.dp))
 
+//        NotificationTestSection(
+//            permissionStatus = permissionStatus,
+//            notificationRequestStatus = notificationRequestStatus,
+//            onRequestPermission = onRequestNotificationPermission,
+//            onTestNotification = onShowSleepCheckInNotification
+//        )
+    }
+}
+
+@Composable
+private fun NotificationTestSection(
+    permissionStatus: String,
+    notificationRequestStatus: String,
+    onRequestPermission: () -> Unit,
+    onTestNotification: () -> Unit
+) {
+    Column {
         Text(
             text = "알림 권한 테스트",
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
         )
-        
+
+        HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+
+        Text(
+            text = permissionStatus,
+            style = MaterialTheme.typography.bodyMedium,
+            color = Gray800
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
-        
-        Text(text = permissionStatus)
-        
-        Spacer(modifier = Modifier.height(24.dp))
-        
+
         Button(
-            onClick = onRequestNotificationPermission
+            onClick = onRequestPermission,
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("알림 권한 요청")
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         val isNotificationEnabled = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissionStatus == "알림 권한 허용됨"
@@ -243,8 +264,9 @@ private fun SleepPageContent(
         }
 
         Button(
-            onClick = onShowSleepCheckInNotification,
-            enabled = isNotificationEnabled
+            onClick = onTestNotification,
+            enabled = isNotificationEnabled,
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("수면 체크인 알림 테스트")
         }
@@ -253,7 +275,8 @@ private fun SleepPageContent(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = notificationRequestStatus,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary
             )
         }
     }
@@ -330,108 +353,3 @@ private fun SelectedSleepSummarySection(
         )
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-private fun SleepPagePreview() {
-    val now = Instant.now()
-    val yesterday = now.minusSeconds(24 * 3600)
-    
-    val dummy24hSummaries = listOf(
-        DailyHealthSummary(
-            sleepStartTime = now.minusSeconds(10 * 3600), // 10 hours ago
-            sleepEndTime = now.minusSeconds(2 * 3600),   // 2 hours ago
-            sleepDurationMinutes = 480L,
-            lightSleepMinutes = 240L,
-            deepSleepMinutes = 72L,
-            remSleepMinutes = 80L,
-            awakeSleepMinutes = 20L,
-            wakeHeartRate = 65L,
-            averageHrvMillis = null,
-            stepsLast24Hours = 7000L
-        ),
-        DailyHealthSummary(
-            sleepStartTime = now.minusSeconds(16 * 3600),  // 16 hours ago
-            sleepEndTime = now.minusSeconds(15 * 3600 + 1800), // 15.5 hours ago
-            sleepDurationMinutes = 30L,
-            lightSleepMinutes = 20L,
-            deepSleepMinutes = 5L,
-            remSleepMinutes = 5L,
-            awakeSleepMinutes = 0L,
-            wakeHeartRate = 68L,
-            averageHrvMillis = null,
-            stepsLast24Hours = 0L
-        ),
-        DailyHealthSummary(
-            sleepStartTime = now.minusSeconds(22 * 3600),  // 22 hours ago
-            sleepEndTime = now.minusSeconds(21 * 3600 + 1500), // 21.6 hours ago
-            sleepDurationMinutes = 25L,
-            lightSleepMinutes = 15L,
-            deepSleepMinutes = 5L,
-            remSleepMinutes = 5L,
-            awakeSleepMinutes = 0L,
-            wakeHeartRate = 66L,
-            averageHrvMillis = null,
-            stepsLast24Hours = 0L
-        )
-    )
-
-    val dummySummaries = listOf(
-        dummy24hSummaries[0],
-        DailyHealthSummary(
-            sleepStartTime = yesterday.minusSeconds(7 * 3600),
-            sleepEndTime = yesterday.plusSeconds(1 * 3600),
-            sleepDurationMinutes = 480L,
-            lightSleepMinutes = 300L,
-            deepSleepMinutes = 60L,
-            remSleepMinutes = 90L,
-            awakeSleepMinutes = 30L,
-            wakeHeartRate = 68L,
-            averageHrvMillis = null,
-            stepsLast24Hours = 8000L
-        )
-    )
-
-    NubloomPilotTheme {
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            Text("데이터 3개인 경우", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(16.dp))
-            SleepPageContent(
-                latestSummary = dummy24hSummaries[0],
-                recentSummaries = dummySummaries,
-                sleepSummariesLast24h = dummy24hSummaries,
-                checkInHistory = emptyList(),
-                averageSleepDurationMinutes = 420L,
-                averageShiftSleepDurationMinutes = 360L,
-                todayShift = "E",
-                averageWakeHeartRate = 72L,
-                isLoading = false,
-                permissionStatus = "알림 권한 허용됨",
-                notificationRequestStatus = "",
-                onRequestNotificationPermission = {},
-                onShowSleepCheckInNotification = {}
-            )
-            
-            Spacer(modifier = Modifier.height(40.dp))
-            HorizontalDivider(thickness = 4.dp)
-            
-            Text("데이터 1개인 경우", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(16.dp))
-            SleepPageContent(
-                latestSummary = dummy24hSummaries[0],
-                recentSummaries = dummySummaries,
-                sleepSummariesLast24h = listOf(dummy24hSummaries[0]),
-                checkInHistory = emptyList(),
-                averageSleepDurationMinutes = 420L,
-                averageShiftSleepDurationMinutes = 360L,
-                todayShift = "E",
-                averageWakeHeartRate = 72L,
-                isLoading = false,
-                permissionStatus = "알림 권한 허용됨",
-                notificationRequestStatus = "",
-                onRequestNotificationPermission = {},
-                onShowSleepCheckInNotification = {}
-            )
-        }
-    }
-}
-
-

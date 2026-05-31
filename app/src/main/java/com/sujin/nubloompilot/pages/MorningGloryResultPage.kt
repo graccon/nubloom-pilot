@@ -22,6 +22,7 @@ import com.sujin.nubloompilot.ui.theme.*
 import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.Surface
+import androidx.compose.ui.text.style.TextDecoration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import com.sujin.nubloompilot.models.*
@@ -32,6 +33,7 @@ fun MorningGloryResultPage(
     participantName: String,
     type: MorningGloryType,
     onBackHome: () -> Unit,
+    onOpenTypeInfo: () -> Unit = {},
     interventions: List<SavedSleepIntervention>,
     isReviewMode: Boolean = false,
     modifier: Modifier = Modifier
@@ -84,7 +86,23 @@ fun MorningGloryResultPage(
         )
 
         Spacer(modifier = Modifier.weight(1f))
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+
+        TextButton(
+            onClick = onOpenTypeInfo,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "다른 나팔꽃 유형도 궁금해요",
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    textDecoration = TextDecoration.Underline
+                ),
+                fontWeight = FontWeight.SemiBold,
+                color = Gray100
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         Button(
             onClick = { onBackHome() },
@@ -104,6 +122,7 @@ fun MorningGloryResultPage(
                 color = Gray900
             )
         }
+
     }
 }
 
@@ -269,39 +288,6 @@ private fun ResultSummaryCard(
             Spacer(modifier = Modifier.height(12.dp))
         }
 
-//        Text(
-//            text = "오늘의 해석",
-//            style = MaterialTheme.typography.titleMedium,
-//            fontWeight = FontWeight.Bold,
-//            color = Gray900
-//        )
-//
-//        Spacer(modifier = Modifier.height(12.dp))
-//
-//        Text(
-//            text = objectiveText,
-//            style = MaterialTheme.typography.bodyMedium,
-//            fontWeight = FontWeight.Medium,
-//            color = Gray900
-//        )
-//
-//        Spacer(modifier = Modifier.height(6.dp))
-//
-//        Text(
-//            text = subjectiveText,
-//            style = MaterialTheme.typography.bodyMedium,
-//            fontWeight = FontWeight.Medium,
-//            color = Gray900
-//        )
-//
-//        Spacer(modifier = Modifier.height(6.dp))
-//
-//        Text(
-//            text = encouragementText,
-//            style = MaterialTheme.typography.bodyMedium,
-//            fontWeight = FontWeight.Medium,
-//            color = Gray900
-//        )
     }
 }
 

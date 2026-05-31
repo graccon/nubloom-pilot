@@ -159,9 +159,9 @@ fun MyInfoPage(
                 }
             )
 
-            MctqBaselineSection(baselineProfile)
-
-            MctqBehaviorSection(mctqBehaviorProfile)
+//            MctqBaselineSection(baselineProfile)
+//
+//            MctqBehaviorSection(mctqBehaviorProfile)
 
             BugReportSection(
                 isSubmitting = isBugReportSubmitting,

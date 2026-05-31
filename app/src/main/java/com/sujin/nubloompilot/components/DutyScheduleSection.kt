@@ -72,7 +72,7 @@ fun DutyScheduleSection(
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         if (isEditMode) {
             DutyScheduleEditPanel(
@@ -85,6 +85,7 @@ fun DutyScheduleSection(
         if (!isEditMode) {
             ShiftLegend()
             Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }

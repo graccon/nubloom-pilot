@@ -21,6 +21,7 @@ import com.sujin.nubloompilot.models.BaselineAssessment
 import com.sujin.nubloompilot.models.SleepResult
 import com.sujin.nubloompilot.pages.HomePage
 import com.sujin.nubloompilot.pages.MorningGloryResultPage
+import com.sujin.nubloompilot.pages.MorningGloryTypeInfoPage
 import com.sujin.nubloompilot.pages.MyInfoPage
 import com.sujin.nubloompilot.pages.OnboardingPage
 import com.sujin.nubloompilot.pages.HealthConnectGuidePage
@@ -129,7 +130,8 @@ fun AppNavGraph() {
             currentRoute != Routes.ONBOARDING_PROCESSING &&
             !currentRoute.startsWith("sleep_check_in") &&
             !currentRoute.startsWith("sleep_processing") &&
-            !currentRoute.startsWith("morning_glory_result")
+            !currentRoute.startsWith("morning_glory_result") &&
+            currentRoute != Routes.MORNING_GLORY_TYPE_INFO
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -395,6 +397,9 @@ fun AppNavGraph() {
                     type = finalType,
                     interventions = interventions,
                     isReviewMode = args.endTime == "NONE",
+                    onOpenTypeInfo = {
+                        navController.navigate(Routes.MORNING_GLORY_TYPE_INFO)
+                    },
                     onBackHome = {
                         navController.navigate(Routes.HOME) {
                             popUpTo(Routes.HOME) {
@@ -402,6 +407,12 @@ fun AppNavGraph() {
                             }
                         }
                     }
+                )
+            }
+
+            composable(Routes.MORNING_GLORY_TYPE_INFO) {
+                MorningGloryTypeInfoPage(
+                    onBack = { navController.popBackStack() }
                 )
             }
         }
