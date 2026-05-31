@@ -38,7 +38,8 @@ fun SleepTimelineBarChart(
     ) {
         Text(
             text = "최근 3일 수면 타임라인",
-            style = MaterialTheme.typography.titleSmall,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
             color = Gray800
         )
 

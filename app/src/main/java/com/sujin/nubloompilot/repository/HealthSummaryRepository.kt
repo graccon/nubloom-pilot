@@ -43,6 +43,46 @@ class HealthSummaryRepository(
         }
     }
 
+    suspend fun getHealthSummariesLast24h(): List<DailyHealthSummary> {
+        val now = Instant.now()
+        val sessions = healthConnectRepository.getRecentSleepSessions(lookBackHours = 24L)
+        
+        return sessions.map { sleepSession ->
+            val sleepDurationMinutes = Duration.between(sleepSession.startTime, sleepSession.endTime).toMinutes()
+
+            var deepMinutes = 0L
+            var lightMinutes = 0L
+            var remMinutes = 0L
+            var awakeMinutes = 0L
+
+            sleepSession.stages.forEach { stage ->
+                val duration = Duration.between(stage.startTime, stage.endTime).toMinutes()
+                when (stage.stage) {
+                    SleepSessionRecord.STAGE_TYPE_DEEP -> deepMinutes += duration
+                    SleepSessionRecord.STAGE_TYPE_LIGHT -> lightMinutes += duration
+                    SleepSessionRecord.STAGE_TYPE_REM -> remMinutes += duration
+                    SleepSessionRecord.STAGE_TYPE_AWAKE -> awakeMinutes += duration
+                }
+            }
+
+            val wakeHeartRate = getWakeHeartRate(sleepEndTime = sleepSession.endTime)
+            val stepsLast24Hours = getStepsLast24Hours(now = now)
+
+            DailyHealthSummary(
+                sleepStartTime = sleepSession.startTime,
+                sleepEndTime = sleepSession.endTime,
+                sleepDurationMinutes = sleepDurationMinutes,
+                deepSleepMinutes = deepMinutes,
+                lightSleepMinutes = lightMinutes,
+                remSleepMinutes = remMinutes,
+                awakeSleepMinutes = awakeMinutes,
+                wakeHeartRate = wakeHeartRate,
+                averageHrvMillis = null,
+                stepsLast24Hours = stepsLast24Hours
+            )
+        }
+    }
+
     private suspend fun getWakeHeartRate(
         sleepEndTime: Instant
     ): Long? {

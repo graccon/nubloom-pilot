@@ -11,5 +11,6 @@ data class SleepResult(
     val fatigueLevel: Int,
     val morningGloryType: MorningGloryType,
     val timestamp: Long = System.currentTimeMillis(),
-    val sleepSummary: DailyHealthSummary? = null
+    val sleepSummary: DailyHealthSummary? = null,
+    val sleepSummariesLast24h: List<DailyHealthSummary> = emptyList()
 )

@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,6 +41,8 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import androidx.compose.ui.tooling.preview.Preview
 import com.sujin.nubloompilot.ui.theme.Gray300
+import com.sujin.nubloompilot.ui.theme.Gray500
+import com.sujin.nubloompilot.ui.theme.Gray800
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 import java.time.Instant
 
@@ -94,6 +97,7 @@ fun SleepPage() {
     SleepPageContent(
         latestSummary = uiState.latestSummary,
         recentSummaries = uiState.recentSummaries,
+        sleepSummariesLast24h = uiState.sleepSummariesLast24h,
         checkInHistory = uiState.checkInHistory,
         averageSleepDurationMinutes = uiState.averageSleepDurationMinutes,
         averageShiftSleepDurationMinutes = uiState.averageShiftSleepDurationMinutes,
@@ -130,6 +134,7 @@ fun SleepPage() {
 private fun SleepPageContent(
     latestSummary: DailyHealthSummary?,
     recentSummaries: List<DailyHealthSummary>,
+    sleepSummariesLast24h: List<DailyHealthSummary>,
     checkInHistory: List<com.sujin.nubloompilot.models.SleepResult>,
     averageSleepDurationMinutes: Long?,
     averageShiftSleepDurationMinutes: Long?,
@@ -141,6 +146,10 @@ private fun SleepPageContent(
     onRequestNotificationPermission: () -> Unit,
     onShowSleepCheckInNotification: () -> Unit
 ) {
+    var selectedSleepSummary by remember(sleepSummariesLast24h) {
+        mutableStateOf(sleepSummariesLast24h.maxByOrNull { it.sleepDurationMinutes })
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -157,15 +166,31 @@ private fun SleepPageContent(
         if (isLoading) {
             Text("데이터를 불러오는 중...")
         } else if (latestSummary != null) {
-            val summary = latestSummary
-            val startTimeText = summary.sleepStartTime.atZone(ZoneId.systemDefault())
+            // Display 24h summaries timeline if available
+            if (sleepSummariesLast24h.isNotEmpty()) {
+                // TODO : (1) 24시간 타임라인에서 선택
+                SleepLast24hTimeline(
+                    summaries = sleepSummariesLast24h,
+                    selectedSummary = selectedSleepSummary,
+                    onSummarySelected = { selectedSleepSummary = it }
+                )
+            }
+
+            val displayedSummary = selectedSleepSummary ?: latestSummary
+            val startTimeText = displayedSummary.sleepStartTime.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("HH:mm"))
-            val endTimeText = summary.sleepEndTime.atZone(ZoneId.systemDefault())
+            val endTimeText = displayedSummary.sleepEndTime.atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("HH:mm"))
             
+            // TODO : (2) 해당 수면 요약
+            // TODO : SleepDurationComparisonCard / 24시간 이내 총 수면시간 / 선택된 영역의 수면시간 
+            val total24hSleepMinutes = sleepSummariesLast24h.sumOf { it.sleepDurationMinutes }
 
+            Spacer(modifier = Modifier.height(24.dp))
             SleepDurationComparisonCard(
-                todaySleepDurationMinutes = summary.sleepDurationMinutes,
+                title = "선택된 수면시간",
+                todayAllSleepDurationMinutes = total24hSleepMinutes,
+                todaySleepDurationMinutes = displayedSummary.sleepDurationMinutes,
                 averageSleepDurationMinutes = averageSleepDurationMinutes
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -179,12 +204,12 @@ private fun SleepPageContent(
                     firstLabel = "수면 시작 - 수면 종료",
                     firstValue = "$startTimeText - $endTimeText",
                     secondLabel = "깬 시간",
-                    secondValue = "${summary.awakeSleepMinutes}분"
+                    secondValue = "${displayedSummary.awakeSleepMinutes}분"
                 )
                 SleepSummaryInfoCard(
                     modifier = Modifier.weight(1f),
                     firstLabel = "기상 심박수",
-                    firstValue = "${summary.wakeHeartRate ?: "--"} bpm",
+                    firstValue = "${displayedSummary.wakeHeartRate ?: "--"} bpm",
                     secondLabel = "평균 심박수",
                     secondValue = "${averageWakeHeartRate ?: "--"} bpm"
                 )
@@ -200,10 +225,10 @@ private fun SleepPageContent(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     SleepStageStackedBar(
-                        lightSleepMinutes = summary.lightSleepMinutes,
-                        deepSleepMinutes = summary.deepSleepMinutes,
-                        remSleepMinutes = summary.remSleepMinutes,
-                        awakeSleepMinutes = summary.awakeSleepMinutes
+                        lightSleepMinutes = displayedSummary.lightSleepMinutes,
+                        deepSleepMinutes = displayedSummary.deepSleepMinutes,
+                        remSleepMinutes = displayedSummary.remSleepMinutes,
+                        awakeSleepMinutes = displayedSummary.awakeSleepMinutes
                     )
                 }
             }
@@ -211,7 +236,7 @@ private fun SleepPageContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             ShiftSleepComparisonCard(
-                todaySleepDurationMinutes = summary.sleepDurationMinutes,
+                todaySleepDurationMinutes = displayedSummary.sleepDurationMinutes,
                 todayShift = todayShift,
                 averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes
             )
@@ -282,11 +307,11 @@ private fun SleepPagePreview() {
     val now = Instant.now()
     val yesterday = now.minusSeconds(24 * 3600)
     
-    val dummySummaries = listOf(
+    val dummy24hSummaries = listOf(
         DailyHealthSummary(
-            sleepStartTime = now.minusSeconds(8 * 3600),
-            sleepEndTime = now.minusSeconds(1 * 3600),
-            sleepDurationMinutes = 420L,
+            sleepStartTime = now.minusSeconds(10 * 3600), // 10 hours ago
+            sleepEndTime = now.minusSeconds(2 * 3600),   // 2 hours ago
+            sleepDurationMinutes = 480L,
             lightSleepMinutes = 240L,
             deepSleepMinutes = 72L,
             remSleepMinutes = 80L,
@@ -295,6 +320,34 @@ private fun SleepPagePreview() {
             averageHrvMillis = null,
             stepsLast24Hours = 7000L
         ),
+        DailyHealthSummary(
+            sleepStartTime = now.minusSeconds(16 * 3600),  // 16 hours ago
+            sleepEndTime = now.minusSeconds(15 * 3600 + 1800), // 15.5 hours ago
+            sleepDurationMinutes = 30L,
+            lightSleepMinutes = 20L,
+            deepSleepMinutes = 5L,
+            remSleepMinutes = 5L,
+            awakeSleepMinutes = 0L,
+            wakeHeartRate = 68L,
+            averageHrvMillis = null,
+            stepsLast24Hours = 0L
+        ),
+        DailyHealthSummary(
+            sleepStartTime = now.minusSeconds(22 * 3600),  // 22 hours ago
+            sleepEndTime = now.minusSeconds(21 * 3600 + 1500), // 21.6 hours ago
+            sleepDurationMinutes = 25L,
+            lightSleepMinutes = 15L,
+            deepSleepMinutes = 5L,
+            remSleepMinutes = 5L,
+            awakeSleepMinutes = 0L,
+            wakeHeartRate = 66L,
+            averageHrvMillis = null,
+            stepsLast24Hours = 0L
+        )
+    )
+
+    val dummySummaries = listOf(
+        dummy24hSummaries[0],
         DailyHealthSummary(
             sleepStartTime = yesterday.minusSeconds(7 * 3600),
             sleepEndTime = yesterday.plusSeconds(1 * 3600),
@@ -310,20 +363,44 @@ private fun SleepPagePreview() {
     )
 
     NubloomPilotTheme {
-        SleepPageContent(
-            latestSummary = dummySummaries[0],
-            recentSummaries = dummySummaries,
-            checkInHistory = emptyList(),
-            averageSleepDurationMinutes = 420L,
-            averageShiftSleepDurationMinutes = 360L,
-            todayShift = "E",
-            averageWakeHeartRate = 72L,
-            isLoading = false,
-            permissionStatus = "알림 권한 허용됨",
-            notificationRequestStatus = "",
-            onRequestNotificationPermission = {},
-            onShowSleepCheckInNotification = {}
-        )
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            Text("데이터 3개인 경우", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(16.dp))
+            SleepPageContent(
+                latestSummary = dummy24hSummaries[0],
+                recentSummaries = dummySummaries,
+                sleepSummariesLast24h = dummy24hSummaries,
+                checkInHistory = emptyList(),
+                averageSleepDurationMinutes = 420L,
+                averageShiftSleepDurationMinutes = 360L,
+                todayShift = "E",
+                averageWakeHeartRate = 72L,
+                isLoading = false,
+                permissionStatus = "알림 권한 허용됨",
+                notificationRequestStatus = "",
+                onRequestNotificationPermission = {},
+                onShowSleepCheckInNotification = {}
+            )
+            
+            Spacer(modifier = Modifier.height(40.dp))
+            HorizontalDivider(thickness = 4.dp)
+            
+            Text("데이터 1개인 경우", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(16.dp))
+            SleepPageContent(
+                latestSummary = dummy24hSummaries[0],
+                recentSummaries = dummySummaries,
+                sleepSummariesLast24h = listOf(dummy24hSummaries[0]),
+                checkInHistory = emptyList(),
+                averageSleepDurationMinutes = 420L,
+                averageShiftSleepDurationMinutes = 360L,
+                todayShift = "E",
+                averageWakeHeartRate = 72L,
+                isLoading = false,
+                permissionStatus = "알림 권한 허용됨",
+                notificationRequestStatus = "",
+                onRequestNotificationPermission = {},
+                onShowSleepCheckInNotification = {}
+            )
+        }
     }
 }
 

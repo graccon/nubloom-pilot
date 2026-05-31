@@ -19,6 +19,7 @@ import java.time.ZoneId
 data class SleepPageUiState(
     val latestSummary: DailyHealthSummary? = null,
     val recentSummaries: List<DailyHealthSummary> = emptyList(),
+    val sleepSummariesLast24h: List<DailyHealthSummary> = emptyList(),
     val checkInHistory: List<SleepResult> = emptyList(),
     val averageSleepDurationMinutes: Long? = null,
     val averageShiftSleepDurationMinutes: Long? = null,
@@ -67,6 +68,7 @@ class SleepViewModel(
             try {
                 if (healthConnectRepository.isHealthConnectAvailable() && healthConnectRepository.hasHealthPermissions()) {
                     val latestSummary = healthSummaryRepository.getLatestHealthSummary()
+                    val summaries24h = healthSummaryRepository.getHealthSummariesLast24h()
                     
                     // 1. 일반 베이스라인 가져오기 (오늘 + 지난 3일)
                     val recentSummaries = healthSummaryRepository.getRecentHealthSummaries(limit = 4)
@@ -100,6 +102,7 @@ class SleepViewModel(
                     uiState = uiState.copy(
                         latestSummary = latestSummary,
                         recentSummaries = recentSummaries,
+                        sleepSummariesLast24h = summaries24h,
                         checkInHistory = checkInHistory,
                         averageSleepDurationMinutes = averageSleepDurationMinutes,
                         averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes,

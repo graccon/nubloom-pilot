@@ -60,6 +60,7 @@ fun SleepProcessingPage(
                 val startTime = System.currentTimeMillis()
                 try {
                     val summary = healthSummaryRepository.getLatestHealthSummary()
+                    val summaries24h = healthSummaryRepository.getHealthSummariesLast24h()
                     
                     val result = SleepResult(
                         participantId = participantId,
@@ -69,7 +70,8 @@ fun SleepProcessingPage(
                         wakeHeartRate = heartRate,
                         fatigueLevel = fatigueLevel,
                         morningGloryType = type,
-                        sleepSummary = summary
+                        sleepSummary = summary,
+                        sleepSummariesLast24h = summaries24h
                     )
                     onSaveResult(result)
                     SleepCheckInNotificationScheduler.cancelScheduledCheckIn(context)

@@ -12,6 +12,8 @@ import com.sujin.nubloompilot.ui.theme.Gray800
 
 @Composable
 fun SleepDurationComparisonCard(
+    title: String = "오늘 총 수면시간",
+    todayAllSleepDurationMinutes: Long,
     todaySleepDurationMinutes: Long,
     averageSleepDurationMinutes: Long?
 ) {
@@ -23,10 +25,19 @@ fun SleepDurationComparisonCard(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             SleepMetricRow(
-                label = "오늘 총 수면시간",
+                label = title,
                 value = formatDuration(todaySleepDurationMinutes),
                 labelStyle = MaterialTheme.typography.titleMedium,
                 valueStyle = MaterialTheme.typography.titleMedium
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            SleepMetricRow(
+                label = "오늘 총 수면시간 (24h)",
+                value = formatDuration(todayAllSleepDurationMinutes),
+                labelStyle = MaterialTheme.typography.bodyLarge,
+                valueStyle = MaterialTheme.typography.bodyLarge
             )
 
             Spacer(modifier = Modifier.height(12.dp))

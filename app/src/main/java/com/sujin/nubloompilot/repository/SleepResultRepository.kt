@@ -44,6 +44,20 @@ class SleepResultRepository(
                     "averageHrvMillis" to (summary.averageHrvMillis ?: -1),
                     "stepsLast24Hours" to summary.stepsLast24Hours
                 )
+            },
+            "sleepSummariesLast24h" to result.sleepSummariesLast24h.map { summary ->
+                hashMapOf(
+                    "sleepStartTime" to summary.sleepStartTime.toString(),
+                    "sleepEndTime" to summary.sleepEndTime.toString(),
+                    "sleepDurationMinutes" to summary.sleepDurationMinutes,
+                    "lightSleepMinutes" to summary.lightSleepMinutes,
+                    "deepSleepMinutes" to summary.deepSleepMinutes,
+                    "remSleepMinutes" to summary.remSleepMinutes,
+                    "awakeSleepMinutes" to summary.awakeSleepMinutes,
+                    "wakeHeartRate" to (summary.wakeHeartRate ?: -1L),
+                    "averageHrvMillis" to (summary.averageHrvMillis ?: -1),
+                    "stepsLast24Hours" to summary.stepsLast24Hours
+                )
             }
         )
 
