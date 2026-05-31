@@ -10,12 +10,13 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sujin.nubloompilot.models.ShiftType
 import com.sujin.nubloompilot.models.TimelineMarker
 import com.sujin.nubloompilot.models.getTimeRange
-import com.sujin.nubloompilot.ui.theme.Gray900
+import com.sujin.nubloompilot.ui.theme.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -37,6 +38,46 @@ private data class ShiftTimelineSegment(
     val label: String
 )
 
+private data class TimelineSpiralStyle(
+    val baseSpiralColor: Color,
+    val baseSpiralStrokeWidth: Float,
+    val shiftArcStrokeWidth: Float,
+    val shiftLabelFontSize: TextUnit,
+    val currentTimeMarkerOuterOffset: Float,
+    val currentTimeMarkerInnerOffset: Float,
+    val currentTimeMarkerStrokeWidth: Float,
+    val markerBaseOuterSize: Float,
+    val markerBaseInnerSize: Float
+)
+
+private fun DrawScope.getTimelineSpiralStyle(isWatchMode: Boolean): TimelineSpiralStyle {
+    return if (isWatchMode) {
+        TimelineSpiralStyle(
+            baseSpiralColor = Gray300,
+            baseSpiralStrokeWidth = 68f,
+            shiftArcStrokeWidth = 46f,
+            shiftLabelFontSize = 16.sp,
+            currentTimeMarkerOuterOffset = 8.dp.toPx(),
+            currentTimeMarkerInnerOffset = 34.dp.toPx(),
+            currentTimeMarkerStrokeWidth = 8.dp.toPx(),
+            markerBaseOuterSize = 24.dp.toPx(),
+            markerBaseInnerSize = 32.dp.toPx()
+        )
+    } else {
+        TimelineSpiralStyle(
+            baseSpiralColor = Color(0xFF3A3A3A),
+            baseSpiralStrokeWidth = 106f,
+            shiftArcStrokeWidth = 68f,
+            shiftLabelFontSize = 20.sp,
+            currentTimeMarkerOuterOffset = 8.dp.toPx(),
+            currentTimeMarkerInnerOffset = 34.dp.toPx(),
+            currentTimeMarkerStrokeWidth = 8.dp.toPx(),
+            markerBaseOuterSize = 24.dp.toPx(),
+            markerBaseInnerSize = 32.dp.toPx()
+        )
+    }
+}
+
 fun DrawScope.drawTimelineSpiralLayer(
     layout: TimelineLayout,
     spiralConfig: TimelineSpiralConfig,
@@ -50,8 +91,11 @@ fun DrawScope.drawTimelineSpiralLayer(
     markerIcons: Map<Int, ImageBitmap> = emptyMap(),
     showCurrentTimeIndicator: Boolean = true,
     highlightedMarkerId: String? = null,
-    revealProgress: Float = 1f
+    revealProgress: Float = 1f,
+    isWatchMode: Boolean = false
 ) {
+    val style = getTimelineSpiralStyle(isWatchMode)
+    
     // 1. Background Spiral Reveal (0.00f -> 0.75f)
     val backgroundReveal = segmentProgress(revealProgress, 0.00f, 0.75f)
 
@@ -63,9 +107,9 @@ fun DrawScope.drawTimelineSpiralLayer(
 
     drawPath(
         path = basePath,
-        color = Color(0xFF3A3A3A),
+        color = style.baseSpiralColor,
         style = Stroke(
-            width = 106f,
+            width = style.baseSpiralStrokeWidth,
             cap = StrokeCap.Round
         )
     )
@@ -97,12 +141,11 @@ fun DrawScope.drawTimelineSpiralLayer(
             startHour = segment.startHour,
             endHour = segment.endHour
         )
-
         drawPath(
             path = path,
             color = segment.color.copy(alpha = segment.color.alpha * shiftRevealAlpha),
             style = Stroke(
-                width = 82f,
+                width = style.shiftArcStrokeWidth,
                 cap = StrokeCap.Round
             )
         )
@@ -112,7 +155,8 @@ fun DrawScope.drawTimelineSpiralLayer(
             config = spiralConfig,
             segment = segment,
             textMeasurer = textMeasurer,
-            revealAlpha = shiftRevealAlpha
+            revealAlpha = shiftRevealAlpha,
+            fontSize = style.shiftLabelFontSize
         )
     }
 
@@ -140,7 +184,9 @@ fun DrawScope.drawTimelineSpiralLayer(
                 marker = marker,
                 icon = markerIcons[marker.iconRes],
                 alpha = if (isAnyHighlighted) 0.3f else 1.0f,
-                localProgress = localProgress
+                localProgress = localProgress,
+                baseOuterSize = style.markerBaseOuterSize,
+                baseInnerSize = style.markerBaseInnerSize
             )
         }
     }
@@ -165,7 +211,9 @@ fun DrawScope.drawTimelineSpiralLayer(
                     marker = marker,
                     icon = markerIcons[marker.iconRes],
                     scale = 1.2f, // Highlight scale
-                    localProgress = localProgress
+                    localProgress = localProgress,
+                    baseOuterSize = style.markerBaseOuterSize,
+                    baseInnerSize = style.markerBaseInnerSize
                 )
             }
         }
@@ -184,7 +232,9 @@ fun DrawScope.drawTimelineSpiralLayer(
             config = spiralConfig,
             hour = currentTimelineHour,
             color = Color(0xFFFF5A1F),
-            revealProgress = revealProgress
+            outerOffset = style.currentTimeMarkerOuterOffset,
+            innerOffset = style.currentTimeMarkerInnerOffset,
+            strokeWidth = style.currentTimeMarkerStrokeWidth
         )
     }
 }
@@ -195,7 +245,9 @@ private fun DrawScope.drawInterventionMarker(
     icon: ImageBitmap?,
     scale: Float = 1.0f,
     alpha: Float = 1.0f,
-    localProgress: Float = 1f
+    localProgress: Float = 1f,
+    baseOuterSize: Float,
+    baseInnerSize: Float
 ) {
     if (localProgress <= 0f) return
 
@@ -203,9 +255,6 @@ private fun DrawScope.drawInterventionMarker(
     val finalScale = scale * popScale
     val finalAlpha = alpha * localProgress
 
-    val baseOuterSize = 24.dp.toPx()
-    val baseInnerSize = 32.dp.toPx()
-    
     val outerSize = baseOuterSize * finalScale
     val innerSize = baseInnerSize * finalScale
 
@@ -309,7 +358,9 @@ private fun DrawScope.drawCurrentTimeMarker(
     config: TimelineSpiralConfig,
     hour: Float,
     color: Color,
-    revealProgress: Float = 1f
+    outerOffset: Float,
+    innerOffset: Float,
+    strokeWidth: Float
 ) {
     val progress = hour / 48f
 
@@ -319,20 +370,20 @@ private fun DrawScope.drawCurrentTimeMarker(
     val angleRad = Math.toRadians(angleDegrees.toDouble())
 
     val outerPoint = Offset(
-        x = layout.circleCenter.x + cos(angleRad).toFloat() * (layout.clockRadius + 8.dp.toPx()),
-        y = layout.circleCenter.y + sin(angleRad).toFloat() * (layout.clockRadius + 8.dp.toPx())
+        x = layout.circleCenter.x + cos(angleRad).toFloat() * (layout.clockRadius + outerOffset),
+        y = layout.circleCenter.y + sin(angleRad).toFloat() * (layout.clockRadius + outerOffset)
     )
 
     val innerPoint = Offset(
-        x = layout.circleCenter.x + cos(angleRad).toFloat() * (layout.clockRadius - 34.dp.toPx()),
-        y = layout.circleCenter.y + sin(angleRad).toFloat() * (layout.clockRadius - 34.dp.toPx())
+        x = layout.circleCenter.x + cos(angleRad).toFloat() * (layout.clockRadius - innerOffset),
+        y = layout.circleCenter.y + sin(angleRad).toFloat() * (layout.clockRadius - innerOffset)
     )
 
     drawLine(
         color = color,
         start = outerPoint,
         end = innerPoint,
-        strokeWidth = 8.dp.toPx(),
+        strokeWidth = strokeWidth,
         cap = StrokeCap.Round
     )
 }
@@ -342,7 +393,8 @@ private fun DrawScope.drawShiftStartLabel(
     config: TimelineSpiralConfig,
     segment: ShiftTimelineSegment,
     textMeasurer: TextMeasurer,
-    revealAlpha: Float = 1f
+    revealAlpha: Float = 1f,
+    fontSize: TextUnit
 ) {
     val segmentDuration = segment.endHour - segment.startHour
 
@@ -363,7 +415,7 @@ private fun DrawScope.drawShiftStartLabel(
         text = segment.label,
         position = labelPosition,
         color = Gray900.copy(alpha = Gray900.alpha * revealAlpha),
-        fontSize = 20.sp,
+        fontSize = fontSize,
         fontWeight = FontWeight.Black
     )
 }

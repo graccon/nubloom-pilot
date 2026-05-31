@@ -1,7 +1,7 @@
 package com.sujin.nubloompilot.components
 
-
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sujin.nubloompilot.ui.theme.Gray600
 import com.sujin.nubloompilot.ui.theme.Gray700
 import kotlin.math.cos
 import kotlin.math.sin
@@ -23,22 +24,74 @@ private data class TimelineTimeMark(
     val label: String
 )
 
+private data class TimelineBackgroundStyle(
+    val nightColor: Color,
+    val outlineColor: Color,
+    val textColor: Color,
+    val minorDotColor: Color,
+    val majorLabelFontSize: TextUnit,
+    val minorLabelFontSize: TextUnit,
+    val labelOffset: Float,
+    val tickOuterRadiusOffset: Float,
+    val dotOffset: Float,
+    val dotRadius: Float,
+    val showDashedLine: Boolean,
+    val nightAreaStartAngle: Float
+)
+
+private fun DrawScope.getTimelineBackgroundStyle(isWatchMode: Boolean): TimelineBackgroundStyle {
+    return if (isWatchMode) {
+        TimelineBackgroundStyle(
+            nightColor = Gray600,
+            outlineColor = Color.White,
+            textColor = Color.White,
+            minorDotColor = Color.White.copy(alpha = 0.9f),
+            majorLabelFontSize = 14.sp,
+            minorLabelFontSize = 14.sp,
+            labelOffset = 18.dp.toPx(),
+            tickOuterRadiusOffset = 6.dp.toPx(),
+            dotOffset = 7.dp.toPx(),
+            dotRadius = 3f.dp.toPx(),
+            showDashedLine = false,
+            nightAreaStartAngle = 0f
+        )
+    } else {
+        TimelineBackgroundStyle(
+            nightColor = Color(0xFFB8B5B5),
+            outlineColor = Color(0xFF3A3A3A),
+            textColor = Color(0xFF2F2F2F),
+            minorDotColor = Color(0xFF3A3A3A).copy(alpha = 0.55f),
+            majorLabelFontSize = 18.sp,
+            minorLabelFontSize = 18.sp,
+            labelOffset = 24.dp.toPx(),
+            tickOuterRadiusOffset = 8.dp.toPx(),
+            dotOffset = 8.dp.toPx(),
+            dotRadius = 3.5f.dp.toPx(),
+            showDashedLine = true,
+            nightAreaStartAngle = 180f
+        )
+    }
+}
+
 fun DrawScope.drawTimelineBackground(
     layout: TimelineLayout,
     textMeasurer: TextMeasurer,
     currentHour: Float,
-    revealProgress: Float = 1f
+    revealProgress: Float = 1f,
+    isWatchMode: Boolean = false
 ) {
     val backgroundReveal = segmentProgress(revealProgress, 0.00f, 0.75f)
-    
-    val nightColor = Color(0xFFB8B5B5).copy(alpha = backgroundReveal)
-    val outlineColor = Color(0xFF3A3A3A).copy(alpha = backgroundReveal)
-    val textColor = Color(0xFF2F2F2F).copy(alpha = backgroundReveal)
+    val style = getTimelineBackgroundStyle(isWatchMode)
+
+    val nightColor = style.nightColor.copy(alpha = backgroundReveal)
+    val outlineColor = style.outlineColor.copy(alpha = backgroundReveal)
+    val textColor = style.textColor.copy(alpha = backgroundReveal)
 
     drawNightArea(
         center = layout.circleCenter,
         radius = layout.clockRadius,
-        color = nightColor
+        color = nightColor,
+        startAngleDegrees = style.nightAreaStartAngle
     )
 
     drawCircle(
@@ -48,11 +101,15 @@ fun DrawScope.drawTimelineBackground(
         style = Stroke(width = 16f)
     )
 
-    drawDashedVerticalLine(
-        center = layout.circleCenter,
-        radius = layout.clockRadius,
-        color = Gray700.copy(alpha = Gray700.alpha * backgroundReveal)
-    )
+    if (style.showDashedLine) {
+        drawDashedVerticalLine(
+            center = layout.circleCenter,
+            radius = layout.clockRadius,
+            color = Gray700.copy(
+                alpha = Gray700.alpha * backgroundReveal
+            )
+        )
+    }
 
     val timeMarks = listOf(
         TimelineTimeMark(hour = 0f, label = "12AM"),
@@ -68,7 +125,8 @@ fun DrawScope.drawTimelineBackground(
             center = layout.circleCenter,
             radius = layout.clockRadius,
             angleDegrees = angle,
-            color = textColor
+            color = textColor,
+            outerRadiusOffset = style.tickOuterRadiusOffset
         )
 
         drawTimelineLabel(
@@ -78,47 +136,48 @@ fun DrawScope.drawTimelineBackground(
             angleDegrees = angle,
             text = mark.label,
             color = textColor,
-            fontSize = 18.sp
+            fontSize = style.majorLabelFontSize,
+            labelOffset = style.labelOffset
         )
     }
 
     drawMinorTimeMarks(
         layout = layout,
         textMeasurer = textMeasurer,
-        color = outlineColor,
+        dotColor = style.minorDotColor.copy(alpha = style.minorDotColor.alpha * backgroundReveal),
         textColor = textColor,
         currentHour = currentHour,
-        revealProgress = revealProgress
+        revealProgress = revealProgress,
+        dotOffset = style.dotOffset,
+        labelOffset = style.labelOffset,
+        dotRadius = style.dotRadius,
+        fontSize = style.minorLabelFontSize
     )
-
-
 }
 
 private fun DrawScope.drawNightArea(
     center: Offset,
     radius: Float,
-    color: Color
+    color: Color,
+    startAngleDegrees: Float
 ) {
     val path = Path().apply {
         moveTo(center.x - radius, center.y)
-
         arcTo(
-            rect = androidx.compose.ui.geometry.Rect(
+            rect = Rect(
                 left = center.x - radius,
                 top = center.y - radius,
                 right = center.x + radius,
                 bottom = center.y + radius
             ),
-            startAngleDegrees = 180f,
+            startAngleDegrees = startAngleDegrees,
             sweepAngleDegrees = 180f,
             forceMoveTo = false
         )
-
         lineTo(center.x + radius, center.y)
         lineTo(center.x - radius, center.y)
         close()
     }
-
     drawPath(
         path = path,
         color = color
@@ -154,12 +213,13 @@ private fun DrawScope.drawTick(
     center: Offset,
     radius: Float,
     angleDegrees: Float,
-    color: Color
+    color: Color,
+    outerRadiusOffset: Float
 ) {
     val angleRad = Math.toRadians(angleDegrees.toDouble())
 
     val innerRadius = radius + 2.dp.toPx()
-    val outerRadius = radius + 8.dp.toPx()
+    val outerRadius = radius + outerRadiusOffset
 
     val start = Offset(
         x = center.x + cos(angleRad).toFloat() * innerRadius,
@@ -187,10 +247,11 @@ private fun DrawScope.drawTimelineLabel(
     angleDegrees: Float,
     text: String,
     color: Color,
-    fontSize: TextUnit
+    fontSize: TextUnit,
+    labelOffset: Float
 ) {
     val angleRad = Math.toRadians(angleDegrees.toDouble())
-    val labelRadius = radius + 24.dp.toPx()
+    val labelRadius = radius + labelOffset
 
     val position = Offset(
         x = center.x + cos(angleRad).toFloat() * labelRadius,
@@ -213,7 +274,7 @@ fun DrawScope.drawCenteredText(
     color: Color,
     fontSize: TextUnit,
     fontWeight: FontWeight = FontWeight.SemiBold
-){
+) {
     val result = textMeasurer.measure(
         text = text,
         style = TextStyle(
@@ -235,10 +296,14 @@ fun DrawScope.drawCenteredText(
 private fun DrawScope.drawMinorTimeMarks(
     layout: TimelineLayout,
     textMeasurer: TextMeasurer,
-    color: Color,
+    dotColor: Color,
     textColor: Color,
     currentHour: Float,
-    revealProgress: Float = 1f
+    revealProgress: Float = 1f,
+    dotOffset: Float,
+    labelOffset: Float,
+    dotRadius: Float,
+    fontSize: TextUnit
 ) {
     val backgroundReveal = segmentProgress(revealProgress, 0.00f, 0.75f)
 
@@ -269,17 +334,17 @@ private fun DrawScope.drawMinorTimeMarks(
         val angle = clockHourToAngle(hour.toFloat())
         val angleRad = Math.toRadians(angle.toDouble())
 
-        val dotRadius = layout.clockRadius + 8.dp.toPx()
-        val labelRadius = layout.clockRadius + 24.dp.toPx()
+        val actualDotRadius = layout.clockRadius + dotOffset
+        val labelRadius = layout.clockRadius + labelOffset
 
         val dotPosition = Offset(
-            x = layout.circleCenter.x + cos(angleRad).toFloat() * dotRadius,
-            y = layout.circleCenter.y + sin(angleRad).toFloat() * dotRadius
+            x = layout.circleCenter.x + cos(angleRad).toFloat() * actualDotRadius,
+            y = layout.circleCenter.y + sin(angleRad).toFloat() * actualDotRadius
         )
 
         drawCircle(
-            color = color.copy(alpha = 0.55f * backgroundReveal),
-            radius = (3.5).dp.toPx(),
+            color = dotColor,
+            radius = dotRadius,
             center = dotPosition
         )
 
@@ -296,7 +361,7 @@ private fun DrawScope.drawMinorTimeMarks(
                 text = label,
                 position = labelPosition,
                 color = textColor.copy(alpha = textColor.alpha * backgroundReveal),
-                fontSize = 18.sp,
+                fontSize = fontSize,
                 fontWeight = FontWeight.SemiBold
             )
         }

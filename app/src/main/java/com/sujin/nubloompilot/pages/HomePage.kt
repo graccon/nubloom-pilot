@@ -380,7 +380,6 @@ private fun InterventionItem(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -390,8 +389,6 @@ private fun InterventionItem(
                     fontWeight = FontWeight.SemiBold,
                     color = Gray900
                 )
-
-
 
                 if (formattedStart.isNotEmpty() && formattedEnd.isNotEmpty()) {
                     Text(
@@ -422,22 +419,4 @@ private fun InterventionItem(
         }
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun HomePagePreview() {
-    NubloomPilotTheme {
-        HomePageContent(
-            participantName = "수진",
-            yesterdayShift = "N",
-            todayShift = "E",
-            tomorrowShift = "E",
-            dayAfterTomorrowShift = "E",
-            latestInterventionBundle = null,
-            uiState = HomePageUiState(
-                morningGloryType = null
-            ),
-            onActionCardClick = {},
-            onDebugSleepCheckInClick = {}
-        )
-    }
-}
+

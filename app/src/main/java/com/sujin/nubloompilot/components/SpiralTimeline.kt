@@ -28,6 +28,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.sujin.nubloompilot.ui.theme.Gray700
 import com.sujin.nubloompilot.ui.theme.Gray800
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 
@@ -41,7 +42,8 @@ fun SpiralTimeline(
     markers: List<TimelineMarker> = emptyList(),
     highlightedMarkerId: String? = null,
     revealProgress: Float = 1f,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isWatchMode: Boolean = false
 ) {
     val textMeasurer = rememberTextMeasurer()
     val context = LocalContext.current
@@ -77,10 +79,13 @@ fun SpiralTimeline(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TimelineSelectionHeader(
-            isPressed = isPressed,
-            selectedTimeText = selectedTimeText
-        )
+
+        if (!isWatchMode) {
+            TimelineSelectionHeader(
+                isPressed = isPressed,
+                selectedTimeText = selectedTimeText
+            )
+        }
 
         Canvas(
             modifier = Modifier
@@ -132,7 +137,8 @@ fun SpiralTimeline(
                 layout = layout,
                 textMeasurer = textMeasurer,
                 currentHour = currentHour,
-                revealProgress = revealProgress
+                revealProgress = revealProgress,
+                isWatchMode = isWatchMode
             )
 
             drawTimelineSpiralLayer(
@@ -148,7 +154,9 @@ fun SpiralTimeline(
                 markerIcons = markerIcons,
                 showCurrentTimeIndicator = !isPressed,
                 highlightedMarkerId = highlightedMarkerId,
-                revealProgress = revealProgress
+                revealProgress = revealProgress,
+                isWatchMode = isWatchMode
+
             )
 
             // Step 5: Draw a focus point at the nearest location on the spiral (Visible only when pressed)
