@@ -65,6 +65,11 @@ dependencies {
     implementation(libs.androidx.wear.compose.material)
     implementation(libs.androidx.wear.compose.foundation)
 
+    // Watch Face
+    implementation(libs.androidx.wear.watchface)
+    implementation(libs.androidx.wear.watchface.client)
+    implementation(libs.androidx.wear.watchface.style)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

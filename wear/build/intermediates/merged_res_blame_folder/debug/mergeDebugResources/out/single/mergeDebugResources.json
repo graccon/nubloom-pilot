@@ -1,22 +1,30 @@
 [
     {
-        "merged": "com.sujin.nubloompilot.wear-debug-52:/drawable_ic_prepare.png.flat",
-        "source": "com.sujin.nubloompilot.wear-main-54:/drawable/ic_prepare.png"
+        "merged": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-debug-65:/drawable_ic_light.png.flat",
+        "source": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-main-67:/drawable/ic_light.png"
     },
     {
-        "merged": "com.sujin.nubloompilot.wear-debug-52:/drawable_ic_light.png.flat",
-        "source": "com.sujin.nubloompilot.wear-main-54:/drawable/ic_light.png"
+        "merged": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-debug-65:/drawable_ic_coffee.png.flat",
+        "source": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-main-67:/drawable/ic_coffee.png"
     },
     {
-        "merged": "com.sujin.nubloompilot.wear-debug-52:/drawable_ic_intervention.png.flat",
-        "source": "com.sujin.nubloompilot.wear-main-54:/drawable/ic_intervention.png"
+        "merged": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-debug-65:/drawable_ic_sleep_face.png.flat",
+        "source": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-main-67:/drawable/ic_sleep_face.png"
     },
     {
-        "merged": "com.sujin.nubloompilot.wear-debug-52:/drawable_ic_coffee.png.flat",
-        "source": "com.sujin.nubloompilot.wear-main-54:/drawable/ic_coffee.png"
+        "merged": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-debug-65:/drawable_ic_prepare.png.flat",
+        "source": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-main-67:/drawable/ic_prepare.png"
     },
     {
-        "merged": "com.sujin.nubloompilot.wear-debug-52:/drawable_ic_sleep_face.png.flat",
-        "source": "com.sujin.nubloompilot.wear-main-54:/drawable/ic_sleep_face.png"
+        "merged": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-debug-65:/drawable_ic_intervention.png.flat",
+        "source": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-main-67:/drawable/ic_intervention.png"
+    },
+    {
+        "merged": "com.sujin.nubloompilot.wear-debug-65:/xml_watch_face.xml.flat",
+        "source": "com.sujin.nubloompilot.wear-main-67:/xml/watch_face.xml"
+    },
+    {
+        "merged": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-debug-65:/xml_watch_face.xml.flat",
+        "source": "/Users/yranno/.gradle/daemon/8.11.1/com.sujin.nubloompilot.wear-main-67:/xml/watch_face.xml"
     }
 ]

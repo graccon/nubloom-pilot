@@ -37,6 +37,29 @@
                     android:scheme="wear" />
             </intent-filter>
         </service>
+
+        <service
+            android:name=".wearface.SpiralWatchFaceService"
+            android:exported="true"
+            android:label="Nubloom Spiral"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview"
+                android:resource="@android:drawable/sym_def_app_icon" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview_circular"
+                android:resource="@android:drawable/sym_def_app_icon" />
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface"
+                android:resource="@xml/watch_face" />
+        </service>
     </application>
 
 </manifest>

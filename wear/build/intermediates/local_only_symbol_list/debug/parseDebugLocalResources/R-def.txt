@@ -5,3 +5,4 @@ drawable ic_intervention
 drawable ic_light
 drawable ic_prepare
 drawable ic_sleep_face
+xml watch_face
