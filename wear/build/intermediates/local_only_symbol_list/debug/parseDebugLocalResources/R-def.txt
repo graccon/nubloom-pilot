@@ -1,2 +1,7 @@
 R_DEF: Internal format may change without notice
 local
+drawable ic_coffee
+drawable ic_intervention
+drawable ic_light
+drawable ic_prepare
+drawable ic_sleep_face

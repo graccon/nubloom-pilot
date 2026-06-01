@@ -5,6 +5,7 @@ import com.google.android.gms.wearable.DataEvent
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.WearableListenerService
+import com.sujin.nubloompilot.shared.models.WatchInterventionPayload
 
 class WearTimelineDataListenerService : WearableListenerService() {
 
@@ -21,7 +22,18 @@ class WearTimelineDataListenerService : WearableListenerService() {
                     val dayAfterTomorrowShift = dataMap.getString("dayAfterTomorrowShift")
                     val referenceDate = dataMap.getString("referenceDate")
                     val updatedAt = dataMap.getLong("updatedAt")
-                    val interventions = dataMap.getDataMapArrayList("interventions")
+                    val interventionsList = dataMap.getDataMapArrayList("interventions")
+
+                    val watchInterventions = interventionsList?.map { map ->
+                        WatchInterventionPayload(
+                            type = map.getString("type", ""),
+                            actionType = map.getString("actionType", ""),
+                            startTime = map.getString("startTime", ""),
+                            endTime = map.getString("endTime", ""),
+                            title = map.getString("title", ""),
+                            description = map.getString("description", "")
+                        )
+                    } ?: emptyList()
 
                     Log.d(TAG, "Data changed at /nubloom/timeline")
                     Log.d(TAG, "yesterdayShift: $yesterdayShift")
@@ -30,7 +42,7 @@ class WearTimelineDataListenerService : WearableListenerService() {
                     Log.d(TAG, "dayAfterTomorrowShift: $dayAfterTomorrowShift")
                     Log.d(TAG, "referenceDate: $referenceDate")
                     Log.d(TAG, "updatedAt: $updatedAt")
-                    Log.d(TAG, "interventions count: ${interventions?.size ?: 0}")
+                    Log.d(TAG, "interventions count: ${watchInterventions.size}")
 
                     // Save to local store
                     val localStore = WearTimelineLocalStore(applicationContext)
@@ -40,9 +52,10 @@ class WearTimelineDataListenerService : WearableListenerService() {
                         tomorrowShift = tomorrowShift,
                         dayAfterTomorrowShift = dayAfterTomorrowShift,
                         referenceDate = referenceDate,
-                        updatedAt = updatedAt
+                        updatedAt = updatedAt,
+                        interventions = watchInterventions
                     )
-                    Log.d(TAG, "Successfully saved timeline info to LocalStore")
+                    Log.d(TAG, "Successfully saved timeline info to LocalStore, interventions=${watchInterventions.size}")
                 }
             }
         }

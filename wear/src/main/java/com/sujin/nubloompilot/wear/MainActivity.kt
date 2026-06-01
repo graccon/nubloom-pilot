@@ -12,8 +12,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import android.graphics.BitmapFactory
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -39,6 +42,29 @@ fun WearApp() {
         mutableStateOf(WearTimelineLocalStore(context).getTimelineInfo())
     }
 
+    val markers = remember(timelineInfo) {
+        WatchInterventionMarkerMapper.map(
+            interventions = timelineInfo.interventions,
+            referenceDateString = timelineInfo.referenceDate
+        )
+    }
+
+    val markerIcons = remember(markers) {
+        val map = mutableMapOf<Int, ImageBitmap>()
+        markers.forEach { marker ->
+            val resId = marker.iconRes
+            if (resId != 0 && !map.containsKey(resId)) {
+                runCatching {
+                    BitmapFactory.decodeResource(context.resources, resId)
+                        ?.asImageBitmap()
+                }.getOrNull()?.let {
+                    map[resId] = it
+                }
+            }
+        }
+        map
+    }
+
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -61,9 +87,11 @@ fun WearApp() {
             SpiralTimeline(
                 yesterdayShift = timelineInfo.yesterdayShift ?: "N",
                 todayShift = timelineInfo.todayShift ?: "D",
-                tomorrowShift = timelineInfo.tomorrowShift ?: "D",
+                tomorrowShift = timelineInfo.tomorrowShift ?: "E",
                 dayAfterTomorrowShift = timelineInfo.dayAfterTomorrowShift ?: "OFF",
                 currentTime = LocalTime.now(),
+                markers = markers,
+                markerIcons = markerIcons,
                 isWatchMode = true,
                 modifier = Modifier
                     .fillMaxWidth()

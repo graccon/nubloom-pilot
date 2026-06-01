@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "com.sujin.nubloompilot.wear-debug-52:/drawable_ic_prepare.png.flat",
+        "source": "com.sujin.nubloompilot.wear-main-54:/drawable/ic_prepare.png"
+    },
+    {
+        "merged": "com.sujin.nubloompilot.wear-debug-52:/drawable_ic_light.png.flat",
+        "source": "com.sujin.nubloompilot.wear-main-54:/drawable/ic_light.png"
+    },
+    {
+        "merged": "com.sujin.nubloompilot.wear-debug-52:/drawable_ic_intervention.png.flat",
+        "source": "com.sujin.nubloompilot.wear-main-54:/drawable/ic_intervention.png"
+    },
+    {
+        "merged": "com.sujin.nubloompilot.wear-debug-52:/drawable_ic_coffee.png.flat",
+        "source": "com.sujin.nubloompilot.wear-main-54:/drawable/ic_coffee.png"
+    },
+    {
+        "merged": "com.sujin.nubloompilot.wear-debug-52:/drawable_ic_sleep_face.png.flat",
+        "source": "com.sujin.nubloompilot.wear-main-54:/drawable/ic_sleep_face.png"
+    }
+]
