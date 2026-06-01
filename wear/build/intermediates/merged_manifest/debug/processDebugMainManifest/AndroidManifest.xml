@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sujin.nubloompilot.wear"
+    package="com.sujin.nubloompilot"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -11,10 +11,10 @@
     <uses-feature android:name="android.hardware.type.watch" />
 
     <permission
-        android:name="com.sujin.nubloompilot.wear.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:name="com.sujin.nubloompilot.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.sujin.nubloompilot.wear.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+    <uses-permission android:name="com.sujin.nubloompilot.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
         android:allowBackup="true"
@@ -25,6 +25,10 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@android:style/Theme.DeviceDefault" >
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
         <uses-library
             android:name="com.google.android.wearable"
             android:required="false" />
@@ -39,6 +43,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="com.sujin.nubloompilot.wear.WearTimelineDataListenerService"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+
+                <data
+                    android:host="*"
+                    android:pathPrefix="/nubloom/timeline"
+                    android:scheme="wear" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name="androidx.activity.ComponentActivity"
             android:exported="true" />
@@ -48,7 +75,7 @@
 
         <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authorities="com.sujin.nubloompilot.wear.androidx-startup"
+            android:authorities="com.sujin.nubloompilot.androidx-startup"
             android:exported="false" >
             <meta-data
                 android:name="androidx.emoji2.text.EmojiCompatInitializer"

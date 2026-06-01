@@ -56,7 +56,7 @@ private fun DrawScope.getTimelineSpiralStyle(isWatchMode: Boolean): TimelineSpir
             baseSpiralColor = Gray300,
             baseSpiralStrokeWidth = 40f,
             shiftArcStrokeWidth = 28f,
-            shiftLabelFontSize = 16.sp,
+            shiftLabelFontSize = 13.sp,
             currentTimeMarkerOuterOffset = 8.dp.toPx(),
             currentTimeMarkerInnerOffset = 34.dp.toPx(),
             currentTimeMarkerStrokeWidth = 8.dp.toPx(),

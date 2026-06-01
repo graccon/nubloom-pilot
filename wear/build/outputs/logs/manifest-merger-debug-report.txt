@@ -1,57 +1,68 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:2:1-27:12
-INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:2:1-27:12
-INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:2:1-27:12
-INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:2:1-27:12
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:2:1-42:12
+INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:2:1-42:12
+INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:2:1-42:12
+INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:2:1-42:12
 MERGED from [:shared] /Users/yranno/AndroidStudioProjects/NubloomPilot/shared/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.wear.compose:compose-material-core:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/bd3edd6c10f438e0571af78ea98e271d/transformed/compose-material-core-1.3.1/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.wear.compose:compose-material:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/e5b5267544ac576b4ff7154686b3e407/transformed/compose-material-1.3.1/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.wear.compose:compose-foundation:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/119d9a85231c647b96922cd10aa342bf/transformed/compose-foundation-1.3.1/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.material3:material3-android:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c77a44ea1d449ee2f0b59e524380b72d/transformed/material3-release/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.compose.material:material-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/bdd4021c46d96e750604308707560f08/transformed/material-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0a40e24bdecd48a46a015826e41403b8/transformed/material-icons-core-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.material:material-ripple-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/9faca5f5e04401fcb3df3517abf65e62/transformed/material-ripple-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.animation:animation-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/79da35e758159f452d5ea048b46741ed/transformed/animation-core-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.animation:animation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/6ff466ec2997f6ffccb1b13f2e6da0d3/transformed/animation-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.foundation:foundation-layout-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c76298bf7ef3e0709d7f6023fc734100/transformed/foundation-layout-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.foundation:foundation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/d808bbd6664bf95be4829a37d7f2745b/transformed/foundation-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-tooling-data-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/56f5d4b2caa2b0453c5c11bdb6d24b43/transformed/ui-tooling-data-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-unit-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/4f89d0dd3a27ab2f3473bf39bc918bcc/transformed/ui-unit-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-geometry-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/583841e0892ca5dada35a6bab8aa7216/transformed/ui-geometry-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-util-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/e4ac4438978e7630cdf4b302439ef606/transformed/ui-util-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-text-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/154803ebd0a22547297ea65eb7890eda/transformed/ui-text-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/6f0b93728931aa54a458e50b7fd3bc11/transformed/ui-tooling-preview-release/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.compose.ui:ui-graphics-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/32d6efed1147d2e3825ec34417b7b992/transformed/ui-graphics-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/7bc4d7816d8da413c4dffaf18ae30ddd/transformed/ui-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c2c9bb9d8971cc828c8bbb36df9094a3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:17:1-28:12
-MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0702c93c3b7b6faf87a5f35cd452622b/transformed/ui-tooling-release/AndroidManifest.xml:17:1-28:12
-MERGED from [androidx.activity:activity-compose:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/50e4298496772e55740988cc0402f3b0/transformed/activity-compose-1.9.3/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.activity:activity-ktx:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/0590b708c48866869a0239f55037e29e/transformed/activity-ktx-1.9.3/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.activity:activity:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/eb93de05052c9044a6fffcd10c1593ac/transformed/activity-1.9.3/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.autofill:autofill:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/75b6f57e303fdb51698d1b5c38d20289/transformed/autofill-1.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:17:1-35:12
-MERGED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:17:1-30:12
-MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/13001a31885a0316438381af79ee3655/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:17:1-35:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/8a10b650e6c5e8a9ccac02ca34587fb7/transformed/lifecycle-livedata-core-2.8.6/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/db8dd91a28797c8f2e3fd97f77f19997/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/96fbf9a1ea1faacf76aec0b6137c2d2e/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/af3d79424a848f5a03ced65c82cbe876/transformed/savedstate-1.2.1/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/9deb0f18b05530f3cf059edb12df41a4/transformed/lifecycle-runtime-release/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/3357bd940412e7f5544573e2e3f9f60d/transformed/lifecycle-viewmodel-ktx-2.8.6/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/54fe1154e4f0c90ee5597e62ac343c43/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a9ada24cdd3b6ebc71b83860d2e66173/transformed/lifecycle-viewmodel-savedstate-2.8.6/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/85154538274a71e2e3c8be97a86f0d21/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:17:1-23:12
-MERGED from [androidx.core:core-ktx:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/1d4f06f5b5738a33acc438e22829739f/transformed/core-ktx-1.13.1/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/yranno/.gradle/caches/8.11.1/transforms/81ae4ed8f2ee64fedf6f3e8ad56b18d2/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/8750b1584bc8d74d7086b198571fb3ed/transformed/runtime-saveable-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.runtime:runtime-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/fbdad0345f21942f1077edd7d3648c4d/transformed/runtime-release/AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/2d907e1cb963256dfbbb4a3d21f1e772/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/92626faab01e790ceb74cd6015297ff0/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
-MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:17:1-55:12
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c66ff32dd77a0dd87675373ecdb739cd/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
-MERGED from [androidx.tracing:tracing:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/94714bf808582f1b0cc9a650814e4d58/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/e362326501e2c5d92d4ad68dfd6fcefb/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-wearable:20.0.1] /Users/yranno/.gradle/caches/8.11.1/transforms/501d00feaea5b2457742122e7c32d4a9/transformed/play-services-wearable-20.0.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.wear.compose:compose-material-core:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/5122259ed30ca15145471a7c11c4fc29/transformed/compose-material-core-1.3.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.compose:compose-material:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c95a875e5cd9bda297346d9b4c691669/transformed/compose-material-1.3.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.compose:compose-foundation:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/9c7d0d7214d97298a4cac593724ddeac/transformed/compose-foundation-1.3.1/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/787f6ab7e1a82b02bd69f5209c07f572/transformed/play-services-base-18.5.0/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/cb2770c5246028b9c2981fd09a1c2036/transformed/play-services-tasks-18.2.0/AndroidManifest.xml:2:1-5:12
+MERGED from [com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5ce4884170bdb48268b59f2854978450/transformed/play-services-basement-18.9.0/AndroidManifest.xml:16:1-26:12
+MERGED from [androidx.fragment:fragment:1.1.0] /Users/yranno/.gradle/caches/8.11.1/transforms/2acd905386b88af8d23b60d3c9fdd296/transformed/fragment-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.compose.material3:material3-android:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/1f918cc5c6f3ecc82cdb0ba35c780fd8/transformed/material3-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.material:material-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/4a109cdc6cf5488afd05066bdda21ff1/transformed/material-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/bf09f90b323a9b20f406b11e5584e4f2/transformed/material-icons-core-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-ripple-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/b2f1ec13a63e2b8ce732fda459952edb/transformed/material-ripple-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/5396b1f287602614e7c312038ba6a15f/transformed/animation-core-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/1ab7440774fcf20f4c02dd474b29adda/transformed/animation-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/247b8a64a0924900a4527f6d29807ae2/transformed/foundation-layout-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c79d22fa3793bebf07cd65eee5f4e012/transformed/foundation-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/b3edfb4cf51050b8f4844565d01d9598/transformed/ui-tooling-data-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-unit-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/db2de8e9fc937dfc6939a31596dfd6d2/transformed/ui-unit-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-geometry-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/e157a8ba88fc1615ff426ebdcb4717a0/transformed/ui-geometry-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-util-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/6046e3723675bb603b6710b5525f1eea/transformed/ui-util-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c49a81e0fa1b793e8f4237cc0c6b4128/transformed/ui-text-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2930db95efd27974280589ec1b1ff2a6/transformed/ui-tooling-preview-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.ui:ui-graphics-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c991d43adf9b7545c8bb67628e6c020e/transformed/ui-graphics-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/f090274a0c946c9a89f651fe7813a287/transformed/ui-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/86d36a6b7f44bd58c6df0d93a88c2ff3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2261526d46d8fe9fd8eb95c9e7d0e793/transformed/ui-tooling-release/AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.activity:activity-compose:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/5b2a6a87737f3978104c7edee5d0d53a/transformed/activity-compose-1.9.3/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity-ktx:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/876d08accf6ed40a3aa81204f33122b1/transformed/activity-ktx-1.9.3/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/17794f0e4cec95bb238f0438f35701ef/transformed/activity-1.9.3/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fe1d3ca9cb7bf75095e7d5ddc72e7ae7/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/ad612e3668118ed74fbe92ffe9f8dbda/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.autofill:autofill:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/166b684fe71f011618e87b5dbf05bbab/transformed/autofill-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.customview:customview:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/d46017e0fdd3493811a451f820068958/transformed/customview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/5e8cab3f23fd5021a89e8ea0e6f8af87/transformed/lifecycle-livedata-core-ktx-2.8.6/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a58bad00cd68a54183d3c4d6df7c4f8e/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ecd9bf5ec7d2d0fed6f37938ec531ffe/transformed/lifecycle-livedata-core-2.8.6/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/23b4d4645d0bb0be1f9538253de8297f/transformed/lifecycle-livedata-2.8.6/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c30e257a210ccf73c771b0f57a10042d/transformed/lifecycle-viewmodel-2.8.6/AndroidManifest.xml:2:1-5:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/576da7de192fab7284a0dd2cb37227a3/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7819fa17c06aa98197fa717c4cf2a5c9/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/2323baa34b2c57a92525431c065dd753/transformed/savedstate-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/5f9e359e931ec401e89ddbbd16f7ed1a/transformed/lifecycle-runtime-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0e4b5663358c6f492ba4914673361630/transformed/lifecycle-viewmodel-ktx-2.8.6/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a5de514292bc67eda9bef09e9e7ba181/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/798b01b42135b96e80c7a39d523a4bbd/transformed/lifecycle-viewmodel-savedstate-2.8.6/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/db8d107ed48b320a663699e18ddac04d/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.core:core-ktx:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7e9f41ee08b19cfcc451f5484aa0ae35/transformed/core-ktx-1.13.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/yranno/.gradle/caches/8.11.1/transforms/d021807f61ba7b8b831f66c78cfa74c6/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/3cdd245cf2316c07fa7c504ad9fca512/transformed/runtime-saveable-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ece28b2d5da4ce37ec56efa96afef1f1/transformed/runtime-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/a5ce64c2c9eb5570e40454eb022098b9/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/9946d0ce147a628d89b79f7de2693ab6/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c37ca39e35fcb3204e6a0d9b01d70e14/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/14663848f739384bcc308cfa4304619f/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/340cc4c948bb5cc644dafe15a49a2ae9/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
 	package
 		INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml
 	android:versionName
@@ -65,28 +76,36 @@ ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/Androi
 	android:name
 		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:4:19-61
 application
-ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:6:5-25:19
-INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:6:5-25:19
-MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c2c9bb9d8971cc828c8bbb36df9094a3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:22:5-26:19
-MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c2c9bb9d8971cc828c8bbb36df9094a3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:22:5-26:19
-MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0702c93c3b7b6faf87a5f35cd452622b/transformed/ui-tooling-release/AndroidManifest.xml:22:5-26:19
-MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0702c93c3b7b6faf87a5f35cd452622b/transformed/ui-tooling-release/AndroidManifest.xml:22:5-26:19
-MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
-MERGED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
-MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/13001a31885a0316438381af79ee3655/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/13001a31885a0316438381af79ee3655/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/92626faab01e790ceb74cd6015297ff0/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/92626faab01e790ceb74cd6015297ff0/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
-MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c66ff32dd77a0dd87675373ecdb739cd/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c66ff32dd77a0dd87675373ecdb739cd/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:6:5-40:19
+INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:6:5-40:19
+MERGED from [com.google.android.gms:play-services-wearable:20.0.1] /Users/yranno/.gradle/caches/8.11.1/transforms/501d00feaea5b2457742122e7c32d4a9/transformed/play-services-wearable-20.0.1/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-wearable:20.0.1] /Users/yranno/.gradle/caches/8.11.1/transforms/501d00feaea5b2457742122e7c32d4a9/transformed/play-services-wearable-20.0.1/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/787f6ab7e1a82b02bd69f5209c07f572/transformed/play-services-base-18.5.0/AndroidManifest.xml:4:5-6:19
+MERGED from [com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/787f6ab7e1a82b02bd69f5209c07f572/transformed/play-services-base-18.5.0/AndroidManifest.xml:4:5-6:19
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/cb2770c5246028b9c2981fd09a1c2036/transformed/play-services-tasks-18.2.0/AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/cb2770c5246028b9c2981fd09a1c2036/transformed/play-services-tasks-18.2.0/AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5ce4884170bdb48268b59f2854978450/transformed/play-services-basement-18.9.0/AndroidManifest.xml:20:5-24:19
+MERGED from [com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5ce4884170bdb48268b59f2854978450/transformed/play-services-basement-18.9.0/AndroidManifest.xml:20:5-24:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/86d36a6b7f44bd58c6df0d93a88c2ff3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/86d36a6b7f44bd58c6df0d93a88c2ff3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2261526d46d8fe9fd8eb95c9e7d0e793/transformed/ui-tooling-release/AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2261526d46d8fe9fd8eb95c9e7d0e793/transformed/ui-tooling-release/AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a58bad00cd68a54183d3c4d6df7c4f8e/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a58bad00cd68a54183d3c4d6df7c4f8e/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/9946d0ce147a628d89b79f7de2693ab6/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/9946d0ce147a628d89b79f7de2693ab6/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c37ca39e35fcb3204e6a0d9b01d70e14/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c37ca39e35fcb3204e6a0d9b01d70e14/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
 	android:extractNativeLibs
 		INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml
 	android:appComponentFactory
-		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
 	android:supportsRtl
 		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:9:9-35
 	android:label
@@ -95,233 +114,295 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/cache
 		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:7:9-35
 	android:theme
 		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:10:9-59
+meta-data#com.google.android.wearable.standalone
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:12:9-14:36
+	android:value
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:14:13-33
+	android:name
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:13:13-66
 uses-library#com.google.android.wearable
-ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:12:9-14:40
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:15:9-17:40
 	android:required
-		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:14:13-37
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:17:13-37
 	android:name
-		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:13:13-55
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:16:13-55
 activity#com.sujin.nubloompilot.wear.MainActivity
-ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:16:9-24:20
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:19:9-27:20
 	android:exported
-		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:18:13-36
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:21:13-36
 	android:theme
-		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:19:13-75
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:22:13-75
 	android:name
-		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:17:13-41
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:20:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:20:13-23:29
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:23:13-26:29
 action#android.intent.action.MAIN
-ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:21:17-69
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:24:17-69
 	android:name
-		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:21:25-66
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:24:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:22:17-77
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:25:17-77
 	android:name
-		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:22:27-74
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:25:27-74
+service#com.sujin.nubloompilot.wear.WearTimelineDataListenerService
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:29:9-39:19
+	android:exported
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:31:13-36
+	android:name
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:30:13-60
+intent-filter#action:name:com.google.android.gms.wearable.DATA_CHANGED+data:host:*+data:pathPrefix:/nubloom/timeline+data:scheme:wear
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:32:13-38:29
+action#com.google.android.gms.wearable.DATA_CHANGED
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:33:17-87
+	android:name
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:33:25-84
+data
+ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:34:17-37:45
+	android:host
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:35:21-37
+	android:scheme
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:37:21-42
+	android:pathPrefix
+		ADDED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:36:21-59
 uses-sdk
 INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml
 INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml
 MERGED from [:shared] /Users/yranno/AndroidStudioProjects/NubloomPilot/shared/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:shared] /Users/yranno/AndroidStudioProjects/NubloomPilot/shared/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
-MERGED from [androidx.wear.compose:compose-material-core:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/bd3edd6c10f438e0571af78ea98e271d/transformed/compose-material-core-1.3.1/AndroidManifest.xml:5:5-44
-MERGED from [androidx.wear.compose:compose-material-core:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/bd3edd6c10f438e0571af78ea98e271d/transformed/compose-material-core-1.3.1/AndroidManifest.xml:5:5-44
-MERGED from [androidx.wear.compose:compose-material:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/e5b5267544ac576b4ff7154686b3e407/transformed/compose-material-1.3.1/AndroidManifest.xml:5:5-44
-MERGED from [androidx.wear.compose:compose-material:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/e5b5267544ac576b4ff7154686b3e407/transformed/compose-material-1.3.1/AndroidManifest.xml:5:5-44
-MERGED from [androidx.wear.compose:compose-foundation:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/119d9a85231c647b96922cd10aa342bf/transformed/compose-foundation-1.3.1/AndroidManifest.xml:5:5-44
-MERGED from [androidx.wear.compose:compose-foundation:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/119d9a85231c647b96922cd10aa342bf/transformed/compose-foundation-1.3.1/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material3:material3-android:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c77a44ea1d449ee2f0b59e524380b72d/transformed/material3-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.material3:material3-android:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c77a44ea1d449ee2f0b59e524380b72d/transformed/material3-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.material:material-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/bdd4021c46d96e750604308707560f08/transformed/material-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/bdd4021c46d96e750604308707560f08/transformed/material-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0a40e24bdecd48a46a015826e41403b8/transformed/material-icons-core-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0a40e24bdecd48a46a015826e41403b8/transformed/material-icons-core-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-ripple-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/9faca5f5e04401fcb3df3517abf65e62/transformed/material-ripple-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-ripple-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/9faca5f5e04401fcb3df3517abf65e62/transformed/material-ripple-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.animation:animation-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/79da35e758159f452d5ea048b46741ed/transformed/animation-core-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.animation:animation-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/79da35e758159f452d5ea048b46741ed/transformed/animation-core-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.animation:animation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/6ff466ec2997f6ffccb1b13f2e6da0d3/transformed/animation-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.animation:animation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/6ff466ec2997f6ffccb1b13f2e6da0d3/transformed/animation-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-layout-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c76298bf7ef3e0709d7f6023fc734100/transformed/foundation-layout-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-layout-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c76298bf7ef3e0709d7f6023fc734100/transformed/foundation-layout-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/d808bbd6664bf95be4829a37d7f2745b/transformed/foundation-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/d808bbd6664bf95be4829a37d7f2745b/transformed/foundation-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-tooling-data-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/56f5d4b2caa2b0453c5c11bdb6d24b43/transformed/ui-tooling-data-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-tooling-data-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/56f5d4b2caa2b0453c5c11bdb6d24b43/transformed/ui-tooling-data-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-unit-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/4f89d0dd3a27ab2f3473bf39bc918bcc/transformed/ui-unit-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-unit-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/4f89d0dd3a27ab2f3473bf39bc918bcc/transformed/ui-unit-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-geometry-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/583841e0892ca5dada35a6bab8aa7216/transformed/ui-geometry-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-geometry-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/583841e0892ca5dada35a6bab8aa7216/transformed/ui-geometry-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-util-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/e4ac4438978e7630cdf4b302439ef606/transformed/ui-util-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-util-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/e4ac4438978e7630cdf4b302439ef606/transformed/ui-util-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-text-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/154803ebd0a22547297ea65eb7890eda/transformed/ui-text-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-text-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/154803ebd0a22547297ea65eb7890eda/transformed/ui-text-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/6f0b93728931aa54a458e50b7fd3bc11/transformed/ui-tooling-preview-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/6f0b93728931aa54a458e50b7fd3bc11/transformed/ui-tooling-preview-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.ui:ui-graphics-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/32d6efed1147d2e3825ec34417b7b992/transformed/ui-graphics-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-graphics-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/32d6efed1147d2e3825ec34417b7b992/transformed/ui-graphics-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/7bc4d7816d8da413c4dffaf18ae30ddd/transformed/ui-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/7bc4d7816d8da413c4dffaf18ae30ddd/transformed/ui-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c2c9bb9d8971cc828c8bbb36df9094a3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c2c9bb9d8971cc828c8bbb36df9094a3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0702c93c3b7b6faf87a5f35cd452622b/transformed/ui-tooling-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0702c93c3b7b6faf87a5f35cd452622b/transformed/ui-tooling-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.activity:activity-compose:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/50e4298496772e55740988cc0402f3b0/transformed/activity-compose-1.9.3/AndroidManifest.xml:5:5-44
-MERGED from [androidx.activity:activity-compose:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/50e4298496772e55740988cc0402f3b0/transformed/activity-compose-1.9.3/AndroidManifest.xml:5:5-44
-MERGED from [androidx.activity:activity-ktx:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/0590b708c48866869a0239f55037e29e/transformed/activity-ktx-1.9.3/AndroidManifest.xml:5:5-44
-MERGED from [androidx.activity:activity-ktx:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/0590b708c48866869a0239f55037e29e/transformed/activity-ktx-1.9.3/AndroidManifest.xml:5:5-44
-MERGED from [androidx.activity:activity:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/eb93de05052c9044a6fffcd10c1593ac/transformed/activity-1.9.3/AndroidManifest.xml:20:5-44
-MERGED from [androidx.activity:activity:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/eb93de05052c9044a6fffcd10c1593ac/transformed/activity-1.9.3/AndroidManifest.xml:20:5-44
-MERGED from [androidx.autofill:autofill:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/75b6f57e303fdb51698d1b5c38d20289/transformed/autofill-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.autofill:autofill:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/75b6f57e303fdb51698d1b5c38d20289/transformed/autofill-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:21:5-44
-MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:21:5-44
-MERGED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/13001a31885a0316438381af79ee3655/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:21:5-44
-MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/13001a31885a0316438381af79ee3655/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:21:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/8a10b650e6c5e8a9ccac02ca34587fb7/transformed/lifecycle-livedata-core-2.8.6/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/8a10b650e6c5e8a9ccac02ca34587fb7/transformed/lifecycle-livedata-core-2.8.6/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/db8dd91a28797c8f2e3fd97f77f19997/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/db8dd91a28797c8f2e3fd97f77f19997/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/96fbf9a1ea1faacf76aec0b6137c2d2e/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/96fbf9a1ea1faacf76aec0b6137c2d2e/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/af3d79424a848f5a03ced65c82cbe876/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/af3d79424a848f5a03ced65c82cbe876/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/9deb0f18b05530f3cf059edb12df41a4/transformed/lifecycle-runtime-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/9deb0f18b05530f3cf059edb12df41a4/transformed/lifecycle-runtime-release/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/3357bd940412e7f5544573e2e3f9f60d/transformed/lifecycle-viewmodel-ktx-2.8.6/AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/3357bd940412e7f5544573e2e3f9f60d/transformed/lifecycle-viewmodel-ktx-2.8.6/AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/54fe1154e4f0c90ee5597e62ac343c43/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/54fe1154e4f0c90ee5597e62ac343c43/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a9ada24cdd3b6ebc71b83860d2e66173/transformed/lifecycle-viewmodel-savedstate-2.8.6/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a9ada24cdd3b6ebc71b83860d2e66173/transformed/lifecycle-viewmodel-savedstate-2.8.6/AndroidManifest.xml:20:5-44
-MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/85154538274a71e2e3c8be97a86f0d21/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
-MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/85154538274a71e2e3c8be97a86f0d21/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
-MERGED from [androidx.core:core-ktx:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/1d4f06f5b5738a33acc438e22829739f/transformed/core-ktx-1.13.1/AndroidManifest.xml:5:5-44
-MERGED from [androidx.core:core-ktx:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/1d4f06f5b5738a33acc438e22829739f/transformed/core-ktx-1.13.1/AndroidManifest.xml:5:5-44
-MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/yranno/.gradle/caches/8.11.1/transforms/81ae4ed8f2ee64fedf6f3e8ad56b18d2/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/yranno/.gradle/caches/8.11.1/transforms/81ae4ed8f2ee64fedf6f3e8ad56b18d2/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/8750b1584bc8d74d7086b198571fb3ed/transformed/runtime-saveable-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/8750b1584bc8d74d7086b198571fb3ed/transformed/runtime-saveable-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.runtime:runtime-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/fbdad0345f21942f1077edd7d3648c4d/transformed/runtime-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.runtime:runtime-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/fbdad0345f21942f1077edd7d3648c4d/transformed/runtime-release/AndroidManifest.xml:5:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/2d907e1cb963256dfbbb4a3d21f1e772/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/2d907e1cb963256dfbbb4a3d21f1e772/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/92626faab01e790ceb74cd6015297ff0/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/92626faab01e790ceb74cd6015297ff0/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
-MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c66ff32dd77a0dd87675373ecdb739cd/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c66ff32dd77a0dd87675373ecdb739cd/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.tracing:tracing:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/94714bf808582f1b0cc9a650814e4d58/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.tracing:tracing:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/94714bf808582f1b0cc9a650814e4d58/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/e362326501e2c5d92d4ad68dfd6fcefb/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/e362326501e2c5d92d4ad68dfd6fcefb/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-wearable:20.0.1] /Users/yranno/.gradle/caches/8.11.1/transforms/501d00feaea5b2457742122e7c32d4a9/transformed/play-services-wearable-20.0.1/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-wearable:20.0.1] /Users/yranno/.gradle/caches/8.11.1/transforms/501d00feaea5b2457742122e7c32d4a9/transformed/play-services-wearable-20.0.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.wear.compose:compose-material-core:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/5122259ed30ca15145471a7c11c4fc29/transformed/compose-material-core-1.3.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-material-core:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/5122259ed30ca15145471a7c11c4fc29/transformed/compose-material-core-1.3.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-material:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c95a875e5cd9bda297346d9b4c691669/transformed/compose-material-1.3.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-material:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c95a875e5cd9bda297346d9b4c691669/transformed/compose-material-1.3.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-foundation:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/9c7d0d7214d97298a4cac593724ddeac/transformed/compose-foundation-1.3.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-foundation:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/9c7d0d7214d97298a4cac593724ddeac/transformed/compose-foundation-1.3.1/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/787f6ab7e1a82b02bd69f5209c07f572/transformed/play-services-base-18.5.0/AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/787f6ab7e1a82b02bd69f5209c07f572/transformed/play-services-base-18.5.0/AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/cb2770c5246028b9c2981fd09a1c2036/transformed/play-services-tasks-18.2.0/AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/cb2770c5246028b9c2981fd09a1c2036/transformed/play-services-tasks-18.2.0/AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5ce4884170bdb48268b59f2854978450/transformed/play-services-basement-18.9.0/AndroidManifest.xml:18:5-43
+MERGED from [com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5ce4884170bdb48268b59f2854978450/transformed/play-services-basement-18.9.0/AndroidManifest.xml:18:5-43
+MERGED from [androidx.fragment:fragment:1.1.0] /Users/yranno/.gradle/caches/8.11.1/transforms/2acd905386b88af8d23b60d3c9fdd296/transformed/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0] /Users/yranno/.gradle/caches/8.11.1/transforms/2acd905386b88af8d23b60d3c9fdd296/transformed/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.compose.material3:material3-android:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/1f918cc5c6f3ecc82cdb0ba35c780fd8/transformed/material3-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/1f918cc5c6f3ecc82cdb0ba35c780fd8/transformed/material3-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material:material-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/4a109cdc6cf5488afd05066bdda21ff1/transformed/material-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/4a109cdc6cf5488afd05066bdda21ff1/transformed/material-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/bf09f90b323a9b20f406b11e5584e4f2/transformed/material-icons-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/bf09f90b323a9b20f406b11e5584e4f2/transformed/material-icons-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/b2f1ec13a63e2b8ce732fda459952edb/transformed/material-ripple-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/b2f1ec13a63e2b8ce732fda459952edb/transformed/material-ripple-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/5396b1f287602614e7c312038ba6a15f/transformed/animation-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/5396b1f287602614e7c312038ba6a15f/transformed/animation-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/1ab7440774fcf20f4c02dd474b29adda/transformed/animation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/1ab7440774fcf20f4c02dd474b29adda/transformed/animation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/247b8a64a0924900a4527f6d29807ae2/transformed/foundation-layout-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/247b8a64a0924900a4527f6d29807ae2/transformed/foundation-layout-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c79d22fa3793bebf07cd65eee5f4e012/transformed/foundation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c79d22fa3793bebf07cd65eee5f4e012/transformed/foundation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/b3edfb4cf51050b8f4844565d01d9598/transformed/ui-tooling-data-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/b3edfb4cf51050b8f4844565d01d9598/transformed/ui-tooling-data-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/db2de8e9fc937dfc6939a31596dfd6d2/transformed/ui-unit-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/db2de8e9fc937dfc6939a31596dfd6d2/transformed/ui-unit-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/e157a8ba88fc1615ff426ebdcb4717a0/transformed/ui-geometry-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/e157a8ba88fc1615ff426ebdcb4717a0/transformed/ui-geometry-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/6046e3723675bb603b6710b5525f1eea/transformed/ui-util-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/6046e3723675bb603b6710b5525f1eea/transformed/ui-util-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c49a81e0fa1b793e8f4237cc0c6b4128/transformed/ui-text-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c49a81e0fa1b793e8f4237cc0c6b4128/transformed/ui-text-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2930db95efd27974280589ec1b1ff2a6/transformed/ui-tooling-preview-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2930db95efd27974280589ec1b1ff2a6/transformed/ui-tooling-preview-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c991d43adf9b7545c8bb67628e6c020e/transformed/ui-graphics-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c991d43adf9b7545c8bb67628e6c020e/transformed/ui-graphics-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/f090274a0c946c9a89f651fe7813a287/transformed/ui-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/f090274a0c946c9a89f651fe7813a287/transformed/ui-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/86d36a6b7f44bd58c6df0d93a88c2ff3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/86d36a6b7f44bd58c6df0d93a88c2ff3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2261526d46d8fe9fd8eb95c9e7d0e793/transformed/ui-tooling-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2261526d46d8fe9fd8eb95c9e7d0e793/transformed/ui-tooling-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-compose:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/5b2a6a87737f3978104c7edee5d0d53a/transformed/activity-compose-1.9.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/5b2a6a87737f3978104c7edee5d0d53a/transformed/activity-compose-1.9.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/876d08accf6ed40a3aa81204f33122b1/transformed/activity-ktx-1.9.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/876d08accf6ed40a3aa81204f33122b1/transformed/activity-ktx-1.9.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/17794f0e4cec95bb238f0438f35701ef/transformed/activity-1.9.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.9.3] /Users/yranno/.gradle/caches/8.11.1/transforms/17794f0e4cec95bb238f0438f35701ef/transformed/activity-1.9.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fe1d3ca9cb7bf75095e7d5ddc72e7ae7/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fe1d3ca9cb7bf75095e7d5ddc72e7ae7/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/ad612e3668118ed74fbe92ffe9f8dbda/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/ad612e3668118ed74fbe92ffe9f8dbda/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.autofill:autofill:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/166b684fe71f011618e87b5dbf05bbab/transformed/autofill-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/166b684fe71f011618e87b5dbf05bbab/transformed/autofill-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/d46017e0fdd3493811a451f820068958/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/d46017e0fdd3493811a451f820068958/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/5e8cab3f23fd5021a89e8ea0e6f8af87/transformed/lifecycle-livedata-core-ktx-2.8.6/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/5e8cab3f23fd5021a89e8ea0e6f8af87/transformed/lifecycle-livedata-core-ktx-2.8.6/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a58bad00cd68a54183d3c4d6df7c4f8e/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a58bad00cd68a54183d3c4d6df7c4f8e/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ecd9bf5ec7d2d0fed6f37938ec531ffe/transformed/lifecycle-livedata-core-2.8.6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ecd9bf5ec7d2d0fed6f37938ec531ffe/transformed/lifecycle-livedata-core-2.8.6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/23b4d4645d0bb0be1f9538253de8297f/transformed/lifecycle-livedata-2.8.6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/23b4d4645d0bb0be1f9538253de8297f/transformed/lifecycle-livedata-2.8.6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c30e257a210ccf73c771b0f57a10042d/transformed/lifecycle-viewmodel-2.8.6/AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c30e257a210ccf73c771b0f57a10042d/transformed/lifecycle-viewmodel-2.8.6/AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/576da7de192fab7284a0dd2cb37227a3/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/576da7de192fab7284a0dd2cb37227a3/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7819fa17c06aa98197fa717c4cf2a5c9/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7819fa17c06aa98197fa717c4cf2a5c9/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/2323baa34b2c57a92525431c065dd753/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/2323baa34b2c57a92525431c065dd753/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/5f9e359e931ec401e89ddbbd16f7ed1a/transformed/lifecycle-runtime-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/5f9e359e931ec401e89ddbbd16f7ed1a/transformed/lifecycle-runtime-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0e4b5663358c6f492ba4914673361630/transformed/lifecycle-viewmodel-ktx-2.8.6/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0e4b5663358c6f492ba4914673361630/transformed/lifecycle-viewmodel-ktx-2.8.6/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a5de514292bc67eda9bef09e9e7ba181/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a5de514292bc67eda9bef09e9e7ba181/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/798b01b42135b96e80c7a39d523a4bbd/transformed/lifecycle-viewmodel-savedstate-2.8.6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/798b01b42135b96e80c7a39d523a4bbd/transformed/lifecycle-viewmodel-savedstate-2.8.6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/db8d107ed48b320a663699e18ddac04d/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/db8d107ed48b320a663699e18ddac04d/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.core:core-ktx:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7e9f41ee08b19cfcc451f5484aa0ae35/transformed/core-ktx-1.13.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7e9f41ee08b19cfcc451f5484aa0ae35/transformed/core-ktx-1.13.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/yranno/.gradle/caches/8.11.1/transforms/d021807f61ba7b8b831f66c78cfa74c6/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/yranno/.gradle/caches/8.11.1/transforms/d021807f61ba7b8b831f66c78cfa74c6/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/3cdd245cf2316c07fa7c504ad9fca512/transformed/runtime-saveable-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/3cdd245cf2316c07fa7c504ad9fca512/transformed/runtime-saveable-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ece28b2d5da4ce37ec56efa96afef1f1/transformed/runtime-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ece28b2d5da4ce37ec56efa96afef1f1/transformed/runtime-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/a5ce64c2c9eb5570e40454eb022098b9/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/a5ce64c2c9eb5570e40454eb022098b9/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/9946d0ce147a628d89b79f7de2693ab6/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/9946d0ce147a628d89b79f7de2693ab6/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c37ca39e35fcb3204e6a0d9b01d70e14/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c37ca39e35fcb3204e6a0d9b01d70e14/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/14663848f739384bcc308cfa4304619f/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/yranno/.gradle/caches/8.11.1/transforms/14663848f739384bcc308cfa4304619f/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/340cc4c948bb5cc644dafe15a49a2ae9/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/yranno/.gradle/caches/8.11.1/transforms/340cc4c948bb5cc644dafe15a49a2ae9/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
 	android:targetSdkVersion
 		INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from /Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/787f6ab7e1a82b02bd69f5209c07f572/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:9-173
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/787f6ab7e1a82b02bd69f5209c07f572/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:146-170
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/787f6ab7e1a82b02bd69f5209c07f572/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:86-145
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/787f6ab7e1a82b02bd69f5209c07f572/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:19-85
+meta-data#com.google.android.gms.version
+ADDED from [com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5ce4884170bdb48268b59f2854978450/transformed/play-services-basement-18.9.0/AndroidManifest.xml:21:9-23:69
+	android:value
+		ADDED from [com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5ce4884170bdb48268b59f2854978450/transformed/play-services-basement-18.9.0/AndroidManifest.xml:23:13-66
+	android:name
+		ADDED from [com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5ce4884170bdb48268b59f2854978450/transformed/play-services-basement-18.9.0/AndroidManifest.xml:22:13-58
 activity#androidx.activity.ComponentActivity
-ADDED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c2c9bb9d8971cc828c8bbb36df9094a3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:23:9-25:39
+ADDED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/86d36a6b7f44bd58c6df0d93a88c2ff3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:23:9-25:39
 	android:exported
-		ADDED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c2c9bb9d8971cc828c8bbb36df9094a3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:25:13-36
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/86d36a6b7f44bd58c6df0d93a88c2ff3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:25:13-36
 	android:name
-		ADDED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/c2c9bb9d8971cc828c8bbb36df9094a3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:24:13-63
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/86d36a6b7f44bd58c6df0d93a88c2ff3/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:24:13-63
 activity#androidx.compose.ui.tooling.PreviewActivity
-ADDED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0702c93c3b7b6faf87a5f35cd452622b/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
+ADDED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2261526d46d8fe9fd8eb95c9e7d0e793/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
 	android:exported
-		ADDED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0702c93c3b7b6faf87a5f35cd452622b/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2261526d46d8fe9fd8eb95c9e7d0e793/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
 	android:name
-		ADDED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0702c93c3b7b6faf87a5f35cd452622b/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/2261526d46d8fe9fd8eb95c9e7d0e793/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
 provider#androidx.startup.InitializationProvider
-ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/13001a31885a0316438381af79ee3655/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/13001a31885a0316438381af79ee3655/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c66ff32dd77a0dd87675373ecdb739cd/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
-MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c66ff32dd77a0dd87675373ecdb739cd/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a58bad00cd68a54183d3c4d6df7c4f8e/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a58bad00cd68a54183d3c4d6df7c4f8e/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c37ca39e35fcb3204e6a0d9b01d70e14/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/yranno/.gradle/caches/8.11.1/transforms/c37ca39e35fcb3204e6a0d9b01d70e14/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
 	tools:node
-		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:28:13-31
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:28:13-31
 	android:authorities
-		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
 	android:exported
-		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
 	android:name
-		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
 meta-data#androidx.emoji2.text.EmojiCompatInitializer
-ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
 	android:value
-		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
 	android:name
-		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/5f90197c2926323053add73b1da9c201/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/f636e39790d97e458c783f2891f8011c/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
 permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
-		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
 	android:name
-		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
-permission#com.sujin.nubloompilot.wear.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+permission#com.sujin.nubloompilot.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
-		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
 	android:name
-		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
 uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
 	android:name
-		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
-uses-permission#com.sujin.nubloompilot.wear.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+uses-permission#com.sujin.nubloompilot.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
 	android:name
-		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/de422d2b74bc53a9256306d63ce2859c/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+		ADDED from [androidx.core:core:1.13.1] /Users/yranno/.gradle/caches/8.11.1/transforms/818207ade91c7c66b441f22865c965ed/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
 meta-data#androidx.lifecycle.ProcessLifecycleInitializer
-ADDED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/13001a31885a0316438381af79ee3655/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:29:13-31:52
+ADDED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a58bad00cd68a54183d3c4d6df7c4f8e/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:29:13-31:52
 	android:value
-		ADDED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/13001a31885a0316438381af79ee3655/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:31:17-49
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a58bad00cd68a54183d3c4d6df7c4f8e/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:31:17-49
 	android:name
-		ADDED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/13001a31885a0316438381af79ee3655/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:30:17-78
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/a58bad00cd68a54183d3c4d6df7c4f8e/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:30:17-78
 meta-data#androidx.profileinstaller.ProfileInstallerInitializer
-ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
 	android:value
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
 receiver#androidx.profileinstaller.ProfileInstallReceiver
-ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
 	android:enabled
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
 	android:exported
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
 	android:permission
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
 	android:directBootAware
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
 intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
 action#androidx.profileinstaller.action.INSTALL_PROFILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
 intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
 action#androidx.profileinstaller.action.SKIP_FILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
 intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
 action#androidx.profileinstaller.action.SAVE_PROFILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
 intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
-ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
 action#androidx.profileinstaller.action.BENCHMARK_OPERATION
-ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/f01c2a3c8730bc51507095ed5fcd6b35/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/eedf52ac42cf873d576e4f051f270fa7/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92

@@ -4,7 +4,7 @@
     "type": "COMPATIBLE_SCREEN_MANIFEST",
     "kind": "Directory"
   },
-  "applicationId": "com.sujin.nubloompilot.wear",
+  "applicationId": "com.sujin.nubloompilot",
   "variantName": "debug",
   "elements": []
 }
