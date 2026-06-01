@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "287825439488",
+    "project_id": "nubloom-pilot",
+    "storage_bucket": "nubloom-pilot.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287825439488:android:fe035808708fa8467b61e5",
+        "android_client_info": {
+          "package_name": "com.sujin.nubloompilot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzrMp4cuQQaLlePIv4iXIlw7nSMLA7z1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

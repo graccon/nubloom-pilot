@@ -63,257 +63,256 @@
 41-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:8:9-38
 42        android:supportsRtl="true"
 42-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:9:9-35
-43        android:testOnly="true"
-44        android:theme="@android:style/Theme.DeviceDefault" >
-44-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:10:9-59
-45        <meta-data
-45-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:12:9-14:36
-46            android:name="com.google.android.wearable.standalone"
-46-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:13:13-66
-47            android:value="true" />
-47-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:14:13-33
-48
-49        <uses-library
-49-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:15:9-17:40
-50            android:name="com.google.android.wearable"
-50-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:16:13-55
-51            android:required="false" />
-51-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:17:13-37
-52
-53        <activity
-53-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:19:9-27:20
-54            android:name="com.sujin.nubloompilot.wear.MainActivity"
-54-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:20:13-41
-55            android:exported="true"
-55-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:21:13-36
-56            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" >
-56-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:22:13-75
-57            <intent-filter>
-57-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:23:13-26:29
-58                <action android:name="android.intent.action.MAIN" />
-58-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:24:17-69
-58-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:24:25-66
-59
-60                <category android:name="android.intent.category.LAUNCHER" />
-60-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:25:17-77
-60-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:25:27-74
-61            </intent-filter>
-62        </activity>
-63
-64        <service
-64-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:29:9-39:19
-65            android:name="com.sujin.nubloompilot.wear.WearTimelineDataListenerService"
-65-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:30:13-60
-66            android:exported="true" >
-66-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:31:13-36
-67            <intent-filter>
-67-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:32:13-38:29
-68                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
-68-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:33:17-87
-68-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:33:25-84
-69
-70                <data
-70-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:34:17-37:45
-71                    android:host="*"
-71-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:35:21-37
-72                    android:pathPrefix="/nubloom/timeline"
-72-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:36:21-59
-73                    android:scheme="wear" />
-73-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:37:21-42
-74            </intent-filter>
-75        </service>
-76        <service
-76-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:41:9-62:19
-77            android:name="com.sujin.nubloompilot.wear.wearface.SpiralWatchFaceService"
-77-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:42:13-60
-78            android:exported="true"
-78-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:43:13-36
-79            android:label="Nubloom Spiral"
-79-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:44:13-43
-80            android:permission="android.permission.BIND_WALLPAPER" >
-80-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:45:13-67
-81            <intent-filter>
-81-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:46:13-49:29
-82                <action android:name="android.service.wallpaper.WallpaperService" />
-82-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:47:17-85
-82-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:47:25-82
-83
-84                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
-84-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:48:17-102
-84-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:48:27-99
-85            </intent-filter>
-86
-87            <meta-data
-87-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:50:13-52:73
-88                android:name="com.google.android.wearable.watchface.preview"
-88-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:51:17-77
-89                android:resource="@android:drawable/sym_def_app_icon" />
-89-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:52:17-70
-90            <meta-data
-90-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:53:13-55:73
-91                android:name="com.google.android.wearable.watchface.preview_circular"
-91-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:54:17-86
-92                android:resource="@android:drawable/sym_def_app_icon" />
-92-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:55:17-70
-93            <meta-data
-93-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:56:13-58:54
-94                android:name="android.service.wallpaper"
-94-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:57:17-57
-95                android:resource="@xml/watch_face" />
-95-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:58:17-51
-96            <meta-data
-96-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:59:13-61:54
-97                android:name="com.google.android.wearable.watchface"
-97-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:60:17-69
-98                android:resource="@xml/watch_face" />
-98-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:61:17-51
-99        </service>
-100        <service
-100-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:42:9-58:19
-101            android:name="androidx.wear.watchface.control.WatchFaceControlService"
-101-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:43:13-83
-102            android:directBootAware="true"
-102-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:44:13-43
-103            android:enabled="@bool/watch_face_instance_service_enabled"
-103-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:45:13-72
-104            android:exported="true"
-104-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:46:13-36
-105            android:permission="com.google.android.wearable.permission.BIND_WATCH_FACE_CONTROL" >
-105-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:47:13-96
-106            <meta-data
-106-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:48:13-50:67
-107                android:name="androidx.wear.watchface.api_version"
-107-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:49:17-67
-108                android:value="@integer/watch_face_api_version" />
-108-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:50:17-64
-109            <meta-data
-109-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:51:13-53:67
-110                android:name="androidx.wear.watchface.xml_version"
-110-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:52:17-67
-111                android:value="@integer/watch_face_xml_version" />
-111-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:53:17-64
-112
-113            <intent-filter>
-113-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:55:13-57:29
-114                <action android:name="com.google.android.wearable.action.WATCH_FACE_CONTROL" />
-114-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:56:17-96
-114-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:56:25-93
-115            </intent-filter>
-116        </service>
-117        <!--
-118      Used to configure complications. Applications can remove this using:
-119      <activity
-120	  android:name="androidx.wear.watchface.ComplicationHelperActivity"
-121	  tools:node="remove" />
-122      in their manifest if they do not support complications and want to allow
-123      R8 to remove the code associated with this activity. If the activity is
-124      remove while it is needed, this may lead to a runtime exception of type
-125      android.content.ActivityNotFoundException.
-126        -->
-127        <activity
-127-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:70:9-74:75
-128            android:name="androidx.wear.watchface.ComplicationHelperActivity"
-128-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:71:13-78
-129            android:excludeFromRecents="true"
-129-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:72:13-46
-130            android:exported="false"
-130-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:73:13-37
-131            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-131-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:74:13-72
-132        <activity
-132-->[com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/87e340b46c46fd82eb20e2c38257e20c/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:9-173
-133            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-133-->[com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/87e340b46c46fd82eb20e2c38257e20c/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:19-85
-134            android:exported="false"
-134-->[com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/87e340b46c46fd82eb20e2c38257e20c/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:146-170
-135            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-135-->[com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/87e340b46c46fd82eb20e2c38257e20c/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:86-145
-136
-137        <meta-data
-137-->[com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/a26919dddaac33911b69e8c4fc8d8938/transformed/play-services-basement-18.9.0/AndroidManifest.xml:21:9-23:69
-138            android:name="com.google.android.gms.version"
-138-->[com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/a26919dddaac33911b69e8c4fc8d8938/transformed/play-services-basement-18.9.0/AndroidManifest.xml:22:13-58
-139            android:value="@integer/google_play_services_version" />
-139-->[com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/a26919dddaac33911b69e8c4fc8d8938/transformed/play-services-basement-18.9.0/AndroidManifest.xml:23:13-66
-140
-141        <activity
-141-->[androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ad4348c45159f12df6a4bfba792c2c26/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
-142            android:name="androidx.compose.ui.tooling.PreviewActivity"
-142-->[androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ad4348c45159f12df6a4bfba792c2c26/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
-143            android:exported="true" />
-143-->[androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ad4348c45159f12df6a4bfba792c2c26/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
-144        <activity
-144-->[androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0b56dc6d59d34cbaafabcd29c73b4456/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:23:9-25:39
-145            android:name="androidx.activity.ComponentActivity"
-145-->[androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0b56dc6d59d34cbaafabcd29c73b4456/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:24:13-63
-146            android:exported="true" />
-146-->[androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0b56dc6d59d34cbaafabcd29c73b4456/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:25:13-36
-147
-148        <provider
-148-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
-149            android:name="androidx.startup.InitializationProvider"
-149-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
-150            android:authorities="com.sujin.nubloompilot.androidx-startup"
-150-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
-151            android:exported="false" >
-151-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
-152            <meta-data
-152-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
-153                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-153-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
-154                android:value="androidx.startup" />
-154-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
-155            <meta-data
-155-->[androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/f88d1fdc3f953c6d23a7e373480b1977/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:29:13-31:52
-156                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-156-->[androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/f88d1fdc3f953c6d23a7e373480b1977/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:30:17-78
-157                android:value="androidx.startup" />
-157-->[androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/f88d1fdc3f953c6d23a7e373480b1977/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:31:17-49
-158            <meta-data
-158-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
-159                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-159-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
-160                android:value="androidx.startup" />
-160-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
-161        </provider>
-162
-163        <receiver
-163-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
-164            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-164-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
-165            android:directBootAware="false"
-165-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
-166            android:enabled="true"
-166-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
-167            android:exported="true"
-167-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
-168            android:permission="android.permission.DUMP" >
-168-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
-169            <intent-filter>
-169-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
-170                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-170-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
-170-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
-171            </intent-filter>
-172            <intent-filter>
-172-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
-173                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-173-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
-173-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
-174            </intent-filter>
-175            <intent-filter>
-175-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
-176                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-176-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
-176-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
-177            </intent-filter>
-178            <intent-filter>
-178-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
-179                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-179-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
-179-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
-180            </intent-filter>
-181        </receiver>
-182    </application>
-183
-184</manifest>
+43        android:theme="@android:style/Theme.DeviceDefault" >
+43-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:10:9-59
+44        <meta-data
+44-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:12:9-14:36
+45            android:name="com.google.android.wearable.standalone"
+45-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:13:13-66
+46            android:value="true" />
+46-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:14:13-33
+47
+48        <uses-library
+48-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:15:9-17:40
+49            android:name="com.google.android.wearable"
+49-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:16:13-55
+50            android:required="false" />
+50-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:17:13-37
+51
+52        <activity
+52-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:19:9-27:20
+53            android:name="com.sujin.nubloompilot.wear.MainActivity"
+53-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:20:13-41
+54            android:exported="true"
+54-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:21:13-36
+55            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" >
+55-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:22:13-75
+56            <intent-filter>
+56-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:23:13-26:29
+57                <action android:name="android.intent.action.MAIN" />
+57-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:24:17-69
+57-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:24:25-66
+58
+59                <category android:name="android.intent.category.LAUNCHER" />
+59-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:25:17-77
+59-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:25:27-74
+60            </intent-filter>
+61        </activity>
+62
+63        <service
+63-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:29:9-39:19
+64            android:name="com.sujin.nubloompilot.wear.WearTimelineDataListenerService"
+64-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:30:13-60
+65            android:exported="true" >
+65-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:31:13-36
+66            <intent-filter>
+66-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:32:13-38:29
+67                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+67-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:33:17-87
+67-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:33:25-84
+68
+69                <data
+69-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:34:17-37:45
+70                    android:host="*"
+70-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:35:21-37
+71                    android:pathPrefix="/nubloom/timeline"
+71-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:36:21-59
+72                    android:scheme="wear" />
+72-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:37:21-42
+73            </intent-filter>
+74        </service>
+75        <service
+75-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:41:9-62:19
+76            android:name="com.sujin.nubloompilot.wear.wearface.SpiralWatchFaceService"
+76-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:42:13-60
+77            android:exported="true"
+77-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:43:13-36
+78            android:label="Nubloom Spiral"
+78-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:44:13-43
+79            android:permission="android.permission.BIND_WALLPAPER" >
+79-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:45:13-67
+80            <intent-filter>
+80-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:46:13-49:29
+81                <action android:name="android.service.wallpaper.WallpaperService" />
+81-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:47:17-85
+81-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:47:25-82
+82
+83                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+83-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:48:17-102
+83-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:48:27-99
+84            </intent-filter>
+85
+86            <meta-data
+86-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:50:13-52:73
+87                android:name="com.google.android.wearable.watchface.preview"
+87-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:51:17-77
+88                android:resource="@android:drawable/sym_def_app_icon" />
+88-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:52:17-70
+89            <meta-data
+89-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:53:13-55:73
+90                android:name="com.google.android.wearable.watchface.preview_circular"
+90-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:54:17-86
+91                android:resource="@android:drawable/sym_def_app_icon" />
+91-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:55:17-70
+92            <meta-data
+92-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:56:13-58:54
+93                android:name="android.service.wallpaper"
+93-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:57:17-57
+94                android:resource="@xml/watch_face" />
+94-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:58:17-51
+95            <meta-data
+95-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:59:13-61:54
+96                android:name="com.google.android.wearable.watchface"
+96-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:60:17-69
+97                android:resource="@xml/watch_face" />
+97-->/Users/yranno/AndroidStudioProjects/NubloomPilot/wear/src/main/AndroidManifest.xml:61:17-51
+98        </service>
+99        <service
+99-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:42:9-58:19
+100            android:name="androidx.wear.watchface.control.WatchFaceControlService"
+100-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:43:13-83
+101            android:directBootAware="true"
+101-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:44:13-43
+102            android:enabled="@bool/watch_face_instance_service_enabled"
+102-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:45:13-72
+103            android:exported="true"
+103-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:46:13-36
+104            android:permission="com.google.android.wearable.permission.BIND_WATCH_FACE_CONTROL" >
+104-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:47:13-96
+105            <meta-data
+105-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:48:13-50:67
+106                android:name="androidx.wear.watchface.api_version"
+106-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:49:17-67
+107                android:value="@integer/watch_face_api_version" />
+107-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:50:17-64
+108            <meta-data
+108-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:51:13-53:67
+109                android:name="androidx.wear.watchface.xml_version"
+109-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:52:17-67
+110                android:value="@integer/watch_face_xml_version" />
+110-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:53:17-64
+111
+112            <intent-filter>
+112-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:55:13-57:29
+113                <action android:name="com.google.android.wearable.action.WATCH_FACE_CONTROL" />
+113-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:56:17-96
+113-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:56:25-93
+114            </intent-filter>
+115        </service>
+116        <!--
+117      Used to configure complications. Applications can remove this using:
+118      <activity
+119	  android:name="androidx.wear.watchface.ComplicationHelperActivity"
+120	  tools:node="remove" />
+121      in their manifest if they do not support complications and want to allow
+122      R8 to remove the code associated with this activity. If the activity is
+123      remove while it is needed, this may lead to a runtime exception of type
+124      android.content.ActivityNotFoundException.
+125        -->
+126        <activity
+126-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:70:9-74:75
+127            android:name="androidx.wear.watchface.ComplicationHelperActivity"
+127-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:71:13-78
+128            android:excludeFromRecents="true"
+128-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:72:13-46
+129            android:exported="false"
+129-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:73:13-37
+130            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+130-->[androidx.wear.watchface:watchface:1.2.1] /Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/AndroidManifest.xml:74:13-72
+131        <activity
+131-->[com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/87e340b46c46fd82eb20e2c38257e20c/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:9-173
+132            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+132-->[com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/87e340b46c46fd82eb20e2c38257e20c/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:19-85
+133            android:exported="false"
+133-->[com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/87e340b46c46fd82eb20e2c38257e20c/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:146-170
+134            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+134-->[com.google.android.gms:play-services-base:18.5.0] /Users/yranno/.gradle/caches/8.11.1/transforms/87e340b46c46fd82eb20e2c38257e20c/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:86-145
+135
+136        <meta-data
+136-->[com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/a26919dddaac33911b69e8c4fc8d8938/transformed/play-services-basement-18.9.0/AndroidManifest.xml:21:9-23:69
+137            android:name="com.google.android.gms.version"
+137-->[com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/a26919dddaac33911b69e8c4fc8d8938/transformed/play-services-basement-18.9.0/AndroidManifest.xml:22:13-58
+138            android:value="@integer/google_play_services_version" />
+138-->[com.google.android.gms:play-services-basement:18.9.0] /Users/yranno/.gradle/caches/8.11.1/transforms/a26919dddaac33911b69e8c4fc8d8938/transformed/play-services-basement-18.9.0/AndroidManifest.xml:23:13-66
+139
+140        <activity
+140-->[androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ad4348c45159f12df6a4bfba792c2c26/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
+141            android:name="androidx.compose.ui.tooling.PreviewActivity"
+141-->[androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ad4348c45159f12df6a4bfba792c2c26/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
+142            android:exported="true" />
+142-->[androidx.compose.ui:ui-tooling-android:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/ad4348c45159f12df6a4bfba792c2c26/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
+143        <activity
+143-->[androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0b56dc6d59d34cbaafabcd29c73b4456/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:23:9-25:39
+144            android:name="androidx.activity.ComponentActivity"
+144-->[androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0b56dc6d59d34cbaafabcd29c73b4456/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:24:13-63
+145            android:exported="true" />
+145-->[androidx.compose.ui:ui-test-manifest:1.6.6] /Users/yranno/.gradle/caches/8.11.1/transforms/0b56dc6d59d34cbaafabcd29c73b4456/transformed/ui-test-manifest-1.6.6/AndroidManifest.xml:25:13-36
+146
+147        <provider
+147-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+148            android:name="androidx.startup.InitializationProvider"
+148-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
+149            android:authorities="com.sujin.nubloompilot.androidx-startup"
+149-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
+150            android:exported="false" >
+150-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
+151            <meta-data
+151-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+152                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+152-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+153                android:value="androidx.startup" />
+153-->[androidx.emoji2:emoji2:1.3.0] /Users/yranno/.gradle/caches/8.11.1/transforms/fae3ebb85b8e996d0ba0a82dd1fb4e04/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+154            <meta-data
+154-->[androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/f88d1fdc3f953c6d23a7e373480b1977/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:29:13-31:52
+155                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+155-->[androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/f88d1fdc3f953c6d23a7e373480b1977/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:30:17-78
+156                android:value="androidx.startup" />
+156-->[androidx.lifecycle:lifecycle-process:2.8.6] /Users/yranno/.gradle/caches/8.11.1/transforms/f88d1fdc3f953c6d23a7e373480b1977/transformed/lifecycle-process-2.8.6/AndroidManifest.xml:31:17-49
+157            <meta-data
+157-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+158                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+158-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+159                android:value="androidx.startup" />
+159-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+160        </provider>
+161
+162        <receiver
+162-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+163            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+163-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+164            android:directBootAware="false"
+164-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+165            android:enabled="true"
+165-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+166            android:exported="true"
+166-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+167            android:permission="android.permission.DUMP" >
+167-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+168            <intent-filter>
+168-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+169                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+169-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+169-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+170            </intent-filter>
+171            <intent-filter>
+171-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+172                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+172-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+172-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+173            </intent-filter>
+174            <intent-filter>
+174-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+175                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+175-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+175-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+176            </intent-filter>
+177            <intent-filter>
+177-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+178                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+178-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+178-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/yranno/.gradle/caches/8.11.1/transforms/20558236a186f22e01d0ae957bba9fec/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+179            </intent-filter>
+180        </receiver>
+181    </application>
+182
+183</manifest>

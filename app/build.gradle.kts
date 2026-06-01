@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.gms.google-services")
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.appdistribution)
 }
 
 android {
@@ -22,6 +23,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            firebaseAppDistribution {
+                groups = "internal-testers"
+                releaseNotes = "[PHONE] NubloomPilot Phone App debug build"
+            }
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(

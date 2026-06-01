@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.appdistribution)
 }
 
 android {
@@ -21,6 +23,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            firebaseAppDistribution {
+                groups = "internal-testers"
+                releaseNotes = "[WEAR] NubloomPilot Wear App and Watch Face debug build"
+            }
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
