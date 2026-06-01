@@ -54,6 +54,7 @@ import java.time.Instant
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.sujin.nubloompilot.shared.models.WatchTimelinePayload
+import com.sujin.nubloompilot.wear.WatchTimelinePayloadMapper
 import com.sujin.nubloompilot.wear.WearDataSyncManager
 import kotlinx.coroutines.launch
 
@@ -125,7 +126,25 @@ private fun HomePageContent(
     val currentTime = rememberCurrentTime()
     val greetingMessage = rememberRotatingMessage()
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(
+        yesterdayShift,
+        todayShift,
+        tomorrowShift,
+        dayAfterTomorrowShift,
+        latestInterventionBundle
+    ) {
+        val payload = WatchTimelinePayloadMapper.map(
+            yesterdayShift = yesterdayShift,
+            todayShift = todayShift,
+            tomorrowShift = tomorrowShift,
+            dayAfterTomorrowShift = dayAfterTomorrowShift,
+            interventions = latestInterventionBundle?.interventions ?: emptyList()
+        )
+        WearDataSyncManager(context).syncTimelinePayload(payload)
+            .onSuccess { Log.d("HomePage", "Automatic watch sync success") }
+            .onFailure { e -> Log.e("HomePage", "Automatic watch sync failed", e) }
+    }
 
     val timelineRevealProgress = remember { Animatable(0f) }
 
@@ -203,29 +222,6 @@ private fun HomePageContent(
             participantName = participantName,
             greetingMessage = greetingMessage
         )
-
-        // TODO: 임시 워치 동기화 테스트 버튼. 실제 데이터 연동 후 제거.
-        Button(
-            onClick = {
-                scope.launch {
-                    val payload = WatchTimelinePayload(
-                        yesterdayShift = "N",
-                        todayShift = "D",
-                        tomorrowShift = "E",
-                        dayAfterTomorrowShift = "OFF",
-                        interventions = emptyList(),
-                        referenceDate = LocalDate.now().toString(),
-                        updatedAt = System.currentTimeMillis()
-                    )
-                    WearDataSyncManager(context).syncTimelinePayload(payload)
-                        .onSuccess { Log.d("HomePage", "Watch sync success") }
-                        .onFailure { e -> Log.e("HomePage", "Watch sync failed", e) }
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("워치 동기화 테스트")
-        }
 
 //        Button(
 //            onClick = onDebugSleepCheckInClick,

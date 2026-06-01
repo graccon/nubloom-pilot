@@ -31,6 +31,18 @@ class WearTimelineDataListenerService : WearableListenerService() {
                     Log.d(TAG, "referenceDate: $referenceDate")
                     Log.d(TAG, "updatedAt: $updatedAt")
                     Log.d(TAG, "interventions count: ${interventions?.size ?: 0}")
+
+                    // Save to local store
+                    val localStore = WearTimelineLocalStore(applicationContext)
+                    localStore.saveTimelineInfo(
+                        yesterdayShift = yesterdayShift,
+                        todayShift = todayShift,
+                        tomorrowShift = tomorrowShift,
+                        dayAfterTomorrowShift = dayAfterTomorrowShift,
+                        referenceDate = referenceDate,
+                        updatedAt = updatedAt
+                    )
+                    Log.d(TAG, "Successfully saved timeline info to LocalStore")
                 }
             }
         }
