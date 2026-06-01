@@ -219,12 +219,12 @@ fun AppNavGraph() {
                 )
             }
 
-            composable(Routes.HOME) {
-                val shiftsAroundToday = remember {
+            composable(Routes.HOME) { backStackEntry ->
+                val shiftsAroundToday = remember(backStackEntry) {
                     shiftScheduleRepository.getShiftsAroundToday()
                 }
 
-                val latestIntervention = remember {
+                val latestIntervention = remember(backStackEntry) {
                     sleepInterventionRepository.getLatestLocal()
                 }
 
