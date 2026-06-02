@@ -11,14 +11,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.sujin.nubloompilot.shared.models.ShiftTimingConfig
+import com.sujin.nubloompilot.shared.models.ShiftType
+import com.sujin.nubloompilot.shared.models.getTimeRange
 import com.sujin.nubloompilot.ui.theme.Gray300
 import com.sujin.nubloompilot.ui.theme.Gray500
 import com.sujin.nubloompilot.ui.theme.Primary
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ShiftLegend(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    config: ShiftTimingConfig = ShiftTimingConfig.Default
 ) {
+    val timeFormatter = DateTimeFormatter.ofPattern("H:mm")
+    val today = LocalDate.now()
+
+    fun formatRange(type: ShiftType): String {
+        val range = type.getTimeRange(today, config)
+        val startText = range.startTime?.format(timeFormatter) ?: ""
+        val endText = range.endTime?.format(timeFormatter) ?: ""
+        return if (startText.isNotEmpty()) "$startText - $endText" else ""
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -29,11 +45,11 @@ fun ShiftLegend(
             )
             .padding(16.dp)
     ) {
-        ShiftLegendItem("D", "Day", "6:30 - 15:30")
+        ShiftLegendItem("D", "Day", formatRange(ShiftType.DAY))
         Spacer(modifier = Modifier.height(10.dp))
-        ShiftLegendItem("E", "Evening", "14:30 - 23:30")
+        ShiftLegendItem("E", "Evening", formatRange(ShiftType.EVENING))
         Spacer(modifier = Modifier.height(10.dp))
-        ShiftLegendItem("N", "Night", "22:30 - 7:30")
+        ShiftLegendItem("N", "Night", formatRange(ShiftType.NIGHT))
     }
 }
 

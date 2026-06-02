@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.components.AppDiagnosticsSection
 import com.sujin.nubloompilot.components.DutyScheduleSection
 import com.sujin.nubloompilot.local.ParticipantLocalStore
+import com.sujin.nubloompilot.local.ShiftScheduleLocalStore
+import com.sujin.nubloompilot.local.ShiftTimingLocalStore
 import com.sujin.nubloompilot.local.SleepInterventionLocalStore
 import com.sujin.nubloompilot.repository.AppDiagnosticsRepository
 import com.sujin.nubloompilot.repository.BugReportRepository
@@ -23,6 +25,7 @@ import com.sujin.nubloompilot.components.MctqBehaviorSection
 import com.sujin.nubloompilot.components.TopBannerManager
 import com.sujin.nubloompilot.models.AppDiagnosticsState
 import com.sujin.nubloompilot.models.BugReport
+import com.sujin.nubloompilot.shared.models.ShiftTimingConfig
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.YearMonth
@@ -41,6 +44,9 @@ fun MyInfoPage(
     }
     val participantLocalStore = remember {
         ParticipantLocalStore(context)
+    }
+    val timingLocalStore = remember {
+        ShiftTimingLocalStore(context)
     }
 
     val bugReportRepository = remember {
@@ -92,6 +98,10 @@ fun MyInfoPage(
         mutableStateOf(1)
     }
 
+    var timingConfig by remember {
+        mutableStateOf(timingLocalStore.getConfig())
+    }
+
     var isBugReportSubmitting by remember {
         mutableStateOf(false)
     }
@@ -120,6 +130,7 @@ fun MyInfoPage(
                 shifts = shifts,
                 isEditMode = isEditMode,
                 selectedDay = selectedDay,
+                timingConfig = timingConfig,
                 onPrevMonth = { currentYearMonth = currentYearMonth.minusMonths(1) },
                 onNextMonth = { currentYearMonth = currentYearMonth.plusMonths(1) },
                 onEditStart = {
@@ -129,6 +140,7 @@ fun MyInfoPage(
                 },
                 onCancelEdit = {
                     shifts = originalShifts
+                    timingConfig = timingLocalStore.getConfig()
                     isEditMode = false
                 },
                 onSave = {
@@ -138,6 +150,7 @@ fun MyInfoPage(
                         shifts = shifts,
                         onSuccess = {
                             originalShifts = shifts
+                            timingLocalStore.saveConfig(timingConfig)
                             isEditMode = false
                             topBannerManager.show("듀티표가 저장되었습니다")
                         },
@@ -158,6 +171,13 @@ fun MyInfoPage(
                     } else {
                         1
                     }
+                },
+                onTimingConfigChange = { newConfig ->
+                    timingConfig = newConfig
+                },
+                onResetTimingConfig = {
+                    timingLocalStore.resetToDefault()
+                    timingConfig = ShiftTimingConfig.Default
                 }
             )
 

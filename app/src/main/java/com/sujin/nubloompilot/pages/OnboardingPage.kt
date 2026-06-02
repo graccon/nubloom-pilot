@@ -63,28 +63,28 @@ fun OnboardingPage(
     val mctqBlocks = remember {
         listOf(
             MctqSleepBlockInfo(
-                title = "이틀 연속 주간근무 시 중간수면",
-                subtitle = "주간근무 D - 수면* - 주간근무 D"
+                title = "이틀 연속 ${ShiftType.DAY.koreanLabel}근무 시 중간수면",
+                subtitle = "${ShiftType.DAY.koreanLabel}근무 ${ShiftType.DAY.code} - 수면* - ${ShiftType.DAY.koreanLabel}근무 ${ShiftType.DAY.code}"
             ),
             MctqSleepBlockInfo(
-                title = "주간근무 이후 이틀간의 휴일 시 수면",
-                subtitle = "주간근무 D - 휴일 - 수면* - 휴일"
+                title = "${ShiftType.DAY.koreanLabel}근무 이후 이틀간의 휴일 시 수면",
+                subtitle = "${ShiftType.DAY.koreanLabel}근무 ${ShiftType.DAY.code} - 휴일 - 수면* - 휴일"
             ),
             MctqSleepBlockInfo(
-                title = "이틀 연속 오후근무 시 중간수면",
-                subtitle = "오후근무 E - 수면* - 오후근무 E"
+                title = "이틀 연속 ${ShiftType.EVENING.koreanLabel}근무 시 중간수면",
+                subtitle = "${ShiftType.EVENING.koreanLabel}근무 ${ShiftType.EVENING.code} - 수면* - ${ShiftType.EVENING.koreanLabel}근무 ${ShiftType.EVENING.code}"
             ),
             MctqSleepBlockInfo(
-                title = "오후근무 이후 이틀간의 휴일 시 수면",
-                subtitle = "오후근무 E - 휴일 - 수면* - 휴일"
+                title = "${ShiftType.EVENING.koreanLabel}근무 이후 이틀간의 휴일 시 수면",
+                subtitle = "${ShiftType.EVENING.koreanLabel}근무 ${ShiftType.EVENING.code} - 휴일 - 수면* - 휴일"
             ),
             MctqSleepBlockInfo(
-                title = "이틀 연속 야간근무 시 중간수면",
-                subtitle = "야간근무 N - 수면* - 야간근무 N"
+                title = "이틀 연속 ${ShiftType.NIGHT.koreanLabel}근무 시 중간수면",
+                subtitle = "${ShiftType.NIGHT.koreanLabel}근무 ${ShiftType.NIGHT.code} - 수면* - ${ShiftType.NIGHT.koreanLabel}근무 ${ShiftType.NIGHT.code}"
             ),
             MctqSleepBlockInfo(
-                title = "야간근무 이후 이틀간의 휴일 시 수면",
-                subtitle = "야간근무 N - 휴일 - 수면* - 휴일"
+                title = "${ShiftType.NIGHT.koreanLabel}근무 이후 이틀간의 휴일 시 수면",
+                subtitle = "${ShiftType.NIGHT.koreanLabel}근무 ${ShiftType.NIGHT.code} - 휴일 - 수면* - 휴일"
             )
         )
     }

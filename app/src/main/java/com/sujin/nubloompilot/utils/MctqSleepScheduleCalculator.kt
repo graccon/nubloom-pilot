@@ -193,7 +193,7 @@ object MctqSleepScheduleCalculator {
         }
 
         val nextShiftStart = nextShift
-            .getTimeRange(context.workDate.plusDays(1))
+            .getTimeRange(context.workDate.plusDays(1), context.shiftTimingConfig)
             .startTime
             ?: return ConstrainedSleepSchedule(
                 targetSleepStart = targetSleepStart,

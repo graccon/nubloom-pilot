@@ -1,6 +1,7 @@
 package com.sujin.nubloompilot.models
 
 import com.sujin.nubloompilot.shared.models.Chronotype
+import com.sujin.nubloompilot.shared.models.ShiftTimingConfig
 import com.sujin.nubloompilot.shared.models.ShiftType
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -39,5 +40,6 @@ data class SleepInterventionContext(
     val subjectiveFatigueLevel: Int,
     val objectiveRecoveryLevel: Int,
     val mctqBaselineProfile: MctqBaselineProfile? = null,
-    val mctqBehaviorProfile: MctqBehaviorProfile? = null
+    val mctqBehaviorProfile: MctqBehaviorProfile? = null,
+    val shiftTimingConfig: ShiftTimingConfig = ShiftTimingConfig.Default
 )

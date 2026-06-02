@@ -19,6 +19,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.shared.models.TimelineMarker
+import com.sujin.nubloompilot.shared.models.ShiftTimingConfig
 import com.sujin.nubloompilot.shared.components.*
 import com.sujin.nubloompilot.shared.ui.theme.Gray700
 import com.sujin.nubloompilot.shared.ui.theme.Gray800
@@ -40,7 +41,8 @@ fun SpiralTimeline(
     highlightedMarkerId: String? = null,
     revealProgress: Float = 1f,
     modifier: Modifier = Modifier,
-    isWatchMode: Boolean = false
+    isWatchMode: Boolean = false,
+    shiftTimingConfig: ShiftTimingConfig = ShiftTimingConfig.Default
 ) {
     val textMeasurer = rememberTextMeasurer()
     
@@ -135,8 +137,8 @@ fun SpiralTimeline(
                 showCurrentTimeIndicator = !isPressed,
                 highlightedMarkerId = highlightedMarkerId,
                 revealProgress = revealProgress,
-                isWatchMode = isWatchMode
-
+                isWatchMode = isWatchMode,
+                shiftTimingConfig = shiftTimingConfig
             )
 
             // Step 5: Draw a focus point at the nearest location on the spiral (Visible only when pressed)

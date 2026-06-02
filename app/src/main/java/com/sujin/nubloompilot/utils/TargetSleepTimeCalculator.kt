@@ -1,5 +1,6 @@
 package com.sujin.nubloompilot.utils
 
+import com.sujin.nubloompilot.shared.models.ShiftTimingConfig
 import com.sujin.nubloompilot.shared.models.ShiftType
 import com.sujin.nubloompilot.shared.models.getTimeRange
 import java.time.LocalDate
@@ -13,9 +14,10 @@ object TargetSleepTimeCalculator {
         workDate: LocalDate,
         mainSleepDurationMinutes: Long = 7 * 60L,
         commuteMinutes: Long = 60L,
-        preWorkPreparationMinutes: Long = 60L
+        preWorkPreparationMinutes: Long = 60L,
+        shiftTimingConfig: ShiftTimingConfig = ShiftTimingConfig.Default
     ): LocalDateTime {
-        val currentShiftRange = currentShift.getTimeRange(workDate)
+        val currentShiftRange = currentShift.getTimeRange(workDate, shiftTimingConfig)
 
         return when (currentShift) {
             ShiftType.DAY -> {
@@ -25,7 +27,8 @@ object TargetSleepTimeCalculator {
                     commuteMinutes = commuteMinutes,
                     mainSleepDurationMinutes = mainSleepDurationMinutes,
                     preWorkPreparationMinutes = preWorkPreparationMinutes,
-                    fallbackTime = LocalTime.of(23, 0)
+                    fallbackTime = LocalTime.of(23, 0),
+                    shiftTimingConfig = shiftTimingConfig
                 )
             }
 
@@ -48,7 +51,8 @@ object TargetSleepTimeCalculator {
                     mainSleepDurationMinutes = mainSleepDurationMinutes,
                     commuteMinutes = commuteMinutes,
                     preWorkPreparationMinutes = preWorkPreparationMinutes,
-                    fallbackTime = LocalTime.of(23, 0)
+                    fallbackTime = LocalTime.of(23, 0),
+                    shiftTimingConfig = shiftTimingConfig
                 )
             }
         }
@@ -60,11 +64,12 @@ object TargetSleepTimeCalculator {
         commuteMinutes: Long,
         preWorkPreparationMinutes: Long,
         mainSleepDurationMinutes: Long,
-        fallbackTime: LocalTime
+        fallbackTime: LocalTime,
+        shiftTimingConfig: ShiftTimingConfig
     ): LocalDateTime {
         val nextWorkDate = workDate.plusDays(1)
         val nextShiftStart = nextShift
-            ?.getTimeRange(nextWorkDate)
+            ?.getTimeRange(nextWorkDate, shiftTimingConfig)
             ?.startTime
             ?: return LocalDateTime.of(workDate, fallbackTime)
 

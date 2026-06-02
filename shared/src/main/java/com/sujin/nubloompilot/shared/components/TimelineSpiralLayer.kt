@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sujin.nubloompilot.shared.models.ShiftTimingConfig
 import com.sujin.nubloompilot.shared.models.ShiftType
 import com.sujin.nubloompilot.shared.models.TimelineMarker
 import com.sujin.nubloompilot.shared.models.getTimeRange
@@ -92,7 +93,8 @@ fun DrawScope.drawTimelineSpiralLayer(
     showCurrentTimeIndicator: Boolean = true,
     highlightedMarkerId: String? = null,
     revealProgress: Float = 1f,
-    isWatchMode: Boolean = false
+    isWatchMode: Boolean = false,
+    shiftTimingConfig: ShiftTimingConfig = ShiftTimingConfig.Default
 ) {
     val style = getTimelineSpiralStyle(isWatchMode)
     
@@ -123,7 +125,8 @@ fun DrawScope.drawTimelineSpiralLayer(
         yesterdayShift = yesterdayShift,
         todayShift = todayShift,
         tomorrowShift = tomorrowShift,
-        dayAfterTomorrowShift = dayAfterTomorrowShift
+        dayAfterTomorrowShift = dayAfterTomorrowShift,
+        shiftTimingConfig = shiftTimingConfig
     )
 
     val shiftSegments = shiftEvents
@@ -282,24 +285,26 @@ private fun buildShiftEventQueue(
     yesterdayShift: String?,
     todayShift: String?,
     tomorrowShift: String?,
-    dayAfterTomorrowShift: String?
+    dayAfterTomorrowShift: String?,
+    shiftTimingConfig: ShiftTimingConfig
 ): List<ShiftEvent> {
     return buildList {
-        addAll(createShiftEvents(ShiftType.fromString(yesterdayShift), referenceDate.minusDays(1), referenceDate))
-        addAll(createShiftEvents(ShiftType.fromString(todayShift), referenceDate, referenceDate))
-        addAll(createShiftEvents(ShiftType.fromString(tomorrowShift), referenceDate.plusDays(1), referenceDate))
-        addAll(createShiftEvents(ShiftType.fromString(dayAfterTomorrowShift), referenceDate.plusDays(2), referenceDate))
+        addAll(createShiftEvents(ShiftType.fromString(yesterdayShift), referenceDate.minusDays(1), referenceDate, shiftTimingConfig))
+        addAll(createShiftEvents(ShiftType.fromString(todayShift), referenceDate, referenceDate, shiftTimingConfig))
+        addAll(createShiftEvents(ShiftType.fromString(tomorrowShift), referenceDate.plusDays(1), referenceDate, shiftTimingConfig))
+        addAll(createShiftEvents(ShiftType.fromString(dayAfterTomorrowShift), referenceDate.plusDays(2), referenceDate, shiftTimingConfig))
     }
 }
 
 private fun createShiftEvents(
     shiftType: ShiftType,
     date: LocalDate,
-    referenceDate: LocalDate
+    referenceDate: LocalDate,
+    shiftTimingConfig: ShiftTimingConfig
 ): List<ShiftEvent> {
     if (shiftType == ShiftType.OFF) return emptyList()
 
-    val timeRange = shiftType.getTimeRange(date)
+    val timeRange = shiftType.getTimeRange(date, shiftTimingConfig)
     val startTime = timeRange.startTime ?: return emptyList()
     val endTime = timeRange.endTime ?: return emptyList()
 
@@ -410,9 +415,12 @@ private fun DrawScope.drawShiftStartLabel(
         hour = labelHour
     )
 
+    // segment.label 대신 ShiftType의 code("D", "E", "N")를 사용하여 첫 자만 표시
+    val displayCode = ShiftType.fromString(segment.label).code
+
     drawCenteredText(
         textMeasurer = textMeasurer,
-        text = segment.label,
+        text = displayCode,
         position = labelPosition,
         color = Gray900.copy(alpha = Gray900.alpha * revealAlpha),
         fontSize = fontSize,

@@ -52,6 +52,8 @@ import com.sujin.nubloompilot.components.TopBannerManager
 import java.time.Instant
 import android.graphics.BitmapFactory
 import android.util.Log
+import com.sujin.nubloompilot.local.ShiftTimingLocalStore
+import com.sujin.nubloompilot.shared.models.ShiftTimingConfig
 import com.sujin.nubloompilot.shared.models.WatchTimelinePayload
 import com.sujin.nubloompilot.wear.WatchTimelinePayloadMapper
 import com.sujin.nubloompilot.wear.WearDataSyncManager
@@ -128,12 +130,30 @@ private fun HomePageContent(
     val greetingMessage = rememberRotatingMessage()
     val context = LocalContext.current
 
+    val shiftTimingStore = remember { ShiftTimingLocalStore(context) }
+    var shiftTimingConfig by remember { mutableStateOf(shiftTimingStore.getConfig()) }
+
+    // HomePage가 다시 보일 때(Resume) 최신 설정값 반영
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
+                shiftTimingConfig = shiftTimingStore.getConfig()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     LaunchedEffect(
         yesterdayShift,
         todayShift,
         tomorrowShift,
         dayAfterTomorrowShift,
-        latestInterventionBundle
+        latestInterventionBundle,
+        shiftTimingConfig
     ) {
         val payload = WatchTimelinePayloadMapper.map(
             yesterdayShift = yesterdayShift,
@@ -240,7 +260,8 @@ private fun HomePageContent(
             markers = timelineMarkers,
             markerIcons = markerIcons,
             highlightedMarkerId = expandedInterventionId,
-            revealProgress = timelineRevealProgress.value
+            revealProgress = timelineRevealProgress.value,
+            shiftTimingConfig = shiftTimingConfig
         )
         Spacer(modifier = Modifier.height(30.dp))
 

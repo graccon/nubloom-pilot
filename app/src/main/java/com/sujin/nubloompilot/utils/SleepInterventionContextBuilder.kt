@@ -2,6 +2,7 @@ package com.sujin.nubloompilot.utils
 
 import com.sujin.nubloompilot.models.*
 import com.sujin.nubloompilot.shared.models.Chronotype
+import com.sujin.nubloompilot.shared.models.ShiftTimingConfig
 import com.sujin.nubloompilot.shared.models.ShiftType
 import com.sujin.nubloompilot.repository.ShiftAroundToday
 import java.time.Instant
@@ -29,7 +30,8 @@ object SleepInterventionContextBuilder {
         commuteMinutes: Long = 60L,
         preWorkPreparationMinutes: Long = 60L,
         mctqBaselineProfile: MctqBaselineProfile? = null,
-        mctqBehaviorProfile: MctqBehaviorProfile? = null
+        mctqBehaviorProfile: MctqBehaviorProfile? = null,
+        shiftTimingConfig: ShiftTimingConfig = ShiftTimingConfig.Default
     ): SleepInterventionContext {
         val objectiveRecoveryLevel = getObjectiveRecoveryLevel(type)
         
@@ -52,7 +54,8 @@ object SleepInterventionContextBuilder {
             workDate = workDate,
             mainSleepDurationMinutes = mainSleepDuration.toMinutes(),
             commuteMinutes = commuteMinutes,
-            preWorkPreparationMinutes = preWorkPreparationMinutes
+            preWorkPreparationMinutes = preWorkPreparationMinutes,
+            shiftTimingConfig = shiftTimingConfig
         )
 
         val wakeTime = (if (endTime == "NONE") Instant.now() else Instant.parse(endTime))
@@ -70,7 +73,8 @@ object SleepInterventionContextBuilder {
             subjectiveFatigueLevel = fatigueLevel,
             objectiveRecoveryLevel = objectiveRecoveryLevel,
             mctqBaselineProfile = mctqBaselineProfile,
-            mctqBehaviorProfile = mctqBehaviorProfile
+            mctqBehaviorProfile = mctqBehaviorProfile,
+            shiftTimingConfig = shiftTimingConfig
         )
     }
 }

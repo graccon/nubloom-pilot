@@ -344,6 +344,8 @@ fun MctqTimeInput(
         }
     }
 
+    val isError = textFieldValue.text.isNotEmpty() && textFieldValue.text.length < 5
+
     val periodLabel = remember(textFieldValue.text) {
         if (textFieldValue.text.length == 5) {
             getTimePeriodLabel(textFieldValue.text)
@@ -352,44 +354,61 @@ fun MctqTimeInput(
         }
     }
 
-    OutlinedTextField(
-        value = textFieldValue,
-        onValueChange = { input ->
-            val formatted = formatTimeInput(input.text)
+    Column(modifier = modifier) {
+        OutlinedTextField(
+            value = textFieldValue,
+            onValueChange = { input ->
+                val formatted = formatTimeInput(input.text)
 
-            textFieldValue = TextFieldValue(
-                text = formatted,
-                selection = TextRange(formatted.length)
-            )
-
-            onValueChange(formatted)
-        },
-        placeholder = {
-            Text(
-                text = placeholder,
-                style = MaterialTheme.typography.bodyMedium
-            )
-        },
-        trailingIcon = {
-            if (periodLabel.isNotBlank()) {
-                Text(
-                    text = periodLabel,
-                    modifier = Modifier.padding(end = 8.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Gray800,
-                    fontWeight = FontWeight.SemiBold
+                textFieldValue = TextFieldValue(
+                    text = formatted,
+                    selection = TextRange(formatted.length)
                 )
-            }
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .height(MctqInputHeight),
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number
-        ),
-        singleLine = true,
-        shape = RoundedCornerShape(12.dp)
-    )
+
+                onValueChange(formatted)
+            },
+            isError = isError,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            trailingIcon = {
+                if (periodLabel.isNotBlank()) {
+                    Text(
+                        text = periodLabel,
+                        modifier = Modifier.padding(end = 8.dp),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Gray800,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(MctqInputHeight),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            ),
+            singleLine = true,
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Primary,
+                unfocusedBorderColor = Gray500
+            )
+        )
+
+        if (isError) {
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = "숫자 4자리 입력",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
+    }
 }
 
 private fun getTimePeriodLabel(time: String): String {
@@ -645,7 +664,7 @@ private fun MctqSleepFormFullPreview() {
                 subtitle = "주간근무 D - 수면* - 주간근무 D"
             ),
             scrollState = rememberScrollState(),
-            bedTime = "22:30",
+            bedTime = "22:3", // 에러 상태를 보여주기 위해 3자리만 입력
             onBedTimeChange = {},
             tryToSleepTime = "23:00",
             onTryToSleepTimeChange = {},

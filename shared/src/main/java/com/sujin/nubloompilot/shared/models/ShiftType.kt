@@ -5,18 +5,36 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-enum class ShiftType(val label: String, val color: Color) {
-    DAY("D", Color(0xFFA9C9EA)),
-    EVENING("E", Color(0xFFF4A249)),
-    NIGHT("N", Color(0xFFEAB0D6)),
-    OFF("OFF", Color.Transparent);
+enum class ShiftType(
+    val code: String,
+    val label: String,
+    val koreanLabel: String,
+    val color: Color
+) {
+    DAY("D", "Day", "주간", Color(0xFFA9C9EA)),
+    EVENING("E", "Evening", "오후", Color(0xFFF4A249)),
+    NIGHT("N", "Night", "야간", Color(0xFFEAB0D6)),
+    OFF("OFF", "Off", "휴일", Color.Transparent);
 
     companion object {
-        fun fromString(value: String?) = when(value) {
-            "D" -> DAY
-            "E" -> EVENING
-            "N" -> NIGHT
-            else -> OFF
+        /**
+         * "D", "E", "N", "OFF" 등 DB 및 전송용 코드를 기반으로 ShiftType을 찾습니다.
+         */
+        fun fromCode(code: String?): ShiftType {
+            return entries.find { it.code.equals(code, ignoreCase = true) } ?: OFF
+        }
+
+        /**
+         * "DAY", "D", "주간" 등 다양한 형태의 문자열을 ShiftType으로 변환합니다.
+         */
+        fun fromString(value: String?): ShiftType {
+            if (value == null) return OFF
+            return entries.find {
+                it.name.equals(value, ignoreCase = true) ||
+                it.code.equals(value, ignoreCase = true) ||
+                it.koreanLabel.equals(value, ignoreCase = true) ||
+                it.label.equals(value, ignoreCase = true)
+            } ?: OFF
         }
     }
 }
@@ -32,21 +50,24 @@ data class ShiftTimeRange(
     val endTime: LocalDateTime?
 )
 
-fun ShiftType.getTimeRange(date: LocalDate): ShiftTimeRange {
+fun ShiftType.getTimeRange(
+    date: LocalDate,
+    config: ShiftTimingConfig = ShiftTimingConfig.Default
+): ShiftTimeRange {
     return when (this) {
         ShiftType.DAY -> ShiftTimeRange(
-            startTime = LocalDateTime.of(date, LocalTime.of(6, 30)),
-            endTime = LocalDateTime.of(date, LocalTime.of(15, 30))
+            startTime = LocalDateTime.of(date, config.dayStart),
+            endTime = LocalDateTime.of(date, config.dayStart).plusHours(config.shiftDurationHours)
         )
 
         ShiftType.EVENING -> ShiftTimeRange(
-            startTime = LocalDateTime.of(date, LocalTime.of(14, 30)),
-            endTime = LocalDateTime.of(date, LocalTime.of(23, 30))
+            startTime = LocalDateTime.of(date, config.eveningStart),
+            endTime = LocalDateTime.of(date, config.eveningStart).plusHours(config.shiftDurationHours)
         )
 
         ShiftType.NIGHT -> ShiftTimeRange(
-            startTime = LocalDateTime.of(date, LocalTime.of(22, 30)),
-            endTime = LocalDateTime.of(date.plusDays(1), LocalTime.of(7, 30))
+            startTime = LocalDateTime.of(date, config.nightStart),
+            endTime = LocalDateTime.of(date, config.nightStart).plusHours(config.shiftDurationHours)
         )
 
         ShiftType.OFF -> ShiftTimeRange(

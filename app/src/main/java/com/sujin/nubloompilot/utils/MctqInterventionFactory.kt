@@ -13,7 +13,7 @@ object MctqInterventionFactory {
         baseline: MctqBaselineProfile,
         behavior: MctqBehaviorProfile
     ): List<SleepIntervention> {
-        val shiftRange = context.currentShift.getTimeRange(context.workDate)
+        val shiftRange = context.currentShift.getTimeRange(context.workDate, context.shiftTimingConfig)
 
         val candidates = buildList {
             addAll(createMctqMainSleepIntervention(context, baseline, behavior))
