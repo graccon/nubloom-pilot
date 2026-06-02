@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.sujin.nubloompilot.wear-mergeDebugResources-63:/values-hdpi-v4/values-hdpi-v4.xml",
+            "outputFile": "com.sujin.nubloompilot.wear-mergeDebugResources-64:/values-hdpi-v4/values-hdpi-v4.xml",
             "map": [
                 {
-                    "source": "/Users/yranno/.gradle/caches/8.11.1/transforms/6938d58609ae7be817bca2257511193c/transformed/appcompat-1.1.0/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "source": "/Users/yranno/.gradle/caches/8.11.1/transforms/cbeb940da28cdb92fcb0f2070a99aa77/transformed/appcompat-1.1.0/res/values-hdpi-v4/values-hdpi-v4.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

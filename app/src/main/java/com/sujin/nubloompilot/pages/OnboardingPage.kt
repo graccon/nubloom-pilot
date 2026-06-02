@@ -391,7 +391,11 @@ private fun PersonalizationStep(
         Spacer(modifier = Modifier.height(16.dp))
         if (!isInputFocused) {
             SpeechBubble(
-                text = "더 정확한 개입을 위해 필요해요"
+                text = "근무 전후 준비 및 이동 시간을 고려해 더 현실적인 수면 일정을 제안할게요"
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            SpeechBubble(
+                text = "실제로 쉴 수 있는 시간을 기준으로 수면 일정을 맞춰드릴게요"
             )
             Spacer(modifier = Modifier.height(32.dp))
         }

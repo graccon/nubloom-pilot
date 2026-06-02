@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.sujin.nubloompilot.wear-mergeDebugResources-63:/values-v30/values-v30.xml",
+            "outputFile": "com.sujin.nubloompilot.wear-mergeDebugResources-64:/values-v30/values-v30.xml",
             "map": [
                 {
-                    "source": "/Users/yranno/.gradle/caches/8.11.1/transforms/7a021c4e92d631cf0998084e2dbc0c82/transformed/watchface-1.2.1/res/values-v30/values-v30.xml",
+                    "source": "/Users/yranno/.gradle/caches/8.11.1/transforms/97652b96507d6eee669804aec75cd5bb/transformed/watchface-1.2.1/res/values-v30/values-v30.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

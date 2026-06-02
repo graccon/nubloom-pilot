@@ -3,6 +3,7 @@ package com.sujin.nubloompilot.wear.wearface
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.util.Log
 import android.view.SurfaceHolder
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
@@ -21,12 +22,18 @@ import java.time.LocalTime
 import java.time.ZonedDateTime
 
 class SpiralWatchFaceService : WatchFaceService() {
+    override fun onCreate() {
+        super.onCreate()
+        Log.d("SpiralWatchFace", "SpiralWatchFaceService.onCreate()")
+    }
+
     override suspend fun createWatchFace(
         surfaceHolder: SurfaceHolder,
         watchState: WatchState,
         complicationSlotsManager: ComplicationSlotsManager,
         currentUserStyleRepository: CurrentUserStyleRepository
     ): WatchFace {
+        Log.d("SpiralWatchFace", "createWatchFace started")
         val renderer = SpiralCanvasRenderer(
             context = applicationContext,
             surfaceHolder = surfaceHolder,
@@ -34,11 +41,14 @@ class SpiralWatchFaceService : WatchFaceService() {
             currentUserStyleRepository = currentUserStyleRepository,
             canvasType = CanvasType.HARDWARE
         )
+        Log.d("SpiralWatchFace", "Renderer created")
 
         return WatchFace(
             watchFaceType = WatchFaceType.ANALOG,
             renderer = renderer
-        )
+        ).apply {
+            Log.d("SpiralWatchFace", "WatchFace instance created")
+        }
     }
 }
 
@@ -65,13 +75,22 @@ class SpiralCanvasRenderer(
     private val markerIcons = mutableMapOf<Int, ImageBitmap>()
 
     // Attempting to create a TextMeasurer for the non-Compose environment
-    private val textMeasurer = TextMeasurer(
-        defaultFontFamilyResolver = createFontFamilyResolver(context),
-        defaultDensity = density,
-        defaultLayoutDirection = layoutDirection
-    )
+    private val textMeasurer = try {
+        Log.d("SpiralWatchFace", "Creating TextMeasurer...")
+        TextMeasurer(
+            defaultFontFamilyResolver = createFontFamilyResolver(context),
+            defaultDensity = density,
+            defaultLayoutDirection = layoutDirection
+        ).also {
+            Log.d("SpiralWatchFace", "TextMeasurer created successfully")
+        }
+    } catch (e: Exception) {
+        Log.e("SpiralWatchFace", "Failed to create TextMeasurer", e)
+        null
+    }
 
     override fun render(canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime) {
+        Log.v("SpiralWatchFace", "render() called at $zonedDateTime")
         // 1. Black background
         canvas.drawColor(android.graphics.Color.BLACK)
 
@@ -113,27 +132,29 @@ class SpiralCanvasRenderer(
             val spiralConfig = createSpiralConfig(startAnchor)
 
             // Draw Background
-            drawTimelineBackground(
-                layout = layout,
-                textMeasurer = textMeasurer,
-                currentHour = currentHour,
-                isWatchMode = true
-            )
+            textMeasurer?.let { tm ->
+                drawTimelineBackground(
+                    layout = layout,
+                    textMeasurer = tm,
+                    currentHour = currentHour,
+                    isWatchMode = true
+                )
 
-            // Draw Spiral Layer (Real shifts & markers with icons)
-            drawTimelineSpiralLayer(
-                layout = layout,
-                spiralConfig = spiralConfig,
-                yesterdayShift = timelineInfo.yesterdayShift ?: "N",
-                todayShift = timelineInfo.todayShift ?: "D",
-                tomorrowShift = timelineInfo.tomorrowShift ?: "E",
-                dayAfterTomorrowShift = timelineInfo.dayAfterTomorrowShift ?: "OFF",
-                currentTime = currentTime,
-                textMeasurer = textMeasurer,
-                markers = markers,
-                markerIcons = markerIcons,
-                isWatchMode = true
-            )
+                // Draw Spiral Layer (Real shifts & markers with icons)
+                drawTimelineSpiralLayer(
+                    layout = layout,
+                    spiralConfig = spiralConfig,
+                    yesterdayShift = timelineInfo.yesterdayShift ?: "D",
+                    todayShift = timelineInfo.todayShift ?: "D",
+                    tomorrowShift = timelineInfo.tomorrowShift ?: "D",
+                    dayAfterTomorrowShift = timelineInfo.dayAfterTomorrowShift ?: "OFF",
+                    currentTime = currentTime,
+                    textMeasurer = tm,
+                    markers = markers,
+                    markerIcons = markerIcons,
+                    isWatchMode = true
+                )
+            }
         }
     }
 

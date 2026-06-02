@@ -20,6 +20,7 @@ import com.sujin.nubloompilot.local.SleepSurveyLocalStore
 import com.sujin.nubloompilot.models.BaselineAssessment
 import com.sujin.nubloompilot.models.SleepResult
 import com.sujin.nubloompilot.pages.HomePage
+import com.sujin.nubloompilot.pages.NotificationPermissionGuidePage
 import com.sujin.nubloompilot.pages.MorningGloryResultPage
 import com.sujin.nubloompilot.pages.MorningGloryTypeInfoPage
 import com.sujin.nubloompilot.pages.CheckInNotificationHelpPage
@@ -128,6 +129,7 @@ fun AppNavGraph() {
     val shouldShowBottomBar = currentRoute != null &&
             currentRoute != Routes.OnboardingPage &&
             currentRoute != Routes.HEALTH_CONNECT_GUIDE &&
+            currentRoute != Routes.NOTIFICATION_PERMISSION_GUIDE &&
             currentRoute != Routes.ONBOARDING_PROCESSING &&
             !currentRoute.startsWith("sleep_check_in") &&
             !currentRoute.startsWith("sleep_processing") &&
@@ -160,6 +162,17 @@ fun AppNavGraph() {
             composable(Routes.HEALTH_CONNECT_GUIDE) {
                 HealthConnectGuidePage(
                     onNext = {
+                        navController.navigate(Routes.NOTIFICATION_PERMISSION_GUIDE)
+                    }
+                )
+            }
+
+            composable(Routes.NOTIFICATION_PERMISSION_GUIDE) {
+                NotificationPermissionGuidePage(
+                    onPermissionGranted = {
+                        navController.navigate(Routes.ONBOARDING_PROCESSING)
+                    },
+                    onPermissionSkipped = {
                         navController.navigate(Routes.ONBOARDING_PROCESSING)
                     }
                 )

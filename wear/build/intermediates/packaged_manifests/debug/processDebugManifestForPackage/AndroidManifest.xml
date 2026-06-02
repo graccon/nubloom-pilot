@@ -40,6 +40,7 @@
         android:extractNativeLibs="false"
         android:label="Nubloom Watch"
         android:supportsRtl="true"
+        android:testOnly="true"
         android:theme="@android:style/Theme.DeviceDefault" >
         <meta-data
             android:name="com.google.android.wearable.standalone"
@@ -74,9 +75,11 @@
         </service>
         <service
             android:name="com.sujin.nubloompilot.wear.wearface.SpiralWatchFaceService"
+            android:directBootAware="true"
             android:exported="true"
-            android:label="Nubloom Spiral"
-            android:permission="android.permission.BIND_WALLPAPER" >
+            android:icon="@drawable/ic_sleep_face"
+            android:label="Nubloom Watch"
+            android:permission="android.permission.BIND_WATCH_FACE" >
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
 
@@ -85,10 +88,10 @@
 
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview"
-                android:resource="@android:drawable/sym_def_app_icon" />
+                android:resource="@drawable/ic_sleep_face" />
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview_circular"
-                android:resource="@android:drawable/sym_def_app_icon" />
+                android:resource="@drawable/ic_sleep_face" />
             <meta-data
                 android:name="android.service.wallpaper"
                 android:resource="@xml/watch_face" />

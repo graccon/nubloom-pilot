@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.sujin.nubloompilot.wear-mergeDebugResources-63:/values-sw360dp-v13/values-sw360dp-v13.xml",
+            "outputFile": "com.sujin.nubloompilot.wear-mergeDebugResources-64:/values-sw360dp-v13/values-sw360dp-v13.xml",
             "map": [
                 {
-                    "source": "/Users/yranno/.gradle/caches/8.11.1/transforms/4131dcc8e091435995abe7b1ddd125b8/transformed/preference-1.1.0/res/values-sw360dp-v13/values-sw360dp-v13.xml",
+                    "source": "/Users/yranno/.gradle/caches/8.11.1/transforms/be14af258e3918438350ca97f43736b9/transformed/preference-1.1.0/res/values-sw360dp-v13/values-sw360dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

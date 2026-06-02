@@ -89,10 +89,10 @@ fun MctqSleepForm(
         Text(
             text = blockInfo.title,
             style = MaterialTheme.typography.titleLarge,
-            color = Primary,
+            color = DarkRed,
             fontWeight = FontWeight.Bold
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         ScheduleBadgeRow(
             subtitle = blockInfo.subtitle
         )

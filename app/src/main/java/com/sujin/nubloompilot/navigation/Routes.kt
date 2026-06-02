@@ -46,6 +46,7 @@ object Routes {
     }
 
     const val HEALTH_CONNECT_GUIDE = "health_connect_guide"
+    const val NOTIFICATION_PERMISSION_GUIDE = "notification_permission_guide"
     const val ONBOARDING_PROCESSING = "onboarding_processing"
 
     const val SLEEP_PROCESSING = "sleep_processing/{type}/{endTime}/{duration}/{heartRate}/{fatigueLevel}"

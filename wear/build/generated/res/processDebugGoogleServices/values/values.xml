@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">287825439488</string>
+    <string name="google_api_key" translatable="false">AIzaSyCzrMp4cuQQaLlePIv4iXIlw7nSMLA7z1Q</string>
+    <string name="google_app_id" translatable="false">1:287825439488:android:fe035808708fa8467b61e5</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCzrMp4cuQQaLlePIv4iXIlw7nSMLA7z1Q</string>
+    <string name="google_storage_bucket" translatable="false">nubloom-pilot.firebasestorage.app</string>
+    <string name="project_id" translatable="false">nubloom-pilot</string>
+</resources>

@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import com.sujin.nubloompilot.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,11 +32,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.components.HomeActionCard
 import com.sujin.nubloompilot.shared.components.SpiralTimeline
-import com.sujin.nubloompilot.components.TopBanner
 import com.sujin.nubloompilot.components.rememberCurrentTime
 import com.sujin.nubloompilot.components.rememberRotatingMessage
 import com.sujin.nubloompilot.models.MorningGloryType
@@ -57,6 +56,8 @@ import com.sujin.nubloompilot.shared.models.WatchTimelinePayload
 import com.sujin.nubloompilot.wear.WatchTimelinePayloadMapper
 import com.sujin.nubloompilot.wear.WearDataSyncManager
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
 
 @Composable
 fun HomePage(
@@ -267,6 +268,9 @@ private fun HomePageContent(
                 type = uiState.morningGloryType,
                 onClick = onActionCardClick
             )
+        } else {
+            Spacer(modifier = Modifier.height(20.dp))
+            NotFoundLatestSleepSection()
         }
 
         Spacer(modifier = Modifier.height(88.dp))
@@ -302,6 +306,64 @@ private fun HomeHeader(
         )
     }
 }
+
+@Composable
+private fun NotFoundLatestSleepSection() {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 2.dp,
+            color = Gray300
+        )
+
+        Spacer(modifier = Modifier.height(18.dp))
+
+        Text(
+            text = "오늘의 수면 리포트",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.headlineSmall
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color(0xFFF5F5F5))
+                .padding(24.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_sleep_face),
+                    contentDescription = null,
+                    modifier = Modifier.size(40.dp)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "감지된 수면 데이터가 없어요",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = Gray800
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "최근 36시간 내에 기록된 수면 세션이 없습니다. 갤럭시 워치를 착용하고 주무셨는지 확인해주세요.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Gray600,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
+
 
 @Composable
 private fun ReportHeader(
