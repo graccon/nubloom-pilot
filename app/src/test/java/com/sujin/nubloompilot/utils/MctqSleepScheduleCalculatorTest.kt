@@ -1,6 +1,8 @@
 package com.sujin.nubloompilot.utils
 
 import com.sujin.nubloompilot.models.*
+import com.sujin.nubloompilot.shared.models.Chronotype
+import com.sujin.nubloompilot.shared.models.ShiftType
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Duration

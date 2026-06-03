@@ -18,7 +18,7 @@ private val Context.sleepSurveyDataStore by preferencesDataStore(
 
 class SleepSurveyLocalStore(
     private val context: Context
-) {
+) : ISleepSurveyLocalStore {
     private val lastSurveyedSleepEndTimeKey =
         stringPreferencesKey("last_surveyed_sleep_end_time")
 
@@ -34,7 +34,7 @@ class SleepSurveyLocalStore(
     private val lastFatigueLevelKey =
         intPreferencesKey("last_fatigue_level")
 
-    suspend fun saveFullSleepResult(result: SleepResult) {
+    override suspend fun saveFullSleepResult(result: SleepResult) {
         context.sleepSurveyDataStore.edit { prefs ->
             prefs[lastSurveyedSleepEndTimeKey] = result.sleepEndTime.toString()
             prefs[lastMorningGloryTypeKey] = result.morningGloryType.name
@@ -44,7 +44,7 @@ class SleepSurveyLocalStore(
         }
     }
 
-    suspend fun getLatestSavedResult(): SleepResult? {
+    override suspend fun getLatestSavedResult(): SleepResult? {
         val prefs = context.sleepSurveyDataStore.data.first()
         val endTimeStr = prefs[lastSurveyedSleepEndTimeKey] ?: return null
         val typeStr = prefs[lastMorningGloryTypeKey] ?: return null
@@ -66,7 +66,7 @@ class SleepSurveyLocalStore(
     }
 
     // Improved check to avoid redundant surveys for fragmented data.
-    suspend fun getSurveyStateForSleepSession(
+    override suspend fun getSurveyStateForSleepSession(
         sleepEndTime: Instant
     ): MorningGloryType? {
         val prefs = context.sleepSurveyDataStore.data.first()

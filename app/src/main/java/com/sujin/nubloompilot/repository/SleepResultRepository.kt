@@ -12,12 +12,12 @@ import java.time.ZoneId
 
 class SleepResultRepository(
     private val participantId: String,
-    private val localStore: SleepSurveyLocalStore,
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val localStore: com.sujin.nubloompilot.local.ISleepSurveyLocalStore,
+    private val firestore: FirebaseFirestore? = FirebaseFirestore.getInstance()
 ) {
-    private val resultsCollection = firestore.collection("participants")
-        .document(participantId)
-        .collection("sleep_results")
+    private val resultsCollection = firestore?.collection("participants")
+        ?.document(participantId)
+        ?.collection("sleep_results")
 
     suspend fun saveSleepResult(result: SleepResult) {
         // 1. Check for existing result today to preserve the day's primary flower type (Method B)
@@ -74,8 +74,12 @@ class SleepResultRepository(
         )
 
         try {
-            resultsCollection.add(remoteData).await()
-            Log.d("SleepResultRepo", "Firestore save success. Final type: ${finalResult.morningGloryType}")
+            if (resultsCollection != null) {
+                resultsCollection.add(remoteData).await()
+                Log.d("SleepResultRepo", "Firestore save success. Final type: ${finalResult.morningGloryType}")
+            } else {
+                Log.w("SleepResultRepo", "resultsCollection is null, skipping remote save")
+            }
         } catch (e: Exception) {
             Log.e("SleepResultRepo", "Firestore save failed", e)
         }
@@ -88,9 +92,13 @@ class SleepResultRepository(
     }
 
     suspend fun getSleepResultsInDateRange(days: Int = 30): List<SleepResult> {
+        val collection = resultsCollection ?: run {
+            Log.w("SleepResultRepo", "getSleepResultsInDateRange: resultsCollection is null")
+            return emptyList()
+        }
         return try {
             val since = System.currentTimeMillis() - (days * 24 * 60 * 60 * 1000L)
-            val snapshot = resultsCollection
+            val snapshot = collection
                 .whereGreaterThanOrEqualTo("timestamp", since)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
@@ -117,8 +125,12 @@ class SleepResultRepository(
     }
 
     suspend fun getLatestSavedSleepResult(): SleepResult? {
+        val collection = resultsCollection ?: run {
+            Log.w("SleepResultRepo", "getLatestSavedSleepResult: resultsCollection is null")
+            return null
+        }
         return try {
-            val snapshot = resultsCollection
+            val snapshot = collection
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(1)
                 .get()
