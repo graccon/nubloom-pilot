@@ -12,7 +12,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.models.DailyHealthSummary
-import com.sujin.nubloompilot.ui.theme.Gray200
 import com.sujin.nubloompilot.ui.theme.Gray300
 import com.sujin.nubloompilot.ui.theme.Gray400
 import com.sujin.nubloompilot.ui.theme.Gray500
@@ -44,13 +43,8 @@ fun SleepTimelineBarChart(
         )
 
         datesToShow.forEach { date ->
-            val summaryForDate = recentSummaries.find {
-                it.sleepEndTime.atZone(ZoneId.systemDefault()).toLocalDate() == date
-            }
-
             SleepTimelineRow(
                 date = date,
-                summary = summaryForDate,
                 allSummaries = recentSummaries
             )
         }
@@ -72,7 +66,6 @@ fun SleepTimelineBarChart(
 @Composable
 private fun SleepTimelineRow(
     date: LocalDate,
-    summary: DailyHealthSummary?,
     allSummaries: List<DailyHealthSummary>
 ) {
     val zoneId = ZoneId.systemDefault()
@@ -91,6 +84,8 @@ private fun SleepTimelineRow(
         } else null
     }
 
+    val totalMinutes = segments.sumOf { (it.second - it.first).toDouble() }.toInt()
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -104,11 +99,12 @@ private fun SleepTimelineRow(
                 fontWeight = FontWeight.Bold
             )
 
-            if (summary != null) {
-                val startText = summary.sleepStartTime.atZone(zoneId).format(DateTimeFormatter.ofPattern("HH:mm"))
-                val endText = summary.sleepEndTime.atZone(zoneId).format(DateTimeFormatter.ofPattern("HH:mm"))
+            if (segments.isNotEmpty()) {
+                val hours = totalMinutes / 60
+                val mins = totalMinutes % 60
+                val durationText = if (hours > 0) "${hours}시간 ${mins}분" else "${mins}분"
                 Text(
-                    text = "$startText - $endText (${summary.sleepDurationMinutes / 60}h ${summary.sleepDurationMinutes % 60}m)",
+                    text = "총 $durationText",
                     style = MaterialTheme.typography.labelMedium,
                     color = Gray800
                 )
