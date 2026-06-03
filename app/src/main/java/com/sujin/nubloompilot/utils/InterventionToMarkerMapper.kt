@@ -19,10 +19,10 @@ object InterventionToMarkerMapper {
     ): List<TimelineMarker> {
         return interventions.mapNotNull { intervention ->
             val start = runCatching { LocalDateTime.parse(intervention.startTime) }.getOrNull() ?: return@mapNotNull null
+            val end = runCatching { LocalDateTime.parse(intervention.endTime) }.getOrNull()
             
-            // For caffeine, use the midpoint of the intervention window for the marker
+            // For caffeine, use the midpoint of the intervention window for the marker (display point)
             val targetTime = if (intervention.type == InterventionType.CAFFEINE.name) {
-                val end = runCatching { LocalDateTime.parse(intervention.endTime) }.getOrNull()
                 if (end != null) {
                     val halfDurationMinutes = ChronoUnit.MINUTES.between(start, end) / 2
                     start.plusMinutes(halfDurationMinutes)
@@ -34,13 +34,17 @@ object InterventionToMarkerMapper {
             }
 
             val absoluteHour = targetTime.toAbsoluteHour(referenceDate)
+            val endAbsoluteHour = end?.toAbsoluteHour(referenceDate)
+
+            android.util.Log.d("InterventionMapper", "Mapped: ${intervention.title} / Start: $absoluteHour / End: $endAbsoluteHour")
 
             TimelineMarker(
                 id = intervention.startTime,
                 absoluteHour = absoluteHour,
                 color = getMarkerColor(intervention.type, intervention.actionType),
                 label = getShortLabel(intervention.title),
-                iconRes = getIconRes(intervention.type, intervention.actionType)
+                iconRes = getIconRes(intervention.type, intervention.actionType),
+                endAbsoluteHour = endAbsoluteHour
             )
         }
     }

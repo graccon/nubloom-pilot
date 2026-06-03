@@ -171,11 +171,23 @@ fun DrawScope.drawTimelineSpiralLayer(
 
     // 1. Draw normal markers first
     markers.forEachIndexed { index, marker ->
-        if (marker.id != highlightedMarkerId && marker.absoluteHour in windowStart..windowEnd) {
+        val markerStart = marker.absoluteHour
+        val markerEnd = marker.endAbsoluteHour
+
+        val isScheduledMarker = markerStart in windowStart..windowEnd
+        val isOngoingMarker = markerEnd != null && markerStart < windowStart && markerEnd > windowStart
+
+        val drawAbsoluteHour = when {
+            isScheduledMarker -> markerStart
+            isOngoingMarker -> windowStart
+            else -> null
+        }
+
+        if (marker.id != highlightedMarkerId && drawAbsoluteHour != null) {
             val delay = index * 0.08f
             val localProgress = ((markerRevealProgress - delay) / 0.25f).coerceIn(0f, 1f)
 
-            val timelineHour = marker.absoluteHour - windowStart
+            val timelineHour = drawAbsoluteHour - windowStart
             val position = getSpiralPoint(
                 layout = layout,
                 config = spiralConfig,
@@ -198,11 +210,23 @@ fun DrawScope.drawTimelineSpiralLayer(
     highlightedMarkerId?.let { id ->
         val index = markers.indexOfFirst { it.id == id }
         markers.find { it.id == id }?.let { marker ->
-            if (marker.absoluteHour in windowStart..windowEnd) {
+            val markerStart = marker.absoluteHour
+            val markerEnd = marker.endAbsoluteHour
+
+            val isScheduledMarker = markerStart in windowStart..windowEnd
+            val isOngoingMarker = markerEnd != null && markerStart < windowStart && markerEnd > windowStart
+
+            val drawAbsoluteHour = when {
+                isScheduledMarker -> markerStart
+                isOngoingMarker -> windowStart
+                else -> null
+            }
+
+            if (drawAbsoluteHour != null) {
                 val delay = if (index != -1) index * 0.08f else 0f
                 val localProgress = ((markerRevealProgress - delay) / 0.25f).coerceIn(0f, 1f)
 
-                val timelineHour = marker.absoluteHour - windowStart
+                val timelineHour = drawAbsoluteHour - windowStart
                 val position = getSpiralPoint(
                     layout = layout,
                     config = spiralConfig,

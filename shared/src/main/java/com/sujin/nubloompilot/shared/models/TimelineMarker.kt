@@ -8,5 +8,6 @@ data class TimelineMarker(
     val absoluteHour: Float,
     val color: Color,
     val label: String,
-    @DrawableRes val iconRes: Int
+    @DrawableRes val iconRes: Int,
+    val endAbsoluteHour: Float? = null
 )
