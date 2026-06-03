@@ -6,6 +6,9 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonPrimitive
+import com.sujin.nubloompilot.models.DailyHealthSummary
 import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SleepResult
 import kotlinx.coroutines.flow.first
@@ -19,6 +22,16 @@ private val Context.sleepSurveyDataStore by preferencesDataStore(
 class SleepSurveyLocalStore(
     private val context: Context
 ) : ISleepSurveyLocalStore {
+
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(Instant::class.java, com.google.gson.JsonSerializer<Instant> { src, _, _ ->
+            JsonPrimitive(src.toString())
+        })
+        .registerTypeAdapter(Instant::class.java, com.google.gson.JsonDeserializer { json, _, _ ->
+            Instant.parse(json.asString)
+        })
+        .create()
+
     private val lastSurveyedSleepEndTimeKey =
         stringPreferencesKey("last_surveyed_sleep_end_time")
 
@@ -33,6 +46,9 @@ class SleepSurveyLocalStore(
 
     private val lastFatigueLevelKey =
         intPreferencesKey("last_fatigue_level")
+
+    private val latestSummaryCacheKey =
+        stringPreferencesKey("latest_summary_cache")
 
     override suspend fun saveFullSleepResult(result: SleepResult) {
         context.sleepSurveyDataStore.edit { prefs ->
@@ -85,6 +101,26 @@ class SleepSurveyLocalStore(
 
         return savedState?.let {
             runCatching { MorningGloryType.valueOf(it) }.getOrNull()
+        }
+    }
+
+    override suspend fun saveLatestSummaryCache(summary: DailyHealthSummary) {
+        context.sleepSurveyDataStore.edit { prefs ->
+            prefs[latestSummaryCacheKey] = gson.toJson(summary)
+        }
+    }
+
+    override suspend fun getCachedLatestSummary(): DailyHealthSummary? {
+        val prefs = context.sleepSurveyDataStore.data.first()
+        val json = prefs[latestSummaryCacheKey] ?: return null
+        return runCatching {
+            gson.fromJson(json, DailyHealthSummary::class.java)
+        }.getOrNull()
+    }
+
+    override suspend fun clearLatestSummaryCache() {
+        context.sleepSurveyDataStore.edit { prefs ->
+            prefs.remove(latestSummaryCacheKey)
         }
     }
 }

@@ -157,4 +157,12 @@ class SleepResultRepository(
             null
         }
     }
+
+    suspend fun getCachedLatestSummary(): com.sujin.nubloompilot.models.DailyHealthSummary? {
+        return localStore.getCachedLatestSummary()
+    }
+
+    suspend fun saveLatestSummaryCache(summary: com.sujin.nubloompilot.models.DailyHealthSummary) {
+        localStore.saveLatestSummaryCache(summary)
+    }
 }

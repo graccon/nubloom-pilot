@@ -104,6 +104,8 @@ fun SleepPage() {
         todayShift = uiState.todayShift,
         averageWakeHeartRate = uiState.averageWakeHeartRate,
         isLoading = uiState.isLoading,
+        isHistoryLoading = uiState.isHistoryLoading,
+        isBaselineLoading = uiState.isBaselineLoading,
         permissionStatus = permissionStatus,
         notificationRequestStatus = notificationRequestStatus,
         onRequestNotificationPermission = {
@@ -141,6 +143,8 @@ private fun SleepPageContent(
     todayShift: String?,
     averageWakeHeartRate: Long?,
     isLoading: Boolean,
+    isHistoryLoading: Boolean,
+    isBaselineLoading: Boolean,
     permissionStatus: String,
     notificationRequestStatus: String,
     onRequestNotificationPermission: () -> Unit,
@@ -194,7 +198,8 @@ private fun SleepPageContent(
                 averageSleepDurationMinutes = averageSleepDurationMinutes,
                 averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes,
                 todayShift = todayShift,
-                averageWakeHeartRate = averageWakeHeartRate
+                averageWakeHeartRate = averageWakeHeartRate,
+                isBaselineLoading = isBaselineLoading
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -205,7 +210,11 @@ private fun SleepPageContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            CheckInGrassGrid(checkInHistory = checkInHistory)
+            if (isHistoryLoading) {
+                Text("체크인 기록 불러오는 중...", color = Gray500)
+            } else {
+                CheckInGrassGrid(checkInHistory = checkInHistory)
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -290,7 +299,8 @@ private fun SelectedSleepSummarySection(
     averageSleepDurationMinutes: Long?,
     averageShiftSleepDurationMinutes: Long?,
     todayShift: String?,
-    averageWakeHeartRate: Long?
+    averageWakeHeartRate: Long?,
+    isBaselineLoading: Boolean
 ) {
     val startTimeText = summary.sleepStartTime.atZone(ZoneId.systemDefault())
         .format(DateTimeFormatter.ofPattern("HH:mm"))
@@ -302,7 +312,7 @@ private fun SelectedSleepSummarySection(
             title = if (hasMultipleSleepSummaries) "선택된 수면의 시간" else "오늘 총 수면시간",
             todayAllSleepDurationMinutes = total24hSleepMinutes,
             todaySleepDurationMinutes = summary.sleepDurationMinutes,
-            averageSleepDurationMinutes = averageSleepDurationMinutes
+            averageSleepDurationMinutes = if (isBaselineLoading) null else averageSleepDurationMinutes
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -349,7 +359,7 @@ private fun SelectedSleepSummarySection(
         ShiftSleepComparisonCard(
             todaySleepDurationMinutes = summary.sleepDurationMinutes,
             todayShift = todayShift,
-            averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes
+            averageShiftSleepDurationMinutes = if (isBaselineLoading) null else averageShiftSleepDurationMinutes
         )
     }
 }
