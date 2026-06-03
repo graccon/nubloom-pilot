@@ -1,5 +1,8 @@
 package com.sujin.nubloompilot.pages
 
+import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -11,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
 import com.sujin.nubloompilot.R
 import com.sujin.nubloompilot.components.FloatingIcon
@@ -35,6 +39,13 @@ fun HealthConnectGuidePage(
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = PermissionController.createRequestPermissionResultContract()
     ) { grantedPermissions ->
+        Log.d("HealthConnectGuide", "Permission callback called")
+        Log.d("HealthConnectGuide", "Granted permissions=$grantedPermissions")
+        val missing = repository.healthPermissions - grantedPermissions
+        if (missing.isNotEmpty()) {
+            Log.d("HealthConnectGuide", "Missing permissions=$missing")
+        }
+
         if (grantedPermissions.containsAll(repository.healthPermissions)) {
             onNext()
         } else {
@@ -87,6 +98,16 @@ fun HealthConnectGuidePage(
             textAlign = TextAlign.Center
         )
 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "Android 10 기기에서는 권한 요청 화면이 자동으로 열리지 않을 수 있습니다. 이 경우 아래 버튼을 통해 Health Connect 앱을 직접 열어 NubloomPilot 권한을 허용해주세요.",
+                style = MaterialTheme.typography.bodySmall,
+                color = Gray600,
+                textAlign = TextAlign.Center
+            )
+        }
+
         if (showPermissionDeniedMessage) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
@@ -103,10 +124,46 @@ fun HealthConnectGuidePage(
             PrimaryButton(
                 text = "건강 데이터 연결하기",
                 onClick = {
-                    permissionLauncher.launch(repository.healthPermissions)
+                    val sdkStatus = HealthConnectClient.getSdkStatus(context)
+                    Log.d("HealthConnectGuide", "Permission button clicked")
+                    Log.d("HealthConnectGuide", "SDK_INT=${Build.VERSION.SDK_INT}")
+                    Log.d("HealthConnectGuide", "HealthConnect sdkStatus=$sdkStatus")
+                    Log.d("HealthConnectGuide", "Requested permissions=${repository.healthPermissions}")
+
+                    try {
+                        Log.d("HealthConnectGuide", "Launching Health Connect permission request")
+                        permissionLauncher.launch(repository.healthPermissions)
+                        Log.d("HealthConnectGuide", "permissionLauncher.launch() called successfully")
+                    } catch (e: Exception) {
+                        Log.e("HealthConnectGuide", "Failed to launch permission request", e)
+                        Toast.makeText(context, "권한 요청 화면을 열 수 없습니다. 직접 앱을 열어주세요.", Toast.LENGTH_LONG).show()
+                    }
                 },
                 modifier = Modifier.padding(bottom = 8.dp)
             )
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                TextButton(
+                    onClick = {
+                        Log.d("HealthConnectGuide", "Fallback button clicked")
+                        val intent = context.packageManager.getLaunchIntentForPackage("com.google.android.apps.healthdata")
+                        if (intent != null) {
+                            Log.d("HealthConnectGuide", "Start Health Connect app activity")
+                            context.startActivity(intent)
+                        } else {
+                            Log.e("HealthConnectGuide", "Launch intent is null")
+                            Toast.makeText(context, "Health Connect 앱을 열 수 없습니다. 설치 상태를 확인해주세요.", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    modifier = Modifier.padding(bottom = 8.dp)
+                ) {
+                    Text(
+                        text = "Health Connect 앱 직접 열기",
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
         }
 
         TextButton(

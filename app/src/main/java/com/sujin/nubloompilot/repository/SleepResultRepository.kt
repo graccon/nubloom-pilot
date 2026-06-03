@@ -1,5 +1,6 @@
 package com.sujin.nubloompilot.repository
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.sujin.nubloompilot.local.SleepSurveyLocalStore
@@ -7,6 +8,7 @@ import com.sujin.nubloompilot.models.MorningGloryType
 import com.sujin.nubloompilot.models.SleepResult
 import kotlinx.coroutines.tasks.await
 import java.time.Instant
+import java.time.ZoneId
 
 class SleepResultRepository(
     private val participantId: String,
@@ -18,20 +20,30 @@ class SleepResultRepository(
         .collection("sleep_results")
 
     suspend fun saveSleepResult(result: SleepResult) {
-        // 1. Local save for Home UI and Data Recovery
-        localStore.saveFullSleepResult(result)
+        // 1. Check for existing result today to preserve the day's primary flower type (Method B)
+        val latestResult = localStore.getLatestSavedResult()
+        val finalResult = if (latestResult != null && isSameDay(latestResult.sleepEndTime, result.sleepEndTime)) {
+            Log.d("SleepResultRepo", "Today's result already exists (End: ${latestResult.sleepEndTime}). " +
+                    "Keeping existing MorningGloryType=${latestResult.morningGloryType}")
+            result.copy(morningGloryType = latestResult.morningGloryType)
+        } else {
+            result
+        }
 
-        // 2. Remote save to Firebase (Subcollection structure: participants/{id}/sleep_results)
+        // 2. Local save for Home UI and Data Recovery
+        localStore.saveFullSleepResult(finalResult)
+
+        // 3. Remote save to Firebase (Subcollection structure: participants/{id}/sleep_results)
         val remoteData = hashMapOf(
-            "participantId" to result.participantId,
-            "participantName" to result.participantName,
-            "sleepEndTime" to result.sleepEndTime.toString(),
-            "sleepDurationMinutes" to result.sleepDurationMinutes,
-            "wakeHeartRate" to (result.wakeHeartRate ?: -1L),
-            "fatigueLevel" to result.fatigueLevel,
-            "morningGloryType" to result.morningGloryType.name,
-            "timestamp" to result.timestamp,
-            "sleepSummary" to result.sleepSummary?.let { summary ->
+            "participantId" to finalResult.participantId,
+            "participantName" to finalResult.participantName,
+            "sleepEndTime" to finalResult.sleepEndTime.toString(),
+            "sleepDurationMinutes" to finalResult.sleepDurationMinutes,
+            "wakeHeartRate" to (finalResult.wakeHeartRate ?: -1L),
+            "fatigueLevel" to finalResult.fatigueLevel,
+            "morningGloryType" to finalResult.morningGloryType.name,
+            "timestamp" to finalResult.timestamp,
+            "sleepSummary" to finalResult.sleepSummary?.let { summary ->
                 hashMapOf(
                     "sleepStartTime" to summary.sleepStartTime.toString(),
                     "sleepEndTime" to summary.sleepEndTime.toString(),
@@ -45,7 +57,7 @@ class SleepResultRepository(
                     "stepsLast24Hours" to summary.stepsLast24Hours
                 )
             },
-            "sleepSummariesLast24h" to result.sleepSummariesLast24h.map { summary ->
+            "sleepSummariesLast24h" to finalResult.sleepSummariesLast24h.map { summary ->
                 hashMapOf(
                     "sleepStartTime" to summary.sleepStartTime.toString(),
                     "sleepEndTime" to summary.sleepEndTime.toString(),
@@ -63,10 +75,16 @@ class SleepResultRepository(
 
         try {
             resultsCollection.add(remoteData).await()
-            println("Firestore sleep_results save success with summary: ${result.sleepSummary != null}")
+            Log.d("SleepResultRepo", "Firestore save success. Final type: ${finalResult.morningGloryType}")
         } catch (e: Exception) {
-            println("Firestore sleep_results save failed: ${e.message}")
+            Log.e("SleepResultRepo", "Firestore save failed", e)
         }
+    }
+
+    private fun isSameDay(instant1: Instant, instant2: Instant): Boolean {
+        val date1 = instant1.atZone(ZoneId.systemDefault()).toLocalDate()
+        val date2 = instant2.atZone(ZoneId.systemDefault()).toLocalDate()
+        return date1 == date2
     }
 
     suspend fun getSleepResultsInDateRange(days: Int = 30): List<SleepResult> {
