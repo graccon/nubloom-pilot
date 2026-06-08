@@ -52,6 +52,10 @@ import com.sujin.nubloompilot.components.TopBannerManager
 import java.time.Instant
 import android.graphics.BitmapFactory
 import android.util.Log
+import com.sujin.nubloompilot.debug.DebugHomeScenarioPanel
+import com.sujin.nubloompilot.debug.DemoHomeControlState
+import com.sujin.nubloompilot.debug.DemoHomeScenarioFactory
+import com.sujin.nubloompilot.debug.DemoIntervention
 import com.sujin.nubloompilot.local.ShiftTimingLocalStore
 import com.sujin.nubloompilot.shared.models.ShiftTimingConfig
 import com.sujin.nubloompilot.shared.models.WatchTimelinePayload
@@ -127,7 +131,7 @@ private fun HomePageContent(
     modifier: Modifier = Modifier
 ) {
     val currentTime = rememberCurrentTime()
-    val greetingMessage = rememberRotatingMessage()
+    val rotatingGreetingMessage = rememberRotatingMessage()
     val context = LocalContext.current
 
     val shiftTimingStore = remember { ShiftTimingLocalStore(context) }
@@ -179,15 +183,65 @@ private fun HomePageContent(
         )
     }
 
+    // --- Demo Logic (Temporarily Disabled) ---
+    /*
+    var demoState by remember { mutableStateOf(DemoHomeControlState()) }
+    val isDebug = remember(context) {
+        (context.applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
+    }
 
+    val demoScenario = remember(demoState, isDebug) {
+        if (isDebug && demoState.enabled) {
+            DemoHomeScenarioFactory.create(demoState)
+        } else {
+            null
+        }
+    }
+
+    val demoInterventions = remember(demoScenario) {
+        demoScenario?.interventions?.map { it.toSavedSleepIntervention() }
+    }
+    */
+    val demoScenario: com.sujin.nubloompilot.debug.DemoHomeScenario? = null
+    val demoInterventions: List<SavedSleepIntervention>? = null
+
+    // --- Real Data Logic ---
     val isInterventionValid = remember(latestInterventionBundle, currentTime) {
         latestInterventionBundle.hasActiveIntervention()
     }
 
-    val timelineMarkers = remember(latestInterventionBundle, isInterventionValid) {
+    val activeInterventions = remember(latestInterventionBundle, isInterventionValid, currentTime) {
         if (isInterventionValid && latestInterventionBundle != null) {
+            val now = LocalDateTime.now()
+            latestInterventionBundle.interventions
+                .filter { intervention ->
+                    val end = runCatching { LocalDateTime.parse(intervention.endTime) }.getOrNull()
+                    end?.isAfter(now) ?: false
+                }
+                .sortedBy { it.startTime }
+                .take(2)
+        } else {
+            emptyList()
+        }
+    }
+
+    // --- Unified Display Data ---
+    val displayedInterventions = if (demoInterventions != null) {
+        demoInterventions
+    } else {
+        activeInterventions
+    }
+
+    val displayedTimelineInterventions = if (demoInterventions != null) {
+        demoInterventions
+    } else {
+        latestInterventionBundle?.interventions ?: emptyList()
+    }
+
+    val timelineMarkers = remember(displayedTimelineInterventions) {
+        if (displayedTimelineInterventions.isNotEmpty()) {
             InterventionToMarkerMapper.map(
-                interventions = latestInterventionBundle.interventions,
+                interventions = displayedTimelineInterventions,
                 referenceDate = LocalDate.now()
             )
         } else {
@@ -211,22 +265,50 @@ private fun HomePageContent(
         map
     }
 
-    val activeInterventions = remember(latestInterventionBundle, isInterventionValid, currentTime) {
-        if (isInterventionValid && latestInterventionBundle != null) {
-            val now = LocalDateTime.now()
-            latestInterventionBundle.interventions
-                .filter { intervention ->
-                    val end = runCatching { LocalDateTime.parse(intervention.endTime) }.getOrNull()
-                    end?.isAfter(now) ?: false
-                }
-                .sortedBy { it.startTime }
-                .take(2)
-        } else {
-            emptyList()
-        }
+    var expandedInterventionId by remember { mutableStateOf<String?>(null) }
+
+    // --- Display Logic ---
+    val displayedCurrentTime = if (demoScenario != null) {
+        demoScenario.currentTime.toLocalTime()
+    } else {
+        currentTime
     }
 
-    var expandedInterventionId by remember { mutableStateOf<String?>(null) }
+    val displayedYesterdayShift = if (demoScenario != null) {
+        demoScenario.yesterdayShift
+    } else {
+        yesterdayShift
+    }
+
+    val displayedTodayShift = if (demoScenario != null) {
+        demoScenario.todayShift
+    } else {
+        todayShift
+    }
+
+    val displayedTomorrowShift = if (demoScenario != null) {
+        demoScenario.tomorrowShift
+    } else {
+        tomorrowShift
+    }
+
+    val displayedDayAfterTomorrowShift = if (demoScenario != null) {
+        demoScenario.dayAfterTomorrowShift
+    } else {
+        dayAfterTomorrowShift
+    }
+
+    val displayedMorningGloryType = if (demoScenario != null) {
+        demoScenario.morningGloryType
+    } else {
+        uiState.morningGloryType
+    }
+
+    val displayedGreetingMessage = if (demoScenario != null) {
+        demoScenario.message
+    } else {
+        rotatingGreetingMessage
+    }
 
     Column(
         modifier = modifier
@@ -241,7 +323,7 @@ private fun HomePageContent(
     ) {
         HomeHeader(
             participantName = participantName,
-            greetingMessage = greetingMessage
+            greetingMessage = displayedGreetingMessage
         )
 
 //        Button(
@@ -252,11 +334,11 @@ private fun HomePageContent(
 //        }
 
         SpiralTimeline(
-            yesterdayShift = yesterdayShift,
-            todayShift = todayShift,
-            tomorrowShift = tomorrowShift,
-            dayAfterTomorrowShift = dayAfterTomorrowShift,
-            currentTime = currentTime,
+            yesterdayShift = displayedYesterdayShift,
+            todayShift = displayedTodayShift,
+            tomorrowShift = displayedTomorrowShift,
+            dayAfterTomorrowShift = displayedDayAfterTomorrowShift,
+            currentTime = displayedCurrentTime,
             markers = timelineMarkers,
             markerIcons = markerIcons,
             highlightedMarkerId = expandedInterventionId,
@@ -265,10 +347,19 @@ private fun HomePageContent(
         )
         Spacer(modifier = Modifier.height(30.dp))
 
-        if (activeInterventions.isNotEmpty()) {
+        if (displayedInterventions.isNotEmpty()) {
+            if (demoScenario != null) {
+                Text(
+                    text = "DEMO MODE",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = Primary,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             InterventionSection(
-                interventions = activeInterventions,
+                interventions = displayedInterventions,
                 expandedId = expandedInterventionId,
                 onExpandedIdChange = { id ->
                     expandedInterventionId = if (expandedInterventionId == id) null else id
@@ -276,17 +367,17 @@ private fun HomePageContent(
             )
         }
 
-        if (uiState.latestHealthSummary != null) {
+        if (uiState.latestHealthSummary != null || demoScenario != null) {
             Spacer(modifier = Modifier.height(20.dp))
 
             ReportHeader(
-                morningGloryType = uiState.morningGloryType
+                morningGloryType = displayedMorningGloryType
             )
 
             Spacer(modifier = Modifier.height(14.dp))
 
             HomeActionCard(
-                type = uiState.morningGloryType,
+                type = displayedMorningGloryType,
                 onClick = onActionCardClick
             )
         } else {
@@ -294,8 +385,34 @@ private fun HomePageContent(
             NotFoundLatestSleepSection()
         }
 
+        /*
+        val isDebug = remember(context) {
+            (context.applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
+        }
+
+        if (isDebug) {
+            Spacer(modifier = Modifier.height(32.dp))
+            DebugHomeScenarioPanel(
+                state = demoState,
+                onStateChange = { demoState = it }
+            )
+        }
+        */
+
         Spacer(modifier = Modifier.height(88.dp))
     }
+}
+
+private fun DemoIntervention.toSavedSleepIntervention(): SavedSleepIntervention {
+    return SavedSleepIntervention(
+        type = type,
+        actionType = actionType,
+        startTime = startTime.toString(),
+        endTime = endTime.toString(),
+        title = title,
+        description = description,
+        reason = ""
+    )
 }
 
 @Composable
@@ -548,4 +665,3 @@ private fun InterventionItem(
         }
     }
 }
-

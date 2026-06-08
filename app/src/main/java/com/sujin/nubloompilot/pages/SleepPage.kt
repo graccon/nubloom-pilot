@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,9 +23,11 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -165,43 +168,61 @@ private fun SleepPageContent(
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
         )
-        // TODO : 설명글 - 영역을 눌러 세부 잠의 정보를 살펴보세요.
         
         Spacer(modifier = Modifier.height(12.dp))
 
         if (isLoading) {
             Text("데이터를 불러오는 중...")
-        } else if (latestSummary != null) {
-            val total24hSleepMinutes = if (sleepSummariesLast24h.isNotEmpty()) {
-                sleepSummariesLast24h.sumOf { it.sleepDurationMinutes }
-            } else {
-                latestSummary.sleepDurationMinutes
-            }
+        } else {
+            // 1. Today's Specific Session Section (Conditional)
+            if (latestSummary != null) {
+                val total24hSleepMinutes = if (sleepSummariesLast24h.isNotEmpty()) {
+                    sleepSummariesLast24h.sumOf { it.sleepDurationMinutes }
+                } else {
+                    latestSummary.sleepDurationMinutes
+                }
 
-            val displayedSummary = selectedSleepSummary ?: latestSummary
+                val displayedSummary = selectedSleepSummary ?: latestSummary
 
-            // Display 24h summaries timeline if available
-            if (sleepSummariesLast24h.isNotEmpty()) {
-                SleepLast24hTimeline(
-                    summaries = sleepSummariesLast24h,
-                    selectedSummary = selectedSleepSummary,
-                    onSummarySelected = { selectedSleepSummary = it }
+                // Display 24h summaries timeline if available
+                if (sleepSummariesLast24h.isNotEmpty()) {
+                    SleepLast24hTimeline(
+                        summaries = sleepSummariesLast24h,
+                        selectedSummary = selectedSleepSummary,
+                        onSummarySelected = { selectedSleepSummary = it }
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+
+                SelectedSleepSummarySection(
+                    summary = displayedSummary,
+                    total24hSleepMinutes = total24hSleepMinutes,
+                    hasMultipleSleepSummaries = sleepSummariesLast24h.size > 1,
+                    averageSleepDurationMinutes = averageSleepDurationMinutes,
+                    averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes,
+                    todayShift = todayShift,
+                    averageWakeHeartRate = averageWakeHeartRate,
+                    isBaselineLoading = isBaselineLoading
                 )
-
-                Spacer(modifier = Modifier.height(24.dp))
+            } else {
+                // Today data missing state
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "오늘 감지된 수면 데이터가 없습니다.\n갤럭시 워치를 착용하고 주무셨는지 확인해주세요.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Gray500,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
 
-            SelectedSleepSummarySection(
-                summary = displayedSummary,
-                total24hSleepMinutes = total24hSleepMinutes,
-                hasMultipleSleepSummaries = sleepSummariesLast24h.size > 1,
-                averageSleepDurationMinutes = averageSleepDurationMinutes,
-                averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes,
-                todayShift = todayShift,
-                averageWakeHeartRate = averageWakeHeartRate,
-                isBaselineLoading = isBaselineLoading
-            )
-
+            // 2. Historical Data Section (Always Visible)
             Spacer(modifier = Modifier.height(24.dp))
             HorizontalDivider()
             Spacer(modifier = Modifier.height(24.dp))
@@ -215,11 +236,6 @@ private fun SleepPageContent(
             } else {
                 CheckInGrassGrid(checkInHistory = checkInHistory)
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-        } else {
-            Text("감지된 수면 데이터가 없습니다.")
         }
 
         Spacer(modifier = Modifier.height(44.dp))
