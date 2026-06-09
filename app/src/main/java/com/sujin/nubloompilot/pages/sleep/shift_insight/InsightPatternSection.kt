@@ -9,6 +9,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.models.ShiftPatternInsight
 import com.sujin.nubloompilot.ui.theme.Gray500
+import com.sujin.nubloompilot.ui.theme.Gray600
+import com.sujin.nubloompilot.ui.theme.Gray700
 import com.sujin.nubloompilot.ui.theme.Gray800
 
 @Composable
@@ -18,7 +20,11 @@ fun InsightPatternSection(
     thirdLabel: String
 ) {
     Column {
-        InsightSubTitle(text = title)
+
+        InsightSectionHeader(
+            title = title,
+            sampleCount = pattern?.sampleCount ?: 0
+        )
 
         // TODO 수면 시간 정보 더 추가하기
         SleepDurationRangeBar(
@@ -43,27 +49,12 @@ fun InsightPatternSection(
         Spacer(modifier = Modifier.height(32.dp))
 
         // TODO 나팔꽃 캐릭터 순위 메기는 시각화
-        Text(
-            text = "나팔꽃 타입 분포",
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            color = Gray800,
-            modifier = Modifier.padding(bottom = 4.dp)
-        )
-        MorningGloryDistributionRows(
+        MorningGloryRankingBarChart(
             counts = pattern?.morningGloryTypeCounts ?: emptyMap(),
+            label = "가장 많이 핀 나팔꽃",
             totalCount = pattern?.sampleCount ?: 0
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        InsightRow(label = thirdLabel, value = pattern?.featureText ?: "데이터 준비 중")
-
-        if (pattern != null && pattern.sampleCount > 0) {
-            InsightSampleCount(pattern.sampleCount)
-            if (!pattern.hasEnoughData) {
-                InsightInsufficientWarning()
-            }
-        }
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
@@ -98,3 +89,33 @@ fun InsightInsufficientWarning() {
     )
 }
 
+
+@Composable
+fun InsightSectionHeader(
+    title: String,
+    sampleCount: Int
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = androidx.compose.ui.Alignment.Top
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+            color = Gray800
+        )
+
+        if (sampleCount > 0) {
+            Text(
+                text = "분석 기록 ${sampleCount}건",
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
+                color = Gray700
+            )
+        }
+    }
+}

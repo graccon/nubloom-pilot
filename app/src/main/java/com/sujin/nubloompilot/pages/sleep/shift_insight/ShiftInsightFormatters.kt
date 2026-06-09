@@ -24,6 +24,7 @@ fun formatMinutesToHourMinute(minutes: Long?): String {
     }
 }
 
+// TODO: formatFatigueLevel (??) 여기에 괄호로 높음/ 낮음
 fun formatFatigueLevel(value: Double?): String {
     if (value == null) return "데이터 준비 중"
     return String.format(Locale.getDefault(), "%.1f점", value)
