@@ -16,6 +16,7 @@ import androidx.compose.foundation.background
 import com.sujin.nubloompilot.ui.theme.Gray800
 import com.sujin.nubloompilot.ui.theme.Gray600
 import androidx.compose.ui.tooling.preview.Preview
+import com.sujin.nubloompilot.ui.theme.Gray700
 import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 
 @Composable
@@ -45,8 +46,8 @@ fun RecoveryRhythmGraphCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 LegendItem(label = "${focusedShift.name} 리듬", color = getSeriesColor(focusedShift).copy(alpha = 0.3f))
-                LegendItem(label = "${focusedShift.name} 근무", color = getSeriesColor(focusedShift))
                 if (focusedShift != ShiftInsightType.OFF) {
+                    LegendItem(label = "${focusedShift.name} 근무", color = getSeriesColor(focusedShift))
                     LegendItem(label = "Off(기준) 리듬", color = getSeriesColor(ShiftInsightType.OFF).copy(alpha = 0.3f))
                 }
             }
@@ -55,6 +56,14 @@ fun RecoveryRhythmGraphCard(
 
             Spacer(modifier = Modifier.height(18.dp))
 
+            Text(
+                text = getRecoveryRhythmGuideText(focusedShift),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Gray700,
+                modifier = Modifier.padding(top = 12.dp)
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }
@@ -112,5 +121,19 @@ fun RecoveryRhythmGraphCardPreview() {
                 }
             )
         }
+    }
+}
+
+private fun getRecoveryRhythmGuideText(
+    focusedShift: ShiftInsightType
+): String {
+    return if (focusedShift == ShiftInsightType.OFF) {
+        "Off 리듬은 쉬는 날의 기준 회복 흐름이에요. " +
+                "근무가 없는 날에는 수면과 회복 리듬이 비교적 자연스럽게 나타날 수 있어요. " +
+                "이 흐름을 기준으로 Day, Evening, Night 근무일의 회복 리듬이 얼마나 달라지는지 비교할 수 있어요."
+    } else {
+        "Off 리듬은 쉬는 날의 기준 흐름이에요. " +
+                "근무 리듬이 Off보다 높으면 회복이 더 잘 된 상태, 낮으면 회복이 부족한 상태로 볼 수 있어요. " +
+                "곡선이 가파르게 변할수록 회복이나 피로 변화가 빠르다는 뜻이에요."
     }
 }

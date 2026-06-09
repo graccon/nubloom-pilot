@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.ui.theme.Gray300
 import com.sujin.nubloompilot.ui.theme.Gray500
-import com.sujin.nubloompilot.ui.theme.Gray600
 import com.sujin.nubloompilot.ui.theme.Gray700
 import com.sujin.nubloompilot.ui.theme.Gray800
 
@@ -207,7 +206,7 @@ private fun SleepDurationSummaryText(
         Text(
             text = "이 근무에서는 평균 ${formatMinutesToHourMinute(averageMinutes)} 정도 주무셨어요.",
             style = MaterialTheme.typography.bodyMedium,
-            color = Gray700
+            color = Gray800
         )
 
         Text(
@@ -217,7 +216,7 @@ private fun SleepDurationSummaryText(
                 "수면 시간 범위를 보려면 기록이 조금 더 필요해요."
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = Gray700,
+            color = Gray800,
             modifier = Modifier.padding(top = 2.dp)
         )
     }

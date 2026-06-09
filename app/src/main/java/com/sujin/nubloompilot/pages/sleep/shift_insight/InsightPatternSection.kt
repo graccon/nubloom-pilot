@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.models.ShiftPatternInsight
-import com.sujin.nubloompilot.ui.theme.Gray500
-import com.sujin.nubloompilot.ui.theme.Gray600
+import androidx.compose.material3.HorizontalDivider
+import com.sujin.nubloompilot.ui.theme.Gray300
 import com.sujin.nubloompilot.ui.theme.Gray700
 import com.sujin.nubloompilot.ui.theme.Gray800
 
@@ -20,7 +20,6 @@ fun InsightPatternSection(
     thirdLabel: String
 ) {
     Column {
-
         InsightSectionHeader(
             title = title,
             sampleCount = pattern?.sampleCount ?: 0
@@ -54,41 +53,19 @@ fun InsightPatternSection(
             label = "가장 많이 핀 나팔꽃",
             totalCount = pattern?.sampleCount ?: 0
         )
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(24.dp))
+        InsightDivider()
     }
 }
 
 @Composable
-fun InsightSubTitle(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelLarge,
-        fontWeight = FontWeight.Bold,
-        color = Gray800,
-        modifier = Modifier.padding(bottom = 8.dp)
+private fun InsightDivider() {
+    HorizontalDivider(
+        modifier = Modifier.padding(vertical = 24.dp),
+        thickness = 1.dp,
+        color = Gray300
     )
 }
-
-@Composable
-fun InsightSampleCount(count: Int) {
-    Text(
-        text = "분석 기록 ${count}건",
-        style = MaterialTheme.typography.labelSmall,
-        color = Gray500,
-        modifier = Modifier.padding(top = 4.dp)
-    )
-}
-
-@Composable
-fun InsightInsufficientWarning() {
-    Text(
-        text = "아직 분석 기록이 적어 참고용으로만 확인해주세요.",
-        style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f),
-        modifier = Modifier.padding(top = 2.dp)
-    )
-}
-
 
 @Composable
 fun InsightSectionHeader(

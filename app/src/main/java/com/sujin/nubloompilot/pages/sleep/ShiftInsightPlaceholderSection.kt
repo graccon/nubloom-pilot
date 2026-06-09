@@ -12,6 +12,7 @@ import com.sujin.nubloompilot.models.ShiftInsightType
 import com.sujin.nubloompilot.ui.theme.Gray600
 import com.sujin.nubloompilot.ui.theme.Gray800
 import com.sujin.nubloompilot.pages.sleep.shift_insight.*
+import com.sujin.nubloompilot.ui.theme.Gray700
 
 @Composable
 fun ShiftInsightPlaceholderSection(
@@ -22,7 +23,6 @@ fun ShiftInsightPlaceholderSection(
 
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // 상단 제목 및 설명
         Column {
@@ -36,7 +36,7 @@ fun ShiftInsightPlaceholderSection(
             Text(
                 text = "근무 유형을 선택하여 수면 패턴과 회복 리듬을 확인하세요.",
                 style = MaterialTheme.typography.bodyMedium,
-                color = Gray600
+                color = Gray700
             )
         }
 
@@ -47,7 +47,6 @@ fun ShiftInsightPlaceholderSection(
         )
 
         // 3. 선택된 근무에 연동되는 리듬 그래프
-        // (선택된 근무의 라인과 OFF 라인을 비교해서 보여줌)
         com.sujin.nubloompilot.pages.sleep.shift_insight.RecoveryRhythmGraphCard(
             graphData = shiftInsightSummary?.recoveryRhythmGraphData,
             focusedShift = selectedShift

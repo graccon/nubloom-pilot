@@ -43,6 +43,8 @@ fun FatigueLevelBar(
         0f
     }
 
+    val hasFatigueData = fatigueLevel != null
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -101,13 +103,15 @@ fun FatigueLevelBar(
 
         Spacer(modifier = Modifier.height(4.dp))
 
-
-        Text(
-            text = getFatigueInterpretation(fatigueLevel),
-            style = MaterialTheme.typography.bodyMedium,
-            color = Gray700,
-            modifier = Modifier.padding(top = 6.dp)
-        )
+        // TODO 만약 데이터가 없으면 설명
+        if (hasFatigueData) {
+            Text(
+                text = getFatigueInterpretation(fatigueLevel),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Gray800,
+                modifier = Modifier.padding(top = 6.dp)
+            )
+        }
     }
 }
 
@@ -154,11 +158,11 @@ private fun FatigueSegmentedBar(
         BoxWithConstraints(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(18.dp)
+                .height(24.dp)
         ) {
             val totalWidth = maxWidth
             val markerSize = 14.dp
-            val barHeight = 18.dp
+            val barHeight = 22.dp
 
             Box(
                 modifier = Modifier

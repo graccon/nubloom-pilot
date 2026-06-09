@@ -15,7 +15,6 @@ import com.sujin.nubloompilot.ui.theme.Gray500
 import com.sujin.nubloompilot.ui.theme.Gray600
 import com.sujin.nubloompilot.ui.theme.Gray800
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -61,7 +60,7 @@ fun MorningGloryRankingBarChart(
         if (totalCount == 0) {
             Text(
                 text = "아직 나팔꽃 타입 기록이 충분하지 않아요.",
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = Gray600
             )
             return@Column
@@ -129,7 +128,7 @@ fun MorningGloryRankingBarChart(
         Text(
             text = getMorningGloryRankingInsightText(topItems, totalCount),
             style = MaterialTheme.typography.bodyMedium,
-            color = Gray700,
+            color = Gray800,
             modifier = Modifier.padding(top = 8.dp)
         )
     }
