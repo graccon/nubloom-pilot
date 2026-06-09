@@ -19,7 +19,7 @@ fun InsightPatternSection(
 ) {
     Column {
         InsightSubTitle(text = title)
-        
+        // TODO 수면 시간 정보 더 추가하기
         InsightRow(
             label = if (title.contains("복귀") || title.contains("회복")) "복귀 전 평균 수면 시간" else "평균 수면 시간",
             value = formatMinutesToHourMinute(pattern?.averageSleepDurationMinutes)

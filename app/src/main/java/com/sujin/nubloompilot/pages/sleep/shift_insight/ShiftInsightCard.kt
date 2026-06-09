@@ -31,12 +31,7 @@ fun ShiftInsightCard(
                 fontWeight = FontWeight.Bold,
                 color = Gray800
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Gray600
-            )
+
             
             if (content != null) {
                 content()

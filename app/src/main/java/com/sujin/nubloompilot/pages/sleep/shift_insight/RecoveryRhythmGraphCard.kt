@@ -15,6 +15,8 @@ import com.sujin.nubloompilot.models.ShiftInsightType
 import androidx.compose.foundation.background
 import com.sujin.nubloompilot.ui.theme.Gray800
 import com.sujin.nubloompilot.ui.theme.Gray600
+import androidx.compose.ui.tooling.preview.Preview
+import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
 
 @Composable
 fun RecoveryRhythmGraphCard(
@@ -29,32 +31,30 @@ fun RecoveryRhythmGraphCard(
 
     ShiftInsightCard(
         title = graphData?.title ?: "회복 리듬 데이터 준비 중",
-        description = "${focusedShift.name} 근무 시 예상되는 회복 리듬입니다. 진한 부분은 실제 근무 시간 타임라인을 의미합니다."
+        description = "${focusedShift.name} 근무 시 예상되는 회복 리듬입니다."
     ) {
         if (graphData != null) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 16.dp,
+                    alignment = Alignment.End
+                ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                LegendItem(label = "${focusedShift.name} 리듬", color = getSeriesColor(focusedShift).copy(alpha = 0.3f))
+                LegendItem(label = "${focusedShift.name} 근무", color = getSeriesColor(focusedShift))
+                if (focusedShift != ShiftInsightType.OFF) {
+                    LegendItem(label = "Off(기준) 리듬", color = getSeriesColor(ShiftInsightType.OFF).copy(alpha = 0.3f))
+                }
+            }
             
             canvasContent(visibleShifts)
 
-            Spacer(modifier = Modifier.height(12.dp))
-            
-            Text(
-                text = "아래 바는 평균 수면이 이루어지는 시간대를 의미해요.",
-                style = MaterialTheme.typography.labelSmall,
-                color = Gray600
-            )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                LegendItem(label = "${focusedShift.name} 리듬", color = getSeriesColor(focusedShift))
-                if (focusedShift != ShiftInsightType.OFF) {
-                    LegendItem(label = "Off(기준) 리듬", color = getSeriesColor(ShiftInsightType.OFF))
-                }
-            }
+            Spacer(modifier = Modifier.height(18.dp))
+
         }
     }
 }
@@ -73,5 +73,44 @@ fun LegendItem(
         )
         Spacer(modifier = Modifier.width(6.dp))
         Text(text = label, style = MaterialTheme.typography.labelSmall, color = Gray800)
+    }
+}
+
+// TODO: Preview
+@Preview(showBackground = true, widthDp = 360)
+@Composable
+fun RecoveryRhythmGraphCardPreview() {
+    val dummyGraphData = RecoveryRhythmGraphData(
+        title = "근무 유형별 예상 회복 리듬",
+        description = "DAY 근무 시 예상되는 회복 리듬입니다.",
+        series = emptyList()
+    )
+
+    NubloomPilotTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            RecoveryRhythmGraphCard(
+                graphData = dummyGraphData,
+                focusedShift = ShiftInsightType.DAY,
+                canvasContent = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(280.dp)
+                            .background(Color.White),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Canvas Preview Area",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Gray600
+                        )
+                    }
+                }
+            )
+        }
     }
 }
