@@ -10,6 +10,8 @@ enum class ShiftInsightType {
 data class ShiftPatternInsight(
     val sampleCount: Int = 0,
     val averageSleepDurationMinutes: Long? = null,
+    val typicalSleepDurationMinMinutes: Long? = null,
+    val typicalSleepDurationMaxMinutes: Long? = null,
     val averageFatigueLevel: Double? = null,
     val mostCommonMorningGloryType: String? = null,
     val morningGloryTypeCounts: Map<String, Int> = emptyMap(),

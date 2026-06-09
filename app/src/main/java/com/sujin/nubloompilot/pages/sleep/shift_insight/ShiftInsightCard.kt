@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.sujin.nubloompilot.ui.theme.Gray200
 import com.sujin.nubloompilot.ui.theme.Gray600
 import com.sujin.nubloompilot.ui.theme.Gray800
-
+import androidx.compose.ui.graphics.Color
 @Composable
 fun ShiftInsightCard(
     title: String,
@@ -22,17 +22,11 @@ fun ShiftInsightCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Gray200)
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Transparent
+        )
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = Gray800
-            )
-
-            
+        Column(modifier = Modifier.padding( horizontal = 16.dp, vertical = 0.dp)) {
             if (content != null) {
                 content()
             }

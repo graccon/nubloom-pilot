@@ -247,7 +247,11 @@ class SleepViewModel(
             // For now, simplify and treat all as "Regular Pattern"
             // (Real transition logic can be added in next iteration)
             val regular = if (results.isNotEmpty()) {
-                val avgDur = results.map { it.sleepDurationMinutes }.average().toLong()
+                val sleepDurations = results.map { it.sleepDurationMinutes }
+
+                val avgDur = sleepDurations.average().toLong()
+                val (typicalMin, typicalMax) = calculateTypicalSleepDurationRange(sleepDurations)
+
                 val avgFatigue = results.map { it.fatigueLevel.toDouble() }.average()
                 val counts = results.groupingBy { it.morningGloryType.name }.eachCount()
                 val mostCommon = counts.maxByOrNull { it.value }?.key
@@ -259,7 +263,9 @@ class SleepViewModel(
                     mostCommonMorningGloryType = mostCommon,
                     morningGloryTypeCounts = counts,
                     featureText = if (results.size >= 3) "충분한 기록으로 분석된 패턴입니다." else "기록이 더 필요합니다.",
-                    hasEnoughData = results.size >= 3
+                    hasEnoughData = results.size >= 3,
+                    typicalSleepDurationMinMinutes = typicalMin,
+                    typicalSleepDurationMaxMinutes = typicalMax,
                 )
             } else null
 
@@ -276,5 +282,22 @@ class SleepViewModel(
             nightInsight = createInsight(ShiftInsightType.NIGHT),
             offInsight = createInsight(ShiftInsightType.OFF)
         )
+    }
+
+    private fun calculateTypicalSleepDurationRange(
+        sleepDurations: List<Long>
+    ): Pair<Long?, Long?> {
+        if (sleepDurations.isEmpty()) return null to null
+
+        val sorted = sleepDurations.sorted()
+
+        if (sorted.size < 5) {
+            return sorted.first() to sorted.last()
+        }
+
+        val lowerIndex = ((sorted.size - 1) * 0.05f).toInt()
+        val upperIndex = ((sorted.size - 1) * 0.95f).toInt()
+
+        return sorted[lowerIndex] to sorted[upperIndex]
     }
 }
