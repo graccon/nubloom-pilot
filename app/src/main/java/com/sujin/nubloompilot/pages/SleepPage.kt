@@ -5,33 +5,29 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sujin.nubloompilot.models.DailyHealthSummary
+import com.sujin.nubloompilot.models.RecoveryRhythmGraphData
+import com.sujin.nubloompilot.models.RecoveryRhythmMarker
+import com.sujin.nubloompilot.models.RecoveryRhythmMarkerType
+import com.sujin.nubloompilot.models.RecoveryRhythmSeries
+import com.sujin.nubloompilot.models.RecoveryRhythmSeriesPoint
+import com.sujin.nubloompilot.models.ShiftInsightSummary
+import com.sujin.nubloompilot.models.ShiftInsightType
+import com.sujin.nubloompilot.models.ShiftPatternInsight
+import com.sujin.nubloompilot.models.ShiftTypeInsight
 import com.sujin.nubloompilot.notifications.SleepCheckInNotificationHelper
 import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.HealthSummaryRepository
@@ -40,14 +36,6 @@ import com.sujin.nubloompilot.repository.SleepResultRepository
 import com.sujin.nubloompilot.local.ParticipantLocalStore
 import com.sujin.nubloompilot.local.SleepSurveyLocalStore
 import com.sujin.nubloompilot.pages.sleep.*
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import androidx.compose.ui.tooling.preview.Preview
-import com.sujin.nubloompilot.ui.theme.Gray300
-import com.sujin.nubloompilot.ui.theme.Gray500
-import com.sujin.nubloompilot.ui.theme.Gray800
-import com.sujin.nubloompilot.ui.theme.NubloomPilotTheme
-import java.time.Instant
 
 @Composable
 fun SleepPage() {
@@ -56,8 +44,9 @@ fun SleepPage() {
     val healthSummaryRepository = remember { HealthSummaryRepository(healthConnectRepository) }
     val shiftScheduleRepository = remember { ShiftScheduleRepository(context) }
     
+    val participantLocalStore = remember { ParticipantLocalStore(context) }
     val participantId = remember { 
-        ParticipantLocalStore(context).getParticipantId() ?: "unknown" 
+        participantLocalStore.getParticipantId() ?: "unknown" 
     }
     val sleepResultRepository = remember(participantId) {
         SleepResultRepository(participantId, SleepSurveyLocalStore(context))
@@ -68,13 +57,12 @@ fun SleepPage() {
             healthSummaryRepository = healthSummaryRepository,
             healthConnectRepository = healthConnectRepository,
             shiftScheduleRepository = shiftScheduleRepository,
-            sleepResultRepository = sleepResultRepository
+            sleepResultRepository = sleepResultRepository,
+            participantLocalStore = participantLocalStore
         )
     )
 
     val uiState = viewModel.uiState
-// ... (omitting middle parts for brevity, but I will include them in the actual write)
-
 
     var permissionStatus by remember {
         mutableStateOf(
@@ -102,6 +90,7 @@ fun SleepPage() {
         recentSummaries = uiState.recentSummaries,
         sleepSummariesLast24h = uiState.sleepSummariesLast24h,
         checkInHistory = uiState.checkInHistory,
+        shiftInsightSummary = uiState.shiftInsightSummary,
         averageSleepDurationMinutes = uiState.averageSleepDurationMinutes,
         averageShiftSleepDurationMinutes = uiState.averageShiftSleepDurationMinutes,
         todayShift = uiState.todayShift,
@@ -141,6 +130,7 @@ private fun SleepPageContent(
     recentSummaries: List<DailyHealthSummary>,
     sleepSummariesLast24h: List<DailyHealthSummary>,
     checkInHistory: List<com.sujin.nubloompilot.models.SleepResult>,
+    shiftInsightSummary: ShiftInsightSummary?,
     averageSleepDurationMinutes: Long?,
     averageShiftSleepDurationMinutes: Long?,
     todayShift: String?,
@@ -153,9 +143,7 @@ private fun SleepPageContent(
     onRequestNotificationPermission: () -> Unit,
     onShowSleepCheckInNotification: () -> Unit
 ) {
-    var selectedSleepSummary by remember(sleepSummariesLast24h) {
-        mutableStateOf(sleepSummariesLast24h.maxByOrNull { it.sleepDurationMinutes })
-    }
+    var selectedTab by remember { mutableStateOf(SleepPageTab.RECENT_RECOVERY) }
 
     Column(
         modifier = Modifier
@@ -163,219 +151,37 @@ private fun SleepPageContent(
             .verticalScroll(rememberScrollState())
             .padding(24.dp)
     ) {
-        Text(
-            text = "오늘의 수면 데이터",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-        )
         
         Spacer(modifier = Modifier.height(12.dp))
 
-        if (isLoading) {
-            Text("데이터를 불러오는 중...")
-        } else {
-            // 1. Today's Specific Session Section (Conditional)
-            if (latestSummary != null) {
-                val total24hSleepMinutes = if (sleepSummariesLast24h.isNotEmpty()) {
-                    sleepSummariesLast24h.sumOf { it.sleepDurationMinutes }
-                } else {
-                    latestSummary.sleepDurationMinutes
-                }
+        SleepPageTabToggle(
+            selectedTab = selectedTab,
+            onTabSelected = { selectedTab = it }
+        )
 
-                val displayedSummary = selectedSleepSummary ?: latestSummary
+        Spacer(modifier = Modifier.height(24.dp))
 
-                // Display 24h summaries timeline if available
-                if (sleepSummariesLast24h.isNotEmpty()) {
-                    SleepLast24hTimeline(
-                        summaries = sleepSummariesLast24h,
-                        selectedSummary = selectedSleepSummary,
-                        onSummarySelected = { selectedSleepSummary = it }
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-                }
-
-                SelectedSleepSummarySection(
-                    summary = displayedSummary,
-                    total24hSleepMinutes = total24hSleepMinutes,
-                    hasMultipleSleepSummaries = sleepSummariesLast24h.size > 1,
+        when (selectedTab) {
+            SleepPageTab.RECENT_RECOVERY -> {
+                RecentRecoverySection(
+                    latestSummary = latestSummary,
+                    recentSummaries = recentSummaries,
+                    sleepSummariesLast24h = sleepSummariesLast24h,
+                    checkInHistory = checkInHistory,
                     averageSleepDurationMinutes = averageSleepDurationMinutes,
                     averageShiftSleepDurationMinutes = averageShiftSleepDurationMinutes,
                     todayShift = todayShift,
                     averageWakeHeartRate = averageWakeHeartRate,
+                    isLoading = isLoading,
+                    isHistoryLoading = isHistoryLoading,
                     isBaselineLoading = isBaselineLoading
                 )
-            } else {
-                // Today data missing state
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 32.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "오늘 감지된 수면 데이터가 없습니다.\n갤럭시 워치를 착용하고 주무셨는지 확인해주세요.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Gray500,
-                        textAlign = TextAlign.Center
-                    )
-                }
             }
-
-            // 2. Historical Data Section (Always Visible)
-            Spacer(modifier = Modifier.height(24.dp))
-            HorizontalDivider()
-            Spacer(modifier = Modifier.height(24.dp))
-
-            SleepTimelineBarChart(recentSummaries = recentSummaries)
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            if (isHistoryLoading) {
-                Text("체크인 기록 불러오는 중...", color = Gray500)
-            } else {
-                CheckInGrassGrid(checkInHistory = checkInHistory)
+            SleepPageTab.SHIFT_INSIGHT -> {
+                ShiftInsightPlaceholderSection(shiftInsightSummary = shiftInsightSummary)
             }
         }
 
         Spacer(modifier = Modifier.height(44.dp))
-
-//        NotificationTestSection(
-//            permissionStatus = permissionStatus,
-//            notificationRequestStatus = notificationRequestStatus,
-//            onRequestPermission = onRequestNotificationPermission,
-//            onTestNotification = onShowSleepCheckInNotification
-//        )
-    }
-}
-
-@Composable
-private fun NotificationTestSection(
-    permissionStatus: String,
-    notificationRequestStatus: String,
-    onRequestPermission: () -> Unit,
-    onTestNotification: () -> Unit
-) {
-    Column {
-        Text(
-            text = "알림 권한 테스트",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
-
-        HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
-
-        Text(
-            text = permissionStatus,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Gray800
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = onRequestPermission,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("알림 권한 요청")
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        val isNotificationEnabled = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissionStatus == "알림 권한 허용됨"
-        } else {
-            true
-        }
-
-        Button(
-            onClick = onTestNotification,
-            enabled = isNotificationEnabled,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("수면 체크인 알림 테스트")
-        }
-
-        if (notificationRequestStatus.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = notificationRequestStatus,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
-            )
-        }
-    }
-}
-
-@Composable
-private fun SelectedSleepSummarySection(
-    summary: DailyHealthSummary,
-    total24hSleepMinutes: Long,
-    hasMultipleSleepSummaries: Boolean,
-    averageSleepDurationMinutes: Long?,
-    averageShiftSleepDurationMinutes: Long?,
-    todayShift: String?,
-    averageWakeHeartRate: Long?,
-    isBaselineLoading: Boolean
-) {
-    val startTimeText = summary.sleepStartTime.atZone(ZoneId.systemDefault())
-        .format(DateTimeFormatter.ofPattern("HH:mm"))
-    val endTimeText = summary.sleepEndTime.atZone(ZoneId.systemDefault())
-        .format(DateTimeFormatter.ofPattern("HH:mm"))
-
-    Column {
-        SleepDurationComparisonCard(
-            title = if (hasMultipleSleepSummaries) "선택된 수면의 시간" else "오늘 총 수면시간",
-            todayAllSleepDurationMinutes = total24hSleepMinutes,
-            todaySleepDurationMinutes = summary.sleepDurationMinutes,
-            averageSleepDurationMinutes = if (isBaselineLoading) null else averageSleepDurationMinutes
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            SleepSummaryInfoCard(
-                modifier = Modifier.weight(1f),
-                firstLabel = "수면 시작 - 수면 종료",
-                firstValue = "$startTimeText - $endTimeText",
-                secondLabel = "깬 시간",
-                secondValue = "${summary.awakeSleepMinutes}분"
-            )
-            SleepSummaryInfoCard(
-                modifier = Modifier.weight(1f),
-                firstLabel = "기상 심박수",
-                firstValue = "${summary.wakeHeartRate ?: "--"} bpm",
-                secondLabel = "평균 심박수",
-                secondValue = "${averageWakeHeartRate ?: "--"} bpm"
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = Gray300
-            )
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                SleepStageStackedBar(
-                    lightSleepMinutes = summary.lightSleepMinutes,
-                    deepSleepMinutes = summary.deepSleepMinutes,
-                    remSleepMinutes = summary.remSleepMinutes,
-                    awakeSleepMinutes = summary.awakeSleepMinutes
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        ShiftSleepComparisonCard(
-            todaySleepDurationMinutes = summary.sleepDurationMinutes,
-            todayShift = todayShift,
-            averageShiftSleepDurationMinutes = if (isBaselineLoading) null else averageShiftSleepDurationMinutes
-        )
     }
 }

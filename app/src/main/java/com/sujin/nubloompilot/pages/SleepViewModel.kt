@@ -7,12 +7,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.sujin.nubloompilot.models.DailyHealthSummary
-import com.sujin.nubloompilot.models.SleepResult
+import com.sujin.nubloompilot.models.*
 import com.sujin.nubloompilot.repository.HealthConnectRepository
 import com.sujin.nubloompilot.repository.HealthSummaryRepository
 import com.sujin.nubloompilot.repository.ShiftScheduleRepository
 import com.sujin.nubloompilot.repository.SleepResultRepository
+import com.sujin.nubloompilot.local.ParticipantLocalStore
+import com.sujin.nubloompilot.logic.RecoveryRhythmGenerator
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -24,6 +25,8 @@ data class SleepPageUiState(
     val recentSummaries: List<DailyHealthSummary> = emptyList(),
     val sleepSummariesLast24h: List<DailyHealthSummary> = emptyList(),
     val checkInHistory: List<SleepResult> = emptyList(),
+    val shiftInsightSummary: ShiftInsightSummary? = null,
+    val mctqBaselineProfile: MctqBaselineProfile? = null,
     val averageSleepDurationMinutes: Long? = null,
     val averageShiftSleepDurationMinutes: Long? = null,
     val todayShift: String? = null,
@@ -31,6 +34,7 @@ data class SleepPageUiState(
     val isLoading: Boolean = false,
     val isHistoryLoading: Boolean = false,
     val isBaselineLoading: Boolean = false,
+    val isShiftInsightLoading: Boolean = false,
     val errorMessage: String? = null
 )
 
@@ -38,14 +42,16 @@ class SleepViewModel(
     private val healthSummaryRepository: HealthSummaryRepository,
     private val healthConnectRepository: HealthConnectRepository,
     private val shiftScheduleRepository: ShiftScheduleRepository,
-    private val sleepResultRepository: SleepResultRepository
+    private val sleepResultRepository: SleepResultRepository,
+    private val participantLocalStore: ParticipantLocalStore
 ) : ViewModel() {
 
     class Factory(
         private val healthSummaryRepository: HealthSummaryRepository,
         private val healthConnectRepository: HealthConnectRepository,
         private val shiftScheduleRepository: ShiftScheduleRepository,
-        private val sleepResultRepository: SleepResultRepository
+        private val sleepResultRepository: SleepResultRepository,
+        private val participantLocalStore: ParticipantLocalStore
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -53,7 +59,8 @@ class SleepViewModel(
                 healthSummaryRepository,
                 healthConnectRepository,
                 shiftScheduleRepository,
-                sleepResultRepository
+                sleepResultRepository,
+                participantLocalStore
             ) as T
         }
     }
@@ -74,10 +81,14 @@ class SleepViewModel(
                 isLoading = true, 
                 isHistoryLoading = true, 
                 isBaselineLoading = true,
+                isShiftInsightLoading = true,
                 errorMessage = null
             )
             
-            // 0. Load from Cache first
+            // 0. Load Cache & Baseline
+            val mctqProfile = participantLocalStore.getBaselineProfile()
+            uiState = uiState.copy(mctqBaselineProfile = mctqProfile)
+
             try {
                 val cached = sleepResultRepository.getCachedLatestSummary()
                 if (cached != null) {
@@ -124,15 +135,33 @@ class SleepViewModel(
 
                     // 2. Secondary Data (Firestore & Baselines) - Run in background
                     
-                    // Firestore History
+                    // Firestore History & Shift Insights
                     launch {
                         val histStartTime = System.currentTimeMillis()
                         try {
                             val history = sleepResultRepository.getSleepResultsInDateRange(days = 30)
-                            uiState = uiState.copy(checkInHistory = history, isHistoryLoading = false)
-                            Log.d("SleepLoad", "Firestore history loaded in ${System.currentTimeMillis() - histStartTime}ms")
+                            
+                            // Calculate Shift Insights from actual history
+                            val insightSummary = calculateShiftInsights(history)
+                            
+                            // Generate Graph based on Insights & Baseline
+                            val graphData = RecoveryRhythmGenerator().generate(
+                                baselineProfile = uiState.mctqBaselineProfile,
+                                shiftInsightSummary = insightSummary
+                            )
+                            
+                            val finalInsight = insightSummary.copy(recoveryRhythmGraphData = graphData)
+
+                            uiState = uiState.copy(
+                                checkInHistory = history, 
+                                isHistoryLoading = false,
+                                shiftInsightSummary = finalInsight,
+                                isShiftInsightLoading = false
+                            )
+                            Log.d("SleepLoad", "Firestore history & insights loaded in ${System.currentTimeMillis() - histStartTime}ms")
                         } catch (e: Exception) {
-                            uiState = uiState.copy(isHistoryLoading = false)
+                            Log.e("SleepLoad", "Failed to load history insights", e)
+                            uiState = uiState.copy(isHistoryLoading = false, isShiftInsightLoading = false)
                         }
                     }
 
@@ -187,5 +216,65 @@ class SleepViewModel(
                 uiState = uiState.copy(errorMessage = "데이터를 불러오는 중 오류가 발생했습니다.", isLoading = false)
             }
         }
+    }
+
+    private suspend fun calculateShiftInsights(history: List<SleepResult>): ShiftInsightSummary {
+        // Helper to get shift for a result's date
+        fun getShiftTypeForResult(result: SleepResult): ShiftInsightType {
+            val date = result.sleepEndTime.atZone(ZoneId.systemDefault()).toLocalDate()
+            // We need a blocking or standard way to get shift here since we are in a non-suspend helper or 
+            // the repository should provide a sync way if possible. 
+            // For now, use runBlocking or ensure repository has cached values.
+            val shiftCode = shiftScheduleRepository.getShiftForDate(date)
+            return when (shiftCode) {
+                "D" -> ShiftInsightType.DAY
+                "E" -> ShiftInsightType.EVENING
+                "N" -> ShiftInsightType.NIGHT
+                else -> ShiftInsightType.OFF
+            }
+        }
+
+        // Group results by shift
+        val shiftMap = mutableMapOf<ShiftInsightType, MutableList<SleepResult>>()
+        history.forEach { res ->
+            val type = getShiftTypeForResult(res)
+            shiftMap.getOrPut(type) { mutableListOf() }.add(res)
+        }
+
+        fun createInsight(type: ShiftInsightType): ShiftTypeInsight {
+            val results = shiftMap[type] ?: emptyList()
+            
+            // For now, simplify and treat all as "Regular Pattern"
+            // (Real transition logic can be added in next iteration)
+            val regular = if (results.isNotEmpty()) {
+                val avgDur = results.map { it.sleepDurationMinutes }.average().toLong()
+                val avgFatigue = results.map { it.fatigueLevel.toDouble() }.average()
+                val counts = results.groupingBy { it.morningGloryType.name }.eachCount()
+                val mostCommon = counts.maxByOrNull { it.value }?.key
+
+                ShiftPatternInsight(
+                    sampleCount = results.size,
+                    averageSleepDurationMinutes = avgDur,
+                    averageFatigueLevel = avgFatigue,
+                    mostCommonMorningGloryType = mostCommon,
+                    morningGloryTypeCounts = counts,
+                    featureText = if (results.size >= 3) "충분한 기록으로 분석된 패턴입니다." else "기록이 더 필요합니다.",
+                    hasEnoughData = results.size >= 3
+                )
+            } else null
+
+            return ShiftTypeInsight(
+                shiftType = type,
+                regularPattern = regular,
+                transitionPattern = null // Placeholder for next step
+            )
+        }
+
+        return ShiftInsightSummary(
+            dayInsight = createInsight(ShiftInsightType.DAY),
+            eveningInsight = createInsight(ShiftInsightType.EVENING),
+            nightInsight = createInsight(ShiftInsightType.NIGHT),
+            offInsight = createInsight(ShiftInsightType.OFF)
+        )
     }
 }
