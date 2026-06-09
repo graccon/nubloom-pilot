@@ -31,14 +31,18 @@ fun InsightPatternSection(
         Spacer(modifier = Modifier.height(32.dp))
 
         // TODO 피로도 7 bar 척도 중에 어디인지 표시
-        InsightRow(
-            label = if (title.contains("복귀") || title.contains("회복")) "복귀일 평균 피로도" else "평균 피로도",
-            value = formatFatigueLevel(pattern?.averageFatigueLevel)
+        FatigueLevelBar(
+            fatigueLevel = pattern?.averageFatigueLevel,
+            label = if (title.contains("복귀") || title.contains("회복")) {
+                "복귀일 평균 피로도"
+            } else {
+                "평균 피로도"
+            }
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // TODO 나팔꽃 캐릭터.. 순위 메기는
+        // TODO 나팔꽃 캐릭터 순위 메기는 시각화
         Text(
             text = "나팔꽃 타입 분포",
             style = MaterialTheme.typography.labelSmall,

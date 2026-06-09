@@ -70,7 +70,7 @@ fun SleepDurationRangeBar(
             verticalAlignment = Alignment.Bottom
         ) {
             Text(
-                text = "평균 수면 시간",
+                text = "평균 수면 시간 (범위)",
                 style = MaterialTheme.typography.labelMedium,
                 color = Gray700
             )
@@ -206,7 +206,7 @@ private fun SleepDurationSummaryText(
     ) {
         Text(
             text = "이 근무에서는 평균 ${formatMinutesToHourMinute(averageMinutes)} 정도 주무셨어요.",
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = Gray700
         )
 
@@ -216,7 +216,7 @@ private fun SleepDurationSummaryText(
             } else {
                 "수면 시간 범위를 보려면 기록이 조금 더 필요해요."
             },
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             color = Gray700,
             modifier = Modifier.padding(top = 2.dp)
         )
